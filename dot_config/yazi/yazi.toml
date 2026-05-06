@@ -1,0 +1,45 @@
+
+[mgr]
+show_hidden = true
+
+# PERF: orphan = true cho phép tách tiến trình (Detach). Bro mở ảnh xong có thể quay lại Yazi làm việc khác mà ảnh không bị tắt.
+open_image = [
+    { run = 'imv "$@"', orphan = true, desc = "View Image" },
+]
+open_video = [
+    { run = 'mpv "$@"', orphan = true, desc = "Play Video" },
+]
+
+# BUG FIX: Khai báo fallback mà bro gọi ở dưới nhưng quên định nghĩa. xdg-open sẽ nhờ Linux tự phân xử.
+my-fallback = [
+    { run = 'xdg-open "$@"', orphan = true, desc = "System Fallback" },
+]
+
+[opener]
+set_wallpaper = [
+    { run = 'awww img "$@" --transition-type center --transition-fps 60', desc = "Set as Wallpaper" }
+]
+edit = [
+    { run = 'nvim "$@"', block = true, desc = "Edit with Neovim" },
+]
+
+[open]
+rules = [
+    # Ưu tiên 1: Bắt chết các đuôi file rắc rối của hệ sinh thái JS/TS và Config
+    { url = "*.{ts,tsx,toml,vue,svelte,lua}", use = "edit" },
+    
+    # Ưu tiên 2: Gom 90% text-based và mã nguồn bằng MIME
+    { mime = "text/*", use = "edit" },
+    { mime = "application/json", use = "edit" },
+    { mime = "inode/x-empty", use = "edit" },
+    { mime = "application/octet-stream", use = "edit" },
+    
+    # Ưu tiên 3: Multimedia (Đã mở phong ấn)
+    { mime = "image/*", use = "set_wallpaper" },
+    { mime = "video/*", use = "open_video" },
+]
+
+append_rules = [
+    # Lưới vét cuối cùng: File lạ thì quăng cho OS tự xử
+    { url = "*", use = "my-fallback" },
+]

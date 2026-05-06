@@ -1,0 +1,50 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 8,
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "battery", "custom/notification"],
+
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    "active-only": false,
+    "format": "{name}",
+    "on-scroll-up": "hyprctl dispatch workspace +1",
+    "on-scroll-down": "hyprctl dispatch workspace -1",
+  },
+
+  "clock": {
+    "format": "{:%H:%M - %A, %d/%m}",
+    "tooltip": false,
+  },
+
+  "battery": {
+    "states": { "warning": 30, "critical": 15 },
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% AC",
+    "format-icons": ["BAT", "BAT", "BAT", "BAT", "BAT"],
+    "tooltip": false,
+  },
+
+  "network": {
+    "format-wifi": "{essid} ({signalStrength}%) WIFI",
+    "format-disconnected": "OFFLINE",
+    "tooltip": false,
+    "on-click": "~/.local/bin/wifi-menu.sh",
+  },
+
+  "pulseaudio": {
+    "format": "{volume}% VOL",
+    "format-muted": "MUTED",
+    "tooltip": false,
+    "on-click": "pavucontrol",
+  },
+
+  "custom/notification": {
+    "tooltip": false,
+    "format": "",
+    "on-click": "swaync-client -t -sw",
+  },
+}

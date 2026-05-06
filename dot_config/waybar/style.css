@@ -1,0 +1,91 @@
+@import "mocha.css";
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  font-weight: bold;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+window#waybar {
+  background-color: rgba(30, 30, 46, 0.85);
+  color: @text;
+
+  border-radius: 16px;
+  border: 1px solid @surface1;
+
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+#workspaces {
+  margin-right: 8px;
+}
+
+#workspaces button {
+  padding: 0 4px;
+  color: @subtext0;
+  background-color: transparent;
+  border-radius: 8px;
+  margin: 4px 2px 4px 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#workspaces button:hover {
+  background-color: @surface1;
+  color: @text;
+}
+
+#workspaces button.active {
+  color: @base;
+  background-color: @mauve;
+  border-radius: 8px;
+}
+
+#workspaces button:hover,
+#workspaces button.empty:hover {
+  background-color: @surface1;
+  box-shadow: inherit;
+  text-shadow: inherit;
+}
+
+#clock,
+#battery,
+#network,
+#pulseaudio,
+#custom-notification {
+  padding: 0 12px;
+  background-color: @surface0;
+  margin: 5px 3px;
+  border-radius: 12px;
+}
+
+#battery.warning {
+  color: @peach;
+}
+#battery.critical {
+  color: @red;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+#battery.charging {
+  color: @teal;
+}
+
+@keyframes blink {
+  to {
+    background-color: @red;
+    color: @base;
+  }
+}

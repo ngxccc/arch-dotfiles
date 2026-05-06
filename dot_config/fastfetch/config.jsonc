@@ -1,0 +1,33 @@
+{
+  "logo": {
+    "type": "auto",
+    "source": "hyprland", // Hyprland logo native
+  },
+  "display": {
+    "color": {
+      "title": "blue",
+      "keys": "green",
+    },
+    "separator": " ",
+    "key": {
+      "width": 12,
+    },
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "de", // Hyprland detected
+    "wm",
+    "cpu",
+    "gpu",
+    "memory",
+    "disk",
+    "colors",
+  ],
+}

@@ -1,0 +1,90 @@
+@import "mocha.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "Ubuntu Nerd Font", sans-serif;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.control-center {
+  background-color: rgba(30, 30, 46, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid #313244;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.notification-background {
+  background-color: #181825;
+  border: 1px solid #313244;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.notification-background:hover {
+  background-color: #313244;
+  border-color: #89b4fa;
+}
+
+.notification-content {
+  padding: 14px;
+}
+
+.summary {
+  color: #cdd6f4;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.time {
+  color: #a6adc8;
+  font-size: 12px;
+}
+
+.body {
+  color: #bac2de;
+  font-size: 13px;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.close-button {
+  background-color: transparent;
+  color: #f38ba8;
+  border-radius: 8px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.close-button:hover {
+  background-color: #f38ba8;
+  color: #11111b;
+  box-shadow: 0 0 10px rgba(243, 139, 168, 0.4);
+}
+
+trough slider {
+  min-width: 20px;
+  min-height: 20px;
+  margin: -10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  background-color: #89b4fa;
+}
+
+/* trough slider:hover { */
+/*   background-color: #b4befe; */
+/*   box-shadow: 0 0 12px rgba(137, 180, 250, 0.6); */
+/*   transform: scale(1.1); */
+/* } */
+
+scrollbar slider {
+  min-width: 6px;
+  min-height: 6px;
+  margin: -3px;
+  background-color: #585b70;
+  border-radius: 10px;
+}
+
+scrollbar slider:hover {
+  background-color: #a6adc8;
+}
