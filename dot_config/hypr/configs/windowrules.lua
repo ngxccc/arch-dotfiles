@@ -31,4 +31,12 @@ hl.window_rule({
 	no_anim = true,
 	stay_focused = true,
 	border_size = 0,
+	rounding = 16,
+	dim_around = true,
+})
+
+hl.window_rule({
+	match = { workspace = "w[tv1]" },
+	border_size = 0,
+	rounding = 0,
 })
