@@ -14,9 +14,11 @@
 window#waybar {
   background-color: rgba(30, 30, 46, 0.85);
   color: @text;
+  background: transparent;
 
   border-radius: 16px;
-  border: 1px solid @surface1;
+  /* border: 1px solid @surface1; */
+  border: none;
 
   transition-property: background-color;
   transition-duration: 0.5s;

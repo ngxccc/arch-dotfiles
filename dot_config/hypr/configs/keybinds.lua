@@ -15,14 +15,30 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/logout.sh"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+-- hl.bind(mainMod .. " + V", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("killall -SIGUSR2 waybar"))
 
 -- 3. Navigation (Focus)
-hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
+
+-- Capture
+-- Screenshot region → clipboard
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("grimblast --notify --freeze copy area"))
+-- Screenshot fullscreen → clipboard
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("grimblast --notify --freeze copy screen"))
+-- Screenshot region → save file (Pictures/)
+hl.bind(
+	mainMod .. " + CTRL + S",
+	hl.dsp.exec_cmd("grimblast --notify --freeze copysave area ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png")
+)
+-- Screenshot full screen → save file
+hl.bind(
+	mainMod .. " + CTRL + SHIFT + S",
+	hl.dsp.exec_cmd("grimblast --notify --freeze copysave screen ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png")
+)
 
 -- 4. Workspaces & Moving Windows
 for i = 1, 10 do
@@ -32,8 +48,8 @@ for i = 1, 10 do
 end
 
 -- 5. Special Workspace (Scratchpad)
-hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- 6. Mouse Bindings
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))

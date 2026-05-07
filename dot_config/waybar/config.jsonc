@@ -32,7 +32,7 @@
     "format-wifi": "{essid} ({signalStrength}%) WIFI",
     "format-disconnected": "OFFLINE",
     "tooltip": false,
-    "on-click": "~/.local/bin/wifi-menu.sh",
+    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
   },
 
   "pulseaudio": {
