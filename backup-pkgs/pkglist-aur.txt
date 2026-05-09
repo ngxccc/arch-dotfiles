@@ -1,0 +1,10 @@
+batctl-tui
+catppuccin-gtk-theme-mocha
+google-chrome
+hyprland-git
+orbit-wifi
+sddm-theme-catppuccin-git
+ttf-ms-fonts
+visual-studio-code-bin
+yay
+yay-debug
