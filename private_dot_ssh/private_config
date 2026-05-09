@@ -1,0 +1,5 @@
+Host ngxc
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/ngxc
+    IdentitiesOnly yes

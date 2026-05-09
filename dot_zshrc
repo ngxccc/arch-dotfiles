@@ -1,0 +1,41 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+plugins=(
+  git
+  web-search
+  colored-man-pages
+  command-not-found
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+eval "$(keychain --eval --quiet ngxc)"
+eval "$(fnm env --use-on-cd --shell zsh)"
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+function backup_pkgs() {
+  local backup_dir="$HOME/backup-pkgs"
+  mkdir -p "$backup_dir"
+  pacman -Qqen > "$backup_dir/pkglist-repo.txt"
+  pacman -Qqem > "$backup_dir/pkglist-aur.txt"
+  print -P "%F{green}✔ Packages successfully dumped to %f%B$backup_dir%b"
+}
+
+alias bpkg='backup_pkgs'
+alias sudo='sudo '
+alias y='y'
+alias vim='nvim'
+alias v='nvim'
+alias vi='nvim'
