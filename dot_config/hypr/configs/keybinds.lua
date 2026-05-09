@@ -42,6 +42,8 @@ hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/wall-picker.s
 -- hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o ~/pictures/screenshots -z"))
 -- hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window -o ~/pictures/screenshots -z"))
 
+local notify_cmd = " && notify-send -u normal -i "
+
 hl.bind(
 	mainMod .. " + PRINT",
 	hl.dsp.exec_cmd(
@@ -53,6 +55,11 @@ hl.bind(
 			.. screen_dir
 			.. "region_"
 			.. timestamp
+			.. notify_cmd
+			.. screen_dir
+			.. "region_"
+			.. timestamp
+			.. " 'Screenshot' 'Vùng chọn đã được lưu và copy!'"
 	)
 )
 
@@ -63,6 +70,11 @@ hl.bind(
 			.. screen_dir
 			.. "win_"
 			.. timestamp
+			.. notify_cmd
+			.. screen_dir
+			.. "win_"
+			.. timestamp
+			.. " 'Screenshot' 'Ảnh cửa sổ đã được lưu vào bộ sưu tập!'"
 	)
 )
 
@@ -73,9 +85,13 @@ hl.bind(
 			.. screen_dir
 			.. "mon_"
 			.. timestamp
+			.. notify_cmd
+			.. screen_dir
+			.. "mon_"
+			.. timestamp
+			.. " 'Screenshot' 'Toàn bộ màn hình đã được ghi lại!'"
 	)
 )
-
 -- Zoom Shortcut
 hl.bind(mainMod .. " + equal", hl.dsp.exec_cmd("hyprctl keyword misc:cursor_zoom_factor 2.0"))
 hl.bind(mainMod .. " + minus", hl.dsp.exec_cmd("hyprctl keyword misc:cursor_zoom_factor 1.0"))
