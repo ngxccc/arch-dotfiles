@@ -23,7 +23,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "blur-kitty",
 	match = { class = "kitty" },
-	opacity = "0.9 0.9",
+	opacity = "0.85 0.85",
 })
 
 hl.window_rule({

@@ -1,0 +1,17 @@
+/* =========================================================
+   THEME: MONOCHROME PORSCHE (GTK3 Native)
+   ========================================================= */
+
+/* Base Colors (Solid) */
+@define-color base #000000;
+@define-color surface #1a1a1a;
+@define-color surface-hover #333333;
+@define-color crust #0d0d0d;
+
+/* Typography */
+@define-color text-primary #f5f5f5;
+@define-color text-muted #888888;
+
+/* Accents */
+@define-color accent #ffffff;
+@define-color danger #d50000;

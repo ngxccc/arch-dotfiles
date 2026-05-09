@@ -24,3 +24,21 @@
 @define-color base #1e1e2e;
 @define-color mantle #181825;
 @define-color crust #11111b;
+
+@define-color cc-bg rgba(30, 30, 46, 0.94);
+@define-color cc-bg-muted rgba(49, 50, 68, 0.92);
+@define-color noti-bg rgba(49, 50, 68, 0.92);
+@define-color noti-bg-hover rgba(69, 71, 90, 0.98);
+@define-color noti-bg-focus rgba(69, 71, 90, 0.72);
+@define-color noti-border rgba(205, 214, 244, 0.12);
+@define-color noti-close-bg rgba(69, 71, 90, 0.95);
+@define-color noti-close-bg-hover rgba(88, 91, 112, 0.98);
+
+@define-color text-color #cdd6f4;
+@define-color text-color-disabled #7f849c;
+@define-color bg-selected #89b4fa;
+@define-color noti-bg-darker #313244;
+@define-color noti-bg-alt #45475a;
+
+@define-color mpris-album-art-overlay rgba(0, 0, 0, 0.55);
+@define-color mpris-button-hover rgba(0, 0, 0, 0.42);
