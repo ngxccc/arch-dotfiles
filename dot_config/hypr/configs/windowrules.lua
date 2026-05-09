@@ -54,3 +54,12 @@ hl.window_rule({
 	center = true,
 	size = "800 600",
 })
+
+hl.window_rule({
+	name = "float-pulsemixer",
+	match = { class = "^(kitty)$", title = "^(pulsemixer)$" },
+	float = true,
+	center = true,
+	size = "900 600",
+	opacity = "0.95 0.95",
+})

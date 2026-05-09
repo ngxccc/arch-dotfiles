@@ -1,10 +1,10 @@
-@import "mocha.css";
+@import "current_theme.css";
 
 * {
   border: none;
   border-radius: 0;
   font-family: "JetBrainsMono Nerd Font", monospace;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   min-height: 0;
   margin: 0;
@@ -12,9 +12,8 @@
 }
 
 window#waybar {
-  color: @text;
+  color: @text-primary;
   background: transparent;
-
   transition-property: background-color;
   transition-duration: 0.5s;
 }
@@ -27,13 +26,13 @@ window#waybar.hidden {
   margin: 6px 10px 6px 12px;
   padding: 2px 8px;
   border-radius: 12px;
-  background: alpha(@mantle, 0.75);
-  border: 1px solid alpha(@surface1, 0.9);
+  background: alpha(@surface, 0.9);
+  border: 1px solid @surface-hover;
 }
 
 #workspaces button {
   padding: 0 7px;
-  color: @subtext0;
+  color: @text-muted;
   background-color: transparent;
   border-radius: 8px;
   margin: 3px 2px;
@@ -41,27 +40,24 @@ window#waybar.hidden {
 }
 
 #workspaces button:hover {
-  background-color: alpha(@surface1, 0.95);
-  color: @text;
-  box-shadow: inset 0 -2px alpha(@sky, 0.55);
+  background-color: @surface-hover;
+  color: @text-primary;
 }
 
 #workspaces button.active {
   color: @base;
-  background-color: @blue;
+  background-color: @accent;
   border-radius: 8px;
-  box-shadow: inset 0 -2px alpha(@lavender, 0.7);
 }
 
 #workspaces button.active:hover {
-  background-color: @lavender;
+  background-color: @text-primary;
   color: @base;
-  box-shadow: inset 0 -2px alpha(@crust, 0.6);
 }
 
 #workspaces button.empty:hover {
-  background-color: alpha(@surface1, 0.9);
-  color: @text;
+  background-color: @surface;
+  color: @text-primary;
   box-shadow: none;
   text-shadow: inherit;
 }
@@ -75,42 +71,33 @@ window#waybar.hidden {
   padding: 0 14px;
   margin: 6px 4px;
   border-radius: 13px;
-  background: alpha(@mantle, 0.78);
-  border: 1px solid alpha(@surface1, 0.95);
-  color: @text;
+  background: alpha(@surface, 0.9);
+  border: 1px solid @surface-hover;
+  color: @text-primary;
 }
 
 #clock {
-  background: alpha(@surface0, 0.93);
-  border-color: alpha(@overlay0, 0.8);
-  color: @lavender;
+  background: @surface;
+  border-color: @surface-hover;
+  color: @accent;
   padding: 0 16px;
 }
 
-#custom-orbit {
-  color: @blue;
-}
-
-#network {
-  color: @sky;
-}
-
-#pulseaudio {
-  color: @green;
-}
-
+#custom-orbit,
+#network,
+#pulseaudio,
 #custom-notification {
-  color: @mauve;
+  color: @text-primary;
 }
 
 #battery.warning {
-  color: @peach;
-  border-color: alpha(@peach, 0.8);
+  color: @text-primary;
+  border-color: @text-muted;
 }
 
 #battery.critical {
-  color: @red;
-  border-color: alpha(@red, 0.8);
+  color: @danger;
+  border-color: @danger;
   animation-name: blink;
   animation-duration: 0.7s;
   animation-timing-function: linear;
@@ -119,31 +106,31 @@ window#waybar.hidden {
 }
 
 #battery.charging {
-  color: @teal;
-  border-color: alpha(@teal, 0.8);
+  color: @accent;
+  border-color: @accent;
 }
 
 @keyframes blink {
   to {
-    background-color: alpha(@red, 0.75);
+    background-color: alpha(@danger, 0.75);
     color: @base;
   }
 }
 
 tooltip {
   background: alpha(@crust, 0.95);
-  border: 1px solid alpha(@surface1, 1);
+  border: 1px solid @surface-hover;
   border-radius: 12px;
 }
 
 tooltip label {
-  color: @text;
+  color: @text-primary;
   padding: 8px 10px;
 }
 
 menu {
-  background: alpha(@crust, 0.98);
-  border: 1px solid alpha(@surface1, 1);
+  background: alpha(@crust, 0.95);
+  border: 1px solid @surface-hover;
   border-radius: 12px;
   padding: 6px;
 }
@@ -152,9 +139,9 @@ menuitem {
   border-radius: 8px;
   padding: 7px 10px;
   margin: 2px 0;
-  color: @text;
+  color: @text-primary;
 }
 
 menuitem:hover {
-  background: alpha(@surface1, 0.9);
+  background: @surface-hover;
 }

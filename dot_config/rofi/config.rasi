@@ -10,70 +10,71 @@ configuration {
     display-window: "Windows:";
 }
 
-/* WHY: Explicitly inherits the global Catppuccin Mocha design system */
-@theme "catppuccin-mocha"
+// * {
+//     font: "JetBrainsMono Nerd Font 12";
+//
+//     bg0:    #000000; /* OLED Black - Nền tổng thể */
+//     bg1:    #0d0d0d; /* Crust - Nền thanh tìm kiếm */
+//     bg2:    #1a1a1a; /* Surface - Nền mục đang chọn */
+//     bg3:    #333333; /* Surface Hover - Viền phân cách */
+//
+//     fg0:    #f5f5f5; /* Primary Text - Trắng kim loại */
+//     muted:  #888888; /* Placeholder - Xám mờ */
+//
+//     dim:    #A0A0A0;
+//
+//     accent: #d50000; /* Porsche Carmine Red - Điểm nhấn chí mạng */
+//     urgent: #ff3333; /* Báo lỗi */
+//
+//     background-color: transparent;
+//     text-color: @fg0;
+//
+//     margin:  0px;
+//     padding: 0px;
+//     spacing: 0px;
+// }
 
-* {
-    /* FIXME: Synced with terminal emulator configuration for global consistency */
-    font: "JetBrainsMono Nerd Font 12";
-    
-    /* WHY: Hardcoded fallback mapping in case upstream theme misses specific variable hooks */
-    bg0:    #1e1e2e;
-    bg1:    #181825;
-    bg2:    #313244;
-    bg3:    #45475a;
-    fg0:    #cdd6f4;
-    blue:   #89b4fa;
-    cyan:   #94e2d5;
-    urgent: #f38ba8;
-    accent: #cba6f7;
-
-    background-color: transparent;
-    text-color: @fg0;
-
-    margin:  0px;
-    padding: 0px;
-    spacing: 0px;
-}
+@theme "current_theme"
 
 window {
     location:       center;
     width:          480;
     y-offset:       -20;
-    border-radius:  24px;
+    
+    border-radius:  12px;
 
-    border: 1px;
-    border-color: @bg3;
+    border: 2px;
+    border-color: @accent;
     background-color: @bg0;
 }
 
 mainbox {
-    padding: 12px;
+    padding: 16px;
 }
 
 inputbar {
     background-color: @bg1;
     border-color:     @bg3;
-    border-radius:    16px;
-    border:           2px;
+    border-radius:    8px;
+    border:           1px;
 
-    padding:  8px 16px;
+    padding:  10px 16px;
     spacing:  8px;
     children: [ prompt, entry ];
 }
 
 prompt {
-    text-color: @blue;
+    text-color: @accent;
 }
 
 entry {
-    placeholder: "";
-    placeholder-color: @cyan;
+    placeholder: "Search...";
+    placeholder-color: @muted;
 }
 
 message {
     margin:           12px 0 0;
-    border-radius:    16px;
+    border-radius:    8px;
     border-color:     @bg2;
     background-color: @bg2;
 }
@@ -85,17 +86,18 @@ textbox {
 
 listview {
     background-color: transparent;
-    margin:           12px 0 0;
+    margin:           16px 0 0;
     columns:          1;
-    /* BUG: Original value '2' clipped the render buffer. Increased to 6 for standard UX. */
     lines:            6;
     fixed-height:     false;
 }
 
 element {
-    padding:       8px 16px;
-    spacing:       8px;
-    border-radius: 16px;
+    padding:       10px 16px;
+    spacing:       12px;
+    margin: 2px 0;
+    border-radius: 8px;
+    text-color:    @dim;
 }
 
 element normal urgent {
@@ -106,12 +108,23 @@ element normal active {
     text-color: @accent;
 }
 
+element normal normal, element alternate normal {
+    background-color: transparent;
+    text-color:       @dim;
+}
+
 element selected normal, element selected active {
     background-color: @bg2;
+    text-color:       @accent;
+}
+
+element normal urgent, element alternate urgent {
+    background-color: transparent;
+    text-color:       @urgent;
 }
 
 element-icon {
-    size:           1em;
+    size:           1.2em;
     vertical-align: 0.5;
 }
 
