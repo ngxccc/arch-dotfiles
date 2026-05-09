@@ -17,4 +17,4 @@ hl.env("GLFW_IM_MODULE", "ibus")
 
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
 
-hl.env("GTK_THEME", "catppuccin-mocha-blue")
+hl.env("GTK_THEME", "catppuccin-mocha-blue-standard+default")

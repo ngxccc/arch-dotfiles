@@ -1,4 +1,3 @@
--- WHY: Wrapped in hyprland.start event to prevent zombie processes on config reloads
 hl.on("hyprland.start", function()
 	hl.exec_cmd("nm-applet")
 	hl.exec_cmd("waybar & hyprpaper")
@@ -6,5 +5,4 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("fcitx5 -d")
 	hl.exec_cmd("swaync")
 	hl.exec_cmd("awww-daemon")
-	-- hl.exec_cmd("hyprlock --immediate")
 end)
