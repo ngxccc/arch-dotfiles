@@ -58,11 +58,11 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "spacing": 1,
-    "on-click": "orbit toggle top-right",
+    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "menu": "on-click-right",
     "menu-file": "~/.config/waybar/context/wifi.xml",
     "menu-actions": {
-      "action-1": "~/.config/waybar/scripts/wifi-menu.sh",
+      "action-1": "orbit toggle top-right",
       "action-2": "nmcli radio wifi off",
       "action-3": "nmcli radio wifi on",
       "action-4": "hyprctl dispatch exec '[float] kitty -e nmtui'",

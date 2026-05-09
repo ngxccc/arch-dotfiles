@@ -23,7 +23,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "blur-kitty",
 	match = { class = "kitty" },
-	opacity = "0.8 0.8",
+	opacity = "0.9 0.9",
 })
 
 hl.window_rule({
@@ -45,4 +45,12 @@ hl.window_rule({
 hl.window_rule({
 	match = { float = true },
 	rounding = 0,
+})
+
+hl.window_rule({
+	name = "float-thunar",
+	match = { class = "^(Thunar)$" },
+	float = true,
+	center = true,
+	size = "800 600",
 })

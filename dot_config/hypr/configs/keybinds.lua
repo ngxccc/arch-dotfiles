@@ -3,6 +3,8 @@ local fileManager = "thunar"
 local tuiFileManager = "kitty -e yazi"
 local menu = "rofi -show drun"
 local mainMod = "SUPER"
+local screen_dir = "~/pictures/screenshots/"
+local timestamp = "$(date +%Y-%m-%d_%H-%M-%S).png"
 
 -- 1. App Launches
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
@@ -34,8 +36,42 @@ hl.bind(mainMod .. " + ALT + K", hl.dsp.workspace.move({ monitor = "u" }))
 hl.bind(mainMod .. " + ALT + J", hl.dsp.workspace.move({ monitor = "d" }))
 
 -- 4. Screenshots
-hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o ~/pictures/screenshots -z"))
-hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window -o ~/pictures/screenshots -z"))
+-- hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o ~/pictures/screenshots -z"))
+-- hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window -o ~/pictures/screenshots -z"))
+
+hl.bind(
+	mainMod .. " + PRINT",
+	hl.dsp.exec_cmd(
+		'grim -g "$(slurp)" -l 0 '
+			.. screen_dir
+			.. "region_"
+			.. timestamp
+			.. " && wl-copy < "
+			.. screen_dir
+			.. "region_"
+			.. timestamp
+	)
+)
+
+hl.bind(
+	mainMod .. " + SHIFT + PRINT",
+	hl.dsp.exec_cmd(
+		'grim -g "$(hyprctl activewindow -j | jq -r \'"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])"\')" -l 0 '
+			.. screen_dir
+			.. "win_"
+			.. timestamp
+	)
+)
+
+hl.bind(
+	mainMod .. " + ALT + PRINT",
+	hl.dsp.exec_cmd(
+		"grim -o $(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name') -l 0 "
+			.. screen_dir
+			.. "mon_"
+			.. timestamp
+	)
+)
 
 -- Zoom Shortcut
 hl.bind(mainMod .. " + equal", hl.dsp.exec_cmd("hyprctl keyword misc:cursor_zoom_factor 2.0"))
@@ -53,6 +89,8 @@ end
 -- hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- 7. Mouse Bindings
+hl.bind(mainMod .. " + RIGHT", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + LEFT", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })

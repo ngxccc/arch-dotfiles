@@ -9,6 +9,7 @@ bluez-utils
 bottom
 brightnessctl
 btrfs-progs
+bun
 chezmoi
 cliphist
 cups
@@ -22,6 +23,7 @@ fcitx5-configtool
 fcitx5-gtk
 fcitx5-qt
 firefox
+fnm
 freerdp
 git
 gst-plugin-pipewire
@@ -41,11 +43,9 @@ nano
 neovim
 network-manager-applet
 networkmanager
-nodejs
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
-npm
 nwg-look
 pavucontrol
 pipewire
