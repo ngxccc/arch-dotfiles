@@ -2,6 +2,9 @@
 local set = vim.opt
 vim.opt.modeline = false
 
+vim.opt.termguicolors = true
+vim.opt.mouse = "a"
+
 --line nums
 set.relativenumber = true
 set.number = true

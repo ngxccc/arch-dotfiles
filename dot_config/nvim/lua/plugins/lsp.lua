@@ -13,23 +13,43 @@ return {
 		"b0o/schemastore.nvim",
 	},
 	config = function()
+		local profiles = require("config.profiles")
+		local lua_tools = require("config.profiles.tools.lua")
+		local python_tools = require("config.profiles.tools.python")
+		local typescript_tools = require("config.profiles.tools.typescript")
+		local html_tools = require("config.profiles.tools.html")
+		local cssls_tools = require("config.profiles.tools.cssls")
+		local tailwindcss_tools = require("config.profiles.tools.tailwindcss")
+		local json_tools = require("config.profiles.tools.json")
+		local prisma_tools = require("config.profiles.tools.prisma")
+		local sql_tools = require("config.profiles.tools.sql")
+		local lua_servers = require("config.profiles.servers.lua")
+		local python_servers = require("config.profiles.servers.python")
+		local typescript_servers = require("config.profiles.servers.typescript")
+		local html_servers = require("config.profiles.servers.html")
+		local cssls_servers = require("config.profiles.servers.cssls")
+		local tailwindcss_servers = require("config.profiles.servers.tailwindcss")
+		local json_servers = require("config.profiles.servers.json")
+		local prisma_servers = require("config.profiles.servers.prisma")
+		local sql_servers = require("config.profiles.servers.sql")
+
 		-- 1. Setup Mason
 		require("mason").setup({ ui = { border = "rounded" } })
 
 		-- 2. Auto Install Tools
+		local tools = profiles.merge_list(
+			lua_tools,
+			python_tools,
+			typescript_tools,
+			html_tools,
+			cssls_tools,
+			tailwindcss_tools,
+			json_tools,
+			prisma_tools,
+			sql_tools
+		)
 		require("mason-tool-installer").setup({
-			ensure_installed = {
-				"ruff",
-				"mypy",
-				"stylua",
-				"prettier",
-				"eslint_d",
-				"lua-language-server",
-				"typescript-language-server",
-				"html-lsp",
-				"css-lsp",
-				"json-lsp",
-			},
+			ensure_installed = tools,
 		})
 
 		-- 3. Config Diagnostics
@@ -48,36 +68,17 @@ return {
 		-- 4. Capabilities (cho cmp)
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-		local servers = {
-			-- 🐍 Python
-			ruff = {
-				cmd = { "ruff", "server" },
-				filetypes = { "python" },
-				root_markers = { "pyproject.toml", ".git" },
-			},
-			-- 🌐 WebDev
-			ts_ls = {
-				cmd = { "typescript-language-server", "--stdio" },
-				filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-				root_markers = { "package.json", "tsconfig.json", ".git" },
-			},
-			html = { cmd = { "vscode-html-language-server", "--stdio" } },
-			cssls = { cmd = { "vscode-css-language-server", "--stdio" } },
-			-- ⚙️ Lõi
-			lua_ls = {
-				cmd = { "lua-language-server" },
-				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
-			},
-			jsonls = {
-				cmd = { "vscode-json-language-server", "--stdio" },
-				settings = {
-					json = {
-						schemas = require("schemastore").json.schemas(),
-						validate = { enable = true },
-					},
-				},
-			},
-		}
+		local servers = profiles.merge_maps(
+			lua_servers,
+			python_servers,
+			typescript_servers,
+			html_servers,
+			cssls_servers,
+			tailwindcss_servers,
+			json_servers,
+			prisma_servers,
+			sql_servers
+		)
 
 		-- Vòng lặp thần thánh: Duyệt qua table và enable toàn bộ
 		for server, config in pairs(servers) do
@@ -96,6 +97,7 @@ return {
 				-- Keybindings
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 			end,

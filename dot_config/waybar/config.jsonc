@@ -1,11 +1,30 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 34,
+  "height": 42,
   "spacing": 8,
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
-  "modules-right": ["pulseaudio", "network", "battery", "custom/notification"],
+  "modules-right": [
+    "custom/orbit",
+    "pulseaudio",
+    "network",
+    "battery",
+    "custom/notification",
+  ],
+
+  "custom/apps": {
+    "format": "ngxc",
+    "font-family": "JetBrainsMono Nerd Font",
+    "font-weight": 400,
+    "on-click": "~/.config/rofi/scripts/menu.sh",
+  },
+
+  "custom/orbit": {
+    "format": "󰀻",
+    "tooltip": false,
+    "on-click": "orbit toggle top-right",
+  },
 
   "hyprland/workspaces": {
     "all-outputs": true,
@@ -29,22 +48,76 @@
   },
 
   "network": {
-    "format-wifi": "{essid} ({signalStrength}%) WIFI",
-    "format-disconnected": "OFFLINE",
-    "tooltip": false,
-    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰌘 ethernet",
+    "format-disconnected": "󰤮",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "spacing": 1,
+    "on-click": "orbit toggle top-right",
+    "menu": "on-click-right",
+    "menu-file": "~/.config/waybar/context/wifi.xml",
+    "menu-actions": {
+      "action-1": "~/.config/waybar/scripts/wifi-menu.sh",
+      "action-2": "nmcli radio wifi off",
+      "action-3": "nmcli radio wifi on",
+      "action-4": "hyprctl dispatch exec '[float] kitty -e nmtui'",
+      "action-5": "hyprctl dispatch exec nm-connection-editor"
+    },
   },
 
   "pulseaudio": {
-    "format": "{volume}% VOL",
-    "format-muted": "MUTED",
-    "tooltip": false,
-    "on-click": "pavucontrol",
+    "format": "{icon} {volume}%",
+    "on-click": "kitty pulsemixer",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "tooltip-format": "Playing at {volume}%",
+    "scroll-step": 5,
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", " ", " "],
+    },
   },
 
   "custom/notification": {
     "tooltip": false,
     "format": "",
     "on-click": "swaync-client -t -sw",
+  },
+
+  "mpris": {
+    "interval": 10,
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} {artist}",
+    "on-click-middle": "playerctl play-pause",
+    "on-click": "playerctl previous",
+    "on-click-right": "playerctl next",
+    "scroll-step": 5.0,
+    "on-scroll-up": "$HOME/.config/hypr/scripts/volume.sh --inc",
+    "on-scroll-down": "$HOME/.config/hypr/scripts/volume.sh --dec",
+    "smooth-scrolling-threshold": 1,
+    "tooltip": true,
+    "tooltip-format": "{status_icon} {title}\nLeft Click: previous\nMid Click: Pause\nRight Click: Next",
+    "player-icons": {
+      "chromium": "",
+      "default": "",
+      "firefox": "",
+      "kdeconnect": "",
+      "mopidy": "",
+      "mpv": "󰐹",
+      "spotify": "󰎆",
+      "vlc": "󰕼",
+    },
+    "status-icons": {
+      "paused": "",
+      "playing": "",
+      "stopped": "",
+    },
+    "dynamic-order": ["artist"],
+    "ignored-players": ["zen"],
+    "max-length": 25,
   },
 }

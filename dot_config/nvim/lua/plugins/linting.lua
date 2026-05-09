@@ -2,13 +2,14 @@ return {
 	"mfussenegger/nvim-lint",
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
+		local profiles = require("config.profiles")
+		local python_linters = require("config.profiles.linters.python")
+		local web_linters = require("config.profiles.linters.web")
+		local shell_linters = require("config.profiles.linters.shell")
+
 		local lint = require("lint")
 
-		lint.linters_by_ft = {
-			python = { "mypy" }, -- Mypy check type ở đây!
-			javascript = { "eslint_d" },
-			typescript = { "eslint_d" },
-		}
+		lint.linters_by_ft = profiles.merge_maps(python_linters, web_linters, shell_linters)
 
 		-- Tự động chạy linter mỗi khi lưu file hoặc rảnh tay (InsertLeave)
 		vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {

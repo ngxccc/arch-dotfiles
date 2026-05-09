@@ -2,6 +2,8 @@ hl.window_rule({
 	name = "suppress-maximize-events",
 	match = { class = ".*" },
 	suppress_event = "maximize",
+	border_size = 1,
+	rounding = 0,
 })
 
 -- HACK: Prevents XWayland invisible drag-drop hitboxes from blocking input events
@@ -38,5 +40,9 @@ hl.window_rule({
 hl.window_rule({
 	match = { workspace = "w[tv1]" },
 	border_size = 0,
+})
+
+hl.window_rule({
+	match = { float = true },
 	rounding = 0,
 })

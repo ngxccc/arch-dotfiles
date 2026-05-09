@@ -1,7 +1,6 @@
 require("configs.env")
 require("themes.catppuccin-mocha")
 require("configs.monitors")
-require("configs.trackpad")
 
 -- Core Engine configs (Hardware/Layout states that rarely change)
 hl.config({
@@ -35,8 +34,9 @@ hl.config({
 		touchpad = {
 			natural_scroll = true,
 			disable_while_typing = true,
-			scroll_factor = 0.5,
+			scroll_factor = 1,
 		},
+		scroll_factor = 2,
 	},
 })
 

@@ -2,7 +2,7 @@
 hl.monitor({
 	output = "eDP-1",
 	mode = "1920x1200@60",
-	position = "0x0",
+	position = "0x1080",
 	scale = "1",
 })
 
@@ -10,7 +10,7 @@ hl.monitor({
 hl.monitor({
 	output = "HDMI-A-1",
 	mode = "1920x1080@60", -- Copy từ hyprctl monitors
-	position = "1920x0", -- Neo đúng tọa độ sau màn laptop (1920)
+	position = "0x0", -- Neo đúng tọa độ sau màn laptop (1920)
 	scale = "1",
 })
 

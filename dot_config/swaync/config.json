@@ -2,32 +2,92 @@
   "$schema": "/etc/xdg/swaync/configSchema.json",
   "positionX": "right",
   "positionY": "top",
-  "control-center-width": 380,
-  "fit-to-screen": false,
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "cssPriority": "user",
 
-  "widgets": ["title", "dnd", "mpris", "volume", "backlight", "notifications"],
+  "control-center-margin-top": 8,
+  "control-center-margin-right": 8,
+  "control-center-margin-bottom": 8,
+  "control-center-margin-left": 8,
+  "control-center-width": 380,
+  "control-center-height": 720,
+
+  "notification-window-width": 360,
+  "notification-body-image-height": 420,
+  "notification-body-image-width": 420,
+
+  "timeout": 4,
+  "timeout-low": 2,
+  "timeout-critical": 0,
+
+  "fit-to-screen": false,
+  "hide-on-clear": true,
+  "hide-on-action": true,
+
+  "widgets": [
+    "title",
+    "mpris",
+    "dnd",
+    "volume",
+    "backlight",
+    "buttons-grid",
+    "notifications"
+  ],
 
   "widget-config": {
     "title": {
       "text": "Control Center",
       "clear-all-button": true,
-      "button-text": "Clear"
+      "button-text": " 󰎟 "
     },
+
     "dnd": {
       "text": "Do Not Disturb"
     },
+
     "mpris": {
-      "image-size": 96,
-      "image-radius": 12
+      "autohide": true,
+      "blacklist": ["org.mpris.MediaPlayer2.playerctld"]
     },
+
     "volume": {
-      "label": "VOL",
-      "show-per-app": true
+      "label": "󰕾",
+      "show-per-app": false
     },
+
     "backlight": {
-      "label": "LGT",
-      "device": "amdgpu_bl1"
+      "label": "󱩑",
+      "device": "amdgpu_bl1",
+      "min": 10
     },
+
+    "buttons-grid": {
+      "buttons-per-row": 4,
+      "actions": [
+        {
+          "label": "",
+          "command": "hyprlock"
+        },
+        {
+          "label": "󰗽",
+          "command": "uwsm stop"
+        },
+        {
+          "label": "󰐥",
+          "command": "systemctl poweroff"
+        },
+        {
+          "label": "󰜉",
+          "command": "systemctl reboot"
+        },
+        {
+          "label": "󰂯",
+          "command": "blueman-manager"
+        }
+      ]
+    },
+
     "notifications": {}
   }
 }
