@@ -17,6 +17,7 @@ fi
 
 ln -sf "$THEME_DIR/waybar.css" "$HOME/.config/waybar/current_theme.css"
 ln -sf "$THEME_DIR/swaync.css" "$HOME/.config/swaync/current_theme.css"
+ln -sf "$THEME_DIR/gtk-3.0.css" "$HOME/.config/gtk-3.0/current_theme.css"
 ln -sf "$THEME_DIR/kitty.conf" "$HOME/.config/kitty/current_theme.conf"
 ln -sf "$THEME_DIR/rofi.rasi" "$HOME/.config/rofi/current_theme.rasi"
 

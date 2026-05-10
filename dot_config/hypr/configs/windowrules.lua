@@ -49,7 +49,15 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "float-thunar",
-	match = { class = "^(Thunar)$" },
+	match = { class = "^(thunar)$" },
+	float = true,
+	center = true,
+	size = "800 600",
+})
+
+hl.window_rule({
+	name = "float-nwg-look",
+	match = { class = "^(nwg-look)$" },
 	float = true,
 	center = true,
 	size = "800 600",

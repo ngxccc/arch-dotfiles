@@ -1,0 +1,9 @@
+README.md
+LICENSE
+.github/
+.git/
+
+install.sh
+
+.DS_Store
+Thumbs.db

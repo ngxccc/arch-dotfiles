@@ -1,6 +1,9 @@
 require("configs.env")
+require("configs.autostart")
 require("configs.animations")
 require("configs.monitors")
+require("configs.keybinds")
+require("configs.windowrules")
 
 -- Core Engine configs (Hardware/Layout states that rarely change)
 hl.config({
@@ -56,7 +59,3 @@ hl.config({
 })
 
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
-
-require("configs.windowrules")
-require("configs.autostart")
-require("configs.keybinds")

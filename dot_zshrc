@@ -25,6 +25,30 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function cz-purge() {
+    echo "[!] Đang quét toàn bộ hệ sinh thái (Files & Dirs)..."
+
+    chezmoi managed --include=files,dirs | tac | while IFS= read -r f; do
+        local target_path="$HOME/$f"
+
+        # Nếu node không tồn tại vật lý (-e) và không phải broken symlink (-L)
+        if [ ! -e "$target_path" ] && [ ! -L "$target_path" ]; then
+            
+            # Kiểm tra xem nó là file hay thư mục để in log cho chuẩn
+            if [ -d "$HOME/$f" ]; then
+                echo "[D] Tiễn vong thư mục: $target_path"
+            else
+                echo "[F] Tiễn vong file: $target_path"
+            fi
+            
+            # Thực hiện lệnh forget
+            chezmoi forget "$target_path"
+        fi
+    done
+
+    echo "[v] Hệ thống đã sạch bóng quân thù!"
+}
+
 function backup_pkgs() {
   local backup_dir="$HOME/backup-pkgs"
   mkdir -p "$backup_dir"

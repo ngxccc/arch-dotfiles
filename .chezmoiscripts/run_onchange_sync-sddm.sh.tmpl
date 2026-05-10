@@ -1,0 +1,35 @@
+#!/bin/bash
+
+{{- $themeDir := joinPath .chezmoi.sourceDir "dot_config/system-configs/sddm/corners" }}
+{{- $defaultConf := joinPath .chezmoi.sourceDir "dot_config/system-configs/sddm/default.conf" }}
+
+{{- if stat $themeDir }}
+# theme_dir_hash: {{ output "find" $themeDir "-type" "f" "-exec" "sha256sum" "{}" "+" | sha256sum }}
+{{- else }}
+# theme_dir_hash: EMPTY_DIR_NO_HASH
+{{- end }}
+
+{{- if stat $defaultConf }}
+# default_conf_hash: {{ include "dot_config/system-configs/sddm/default.conf" | sha256sum }}
+{{- else }}
+# default_conf_hash: EMPTY_FILE_NO_HASH
+{{- end }}
+
+echo "Đang nạp động cơ SDDM và toàn bộ Component QML bằng quyền Root..."
+
+sudo mkdir -p /etc/sddm.conf.d
+sudo mkdir -p /usr/share/sddm/themes/corners/components
+sudo mkdir -p /usr/share/sddm/themes/corners/images
+
+{{- if stat $themeDir }}
+sudo rsync -av --delete {{ $themeDir }}/Main.qml /usr/share/sddm/themes/corners/
+sudo rsync -av --delete {{ $themeDir }}/theme.conf /usr/share/sddm/themes/corners/
+sudo rsync -av --delete {{ $themeDir }}/components /usr/share/sddm/themes/corners/
+sudo rsync -av --delete {{ $themeDir }}/images /usr/share/sddm/themes/corners/
+{{- end }}
+
+{{- if stat $defaultConf }}
+sudo cp {{ $defaultConf }} /etc/sddm.conf.d/default.conf
+{{- end }}
+
+echo "Hoàn tất nạp SDDM!"

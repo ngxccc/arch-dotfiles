@@ -223,7 +223,13 @@ blankwindow,
 }
 
 .notification-group .notification-row .notification {
-  background-color: rgba(49, 50, 68, 1);
+  background-color: rgba(26, 26, 26, 1);
+  border: 1px solid rgba(245, 245, 245, 0.12);
+}
+
+.notification-group .notification-row .notification:hover {
+  background-color: rgba(51, 51, 51, 1);
+  border-color: #d50000;
 }
 
 .notification-group .notification-row .notification .notification-action,

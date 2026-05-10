@@ -1,0 +1,39 @@
+@import "current_theme.css";
+
+button.suggested-action {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+selection {
+  background-color: @theme_selected_bg_color;
+  color: @theme_selected_fg_color;
+}
+
+notebook tab:checked {
+  border-bottom: 2px solid @accent_color;
+}
+
+window.thunar treeview header button {
+  font-weight: bold;
+  border-style: none;
+  border-radius: 0px;
+}
+
+window.thunar treeview.view row:selected,
+window.thunar treeview.view row:selected:focus,
+window.thunar treeview.view row:selected:backdrop,
+window.thunar iconview.view:selected,
+window.thunar iconview.view:selected:focus {
+  background-image: none;
+  background-color: rgba(213, 0, 0, 0.3);
+  color: #ffffff;
+  border-style: none;
+  border-radius: 4px;
+}
+
+window.thunar .view:focus,
+window.thunar treeview.view:focus,
+window.thunar iconview.view:focus {
+  outline-style: none;
+}
