@@ -42,19 +42,7 @@ vim.keymap.set(
   { silent = true, desc = "Make current file executable (mx)" }
 )
 
--- 🚀 MOVEMENT & EDITING (Thực chiến: Di chuyển mượt không lóa mắt)
-vim.keymap.set(
-  "v",
-  "J",
-  ":m '>+1<CR>gv=gv",
-  { desc = "Move selected block down (like VSCode Alt+Down)" }
-)
-vim.keymap.set(
-  "v",
-  "K",
-  ":m '<-2<CR>gv=gv",
-  { desc = "Move selected block up (like VSCode Alt+Up)" }
-)
+-- 🚀 MOVEMENT & EDITING
 vim.keymap.set("v", ">", ">gv", { desc = "Indent and keep selection" })
 vim.keymap.set("v", "<", "<gv", { desc = "Outdent and keep selection" })
 vim.keymap.set("v", "H", "^", { desc = "Move to start of line" })
@@ -207,39 +195,31 @@ vim.keymap.set(
   { desc = "Replace word under cursor (Current Line)" }
 )
 
--- 🌳 NEO-TREE & WINDOWS
-vim.keymap.set(
-  "n",
-  "<leader>e",
-  ":Neotree toggle<CR>",
-  { desc = "Toggle Neo-tree", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<leader>fe",
-  ":Neotree focus<CR>",
-  { desc = "Focus Neo-tree", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<leader>E",
-  ":Neotree toggle reveal<CR>",
-  { desc = "Reveal current file in Neo-tree", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<leader>ge",
-  ":Neotree float git_status<CR>",
-  { desc = "Git status", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<leader>be",
-  ":Neotree toggle buffers<CR>",
-  { desc = "Buffer list", silent = true }
-)
-
 -- Window Navigation
+vim.keymap.set(
+  "n",
+  "<C-Up>",
+  "<cmd>resize +2<cr>",
+  { desc = "Increase Window Height" }
+)
+vim.keymap.set(
+  "n",
+  "<C-Down>",
+  "<cmd>resize -2<cr>",
+  { desc = "Decrease Window Height" }
+)
+vim.keymap.set(
+  "n",
+  "<C-Left>",
+  "<cmd>vertical resize -2<cr>",
+  { desc = "Decrease Window Width" }
+)
+vim.keymap.set(
+  "n",
+  "<C-Right>",
+  "<cmd>vertical resize +2<cr>",
+  { desc = "Increase Window Width" }
+)
 vim.keymap.set(
   "n",
   "<C-h>",
@@ -277,3 +257,23 @@ vim.keymap.set(
   vim.diagnostic.open_float,
   { desc = "Show Line Diagnostics" }
 )
+
+vim.keymap.set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move line down" })
+vim.keymap.set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move line up" })
+vim.keymap.set(
+  "i",
+  "<A-j>",
+  "<esc><cmd>m .+1<cr>==gi",
+  { desc = "Move line down" }
+)
+vim.keymap.set(
+  "i",
+  "<A-k>",
+  "<esc><cmd>m .-2<cr>==gi",
+  { desc = "Move line up" }
+)
+
+vim.keymap.set("n", "<A-J>", "yyp", { desc = "Duplicate line down" })
+vim.keymap.set("n", "<A-K>", "yyP", { desc = "Duplicate line up" })
+vim.keymap.set("v", "<A-J>", "Y'>p", { desc = "Duplicate block down" })
+vim.keymap.set("v", "<A-K>", "Y'<P", { desc = "Duplicate block up" })

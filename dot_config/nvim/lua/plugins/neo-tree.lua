@@ -25,6 +25,25 @@ return {
       default = true,
     })
 
+    local common_mappings = {
+      ["<bs>"] = "navigate_up",
+      ["."] = "set_root",
+      ["h"] = "close_node",
+      ["l"] = "toggle_node",
+      ["e"] = "open",
+      ["O"] = {
+        "show_help",
+        nowait = false,
+        config = { title = "Order by", prefix_key = "O" },
+      },
+      ["Oc"] = { "order_by_created", nowait = false },
+      ["Od"] = { "order_by_diagnostics", nowait = false },
+      ["Om"] = { "order_by_modified", nowait = false },
+      ["On"] = { "order_by_name", nowait = false },
+      ["Os"] = { "order_by_size", nowait = false },
+      ["Ot"] = { "order_by_type", nowait = false },
+    }
+
     require("neo-tree").setup({
       close_if_last_window = true,
       popup_border_style = "rounded",
@@ -79,7 +98,7 @@ return {
 
       window = {
         position = "left",
-        width = 35,
+        width = 30,
         mapping_options = {
           noremap = true,
           nowait = true,
@@ -116,9 +135,7 @@ return {
         hijack_netrw_behavior = "open_default",
         use_libuv_file_watcher = true, -- Auto-refresh khi file thay đổi
         window = {
-          mappings = {
-            ["<bs>"] = "navigate_up",
-            ["."] = "set_root",
+          mappings = vim.tbl_extend("force", common_mappings, {
             ["H"] = "toggle_hidden",
             ["/"] = "fuzzy_finder",
             ["D"] = "fuzzy_finder_directory",
@@ -127,22 +144,7 @@ return {
             ["<c-x>"] = "clear_filter",
             ["[g"] = "prev_git_modified",
             ["]g"] = "next_git_modified",
-            ["h"] = "close_node",
-            ["l"] = "toggle_node",
-            ["o"] = "open",
-            ["O"] = {
-              "show_help",
-              nowait = false,
-              config = { title = "Order by", prefix_key = "O" },
-            },
-            ["Oc"] = { "order_by_created", nowait = false },
-            ["Od"] = { "order_by_diagnostics", nowait = false },
-            ["Og"] = { "order_by_git_status", nowait = false },
-            ["Om"] = { "order_by_modified", nowait = false },
-            ["On"] = { "order_by_name", nowait = false },
-            ["Os"] = { "order_by_size", nowait = false },
-            ["Ot"] = { "order_by_type", nowait = false },
-          },
+          }),
         },
       },
 
@@ -153,33 +155,15 @@ return {
         },
         group_empty_dirs = true,
         show_unloaded = true,
-        window = {
-          mappings = {
-            ["bd"] = "buffer_delete",
-            ["<bs>"] = "navigate_up",
-            ["."] = "set_root",
-            ["h"] = "close_node",
-            ["l"] = "toggle_node",
-            ["o"] = "open",
-            ["O"] = {
-              "show_help",
-              nowait = false,
-              config = { title = "Order by", prefix_key = "O" },
-            },
-            ["Oc"] = { "order_by_created", nowait = false },
-            ["Od"] = { "order_by_diagnostics", nowait = false },
-            ["Om"] = { "order_by_modified", nowait = false },
-            ["On"] = { "order_by_name", nowait = false },
-            ["Os"] = { "order_by_size", nowait = false },
-            ["Ot"] = { "order_by_type", nowait = false },
-          },
-        },
+        mappings = vim.tbl_extend("force", common_mappings, {
+          ["bd"] = "buffer_delete",
+        }),
       },
 
       git_status = {
         window = {
           position = "float",
-          mappings = {
+          mappings = vim.tbl_extend("force", common_mappings, {
             ["A"] = "git_add_all",
             ["gu"] = "git_unstage_file",
             ["ga"] = "git_add_file",
@@ -187,18 +171,7 @@ return {
             ["gc"] = "git_commit",
             ["gp"] = "git_push",
             ["gg"] = "git_commit_and_push",
-            ["o"] = {
-              "show_help",
-              nowait = false,
-              config = { title = "Order by", prefix_key = "o" },
-            },
-            ["oc"] = { "order_by_created", nowait = false },
-            ["od"] = { "order_by_diagnostics", nowait = false },
-            ["om"] = { "order_by_modified", nowait = false },
-            ["on"] = { "order_by_name", nowait = false },
-            ["os"] = { "order_by_size", nowait = false },
-            ["ot"] = { "order_by_type", nowait = false },
-          },
+          }),
         },
       },
     })

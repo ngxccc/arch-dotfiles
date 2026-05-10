@@ -2,7 +2,7 @@
 
 set -e
 
-WALL_DIR="$HOME/.config/walls"
+WALL_DIR="$HOME/walls"
 
 if [ ! -d "$WALL_DIR" ]; then
     notify-send -u critical "Wallpaper Error" "$WALL_DIR folder not found!"

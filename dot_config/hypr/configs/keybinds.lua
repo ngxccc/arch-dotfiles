@@ -107,9 +107,10 @@ end
 -- hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("magic"))
 -- hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:magic" }))
 
+hl.bind(mainMod .. " + NEXT", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + PRIOR", hl.dsp.focus({ workspace = "e-1" }))
+
 -- Mouse Bindings
-hl.bind(mainMod .. " + RIGHT", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + LEFT", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
