@@ -45,6 +45,13 @@
     "format-charging": "{capacity}% AC",
     "format-icons": ["BAT", "BAT", "BAT", "BAT", "BAT"],
     "tooltip": false,
+    "on-click": "kitty --title batctl -e bash -c 'batctl status; echo -e \"\n[Press q/Q to quit]\"; while read -s -n 1 key; do [[ \"$key\" == \"q\" || \"$key\" == \"Q\" ]] && exit; done'",
+    "menu": "on-click-right",
+    "menu-file": "~/.config/waybar/context/battery.xml",
+    "menu-actions": {
+      "action-1": "kitty --title batctl -e bash -c 'batctl status; echo -e \"\n[Press q/Q to quit]\"; while read -s -n 1 key; do [[ \"$key\" == \"q\" || \"$key\" == \"Q\" ]] && exit; done'",
+      "action-2": "kitty --title batctl -e batctl",
+    }
   },
 
   "network": {

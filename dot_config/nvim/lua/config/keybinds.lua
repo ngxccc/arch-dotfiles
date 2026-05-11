@@ -43,6 +43,7 @@ vim.keymap.set(
 )
 
 -- 🚀 MOVEMENT & EDITING
+vim.keymap.set("n", "<leader>a", "ggVG", { desc = "Select entire file" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent and keep selection" })
 vim.keymap.set("v", "<", "<gv", { desc = "Outdent and keep selection" })
 vim.keymap.set("v", "H", "^", { desc = "Move to start of line" })

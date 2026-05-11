@@ -5,18 +5,18 @@ set -e
 WALL_DIR="$HOME/walls"
 
 if [ ! -d "$WALL_DIR" ]; then
-    notify-send -u critical "Wallpaper Error" "$WALL_DIR folder not found!"
-    exit 1
+  notify-send -u critical "Wallpaper Error" "$WALL_DIR folder not found!"
+  exit 1
 fi
 
 shopt -s nullglob nocaseglob
 cd "$WALL_DIR" || exit 1
 
 SELECTED=$(
-    for file in *.{jpg,jpeg,png,gif,webp}; do
-        printf "%s\0icon\x1f%s/%s\n" "$file" "$WALL_DIR" "$file"
-    done | rofi -dmenu -i -show-icons -p "Wallpapers" \
-        -theme-str '
+  for file in *.{jpg,jpeg,png,gif,webp}; do
+    printf "%s\0icon\x1f%s/%s\n" "$file" "$WALL_DIR" "$file"
+  done | rofi -dmenu -i -show-icons -p "Wallpapers" \
+    -theme-str '
         window {
             width: 70%;
             padding: 20px;
@@ -42,19 +42,18 @@ SELECTED=$(
 )
 
 if [ -z "$SELECTED" ]; then
-    exit 0
+  exit 0
 fi
 
 FULL_PATH="$WALL_DIR/$SELECTED"
 
-if ! pgrep -x "awww-daemon" > /dev/null; then
-    awww-daemon &
-    sleep 1
+if ! pgrep -x "awww-daemon" >/dev/null; then
+  awww-daemon &
+  sleep 1
 fi
 
 awww img "$FULL_PATH" \
-    --transition-type center \
-    --transition-pos "$(hyprctl cursorpos)" \
-    --transition-duration 1.2 \
-    --transition-fps 60
-
+  --transition-type center \
+  --transition-pos "$(hyprctl cursorpos)" \
+  --transition-duration 1.2 \
+  --transition-fps 60
