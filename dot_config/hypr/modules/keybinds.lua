@@ -1,4 +1,5 @@
 local terminal = "kitty"
+local browser = "brave"
 local fileManager = "thunar"
 local tuiFileManager = "kitty -e yazi"
 local menu = "rofi -show drun"
@@ -27,6 +28,7 @@ hl.bind(
   hl.dsp.exec_cmd(menu),
   { desc = "Open Application Launcher" }
 )
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser), { desc = "Open browser" })
 
 -- Window Management & System
 hl.bind(
@@ -51,10 +53,11 @@ hl.bind(
 )
 
 hl.bind(
-  mainMod .. " + B",
+  mainMod .. " + SHIFT + B",
   hl.dsp.exec_cmd("killall -SIGUSR2 waybar"),
   { desc = "Toggle Waybar" }
 )
+
 hl.bind(
   mainMod .. " + SHIFT + SLASH",
   hl.dsp.exec_cmd("~/.config/hypr/scripts/hypr-keys.sh"),
@@ -165,11 +168,15 @@ hl.bind(
       .. screen_dir
       .. "win_"
       .. timestamp
+      .. " && wl-copy < "
+      .. screen_dir
+      .. "win_"
+      .. timestamp
       .. notify_cmd
       .. screen_dir
       .. "win_"
       .. timestamp
-      .. " 'Screenshot' 'Window screenshot saved to collection!'"
+      .. " 'Screenshot' 'Window screenshot saved and copied!'"
   ),
   { desc = "Screenshot Window" }
 )
@@ -181,14 +188,19 @@ hl.bind(
       .. screen_dir
       .. "mon_"
       .. timestamp
+      .. " && wl-copy < "
+      .. screen_dir
+      .. "mon_"
+      .. timestamp
       .. notify_cmd
       .. screen_dir
       .. "mon_"
       .. timestamp
-      .. " 'Screenshot' 'Full screen captured!'"
+      .. " 'Screenshot' 'Full screen saved and copied!'"
   ),
   { desc = "Screenshot Full Screen" }
 )
+
 -- Zoom Shortcut
 hl.bind(
   mainMod .. " + equal",

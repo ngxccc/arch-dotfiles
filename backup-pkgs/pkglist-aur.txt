@@ -1,11 +1,10 @@
 batctl-tui
 bibata-cursor-theme-bin
-catppuccin-gtk-theme-mocha
+brave-bin
+fcitx5-lotus-bin
 google-chrome
 graphite-gtk-theme
 hyprland-git
-orbit-wifi
-sddm-theme-catppuccin-git
 sddm-theme-corners-git
 tela-circle-icon-theme-git
 ttf-google-fonts-typewolf

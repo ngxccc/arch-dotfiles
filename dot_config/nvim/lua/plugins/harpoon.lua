@@ -35,7 +35,7 @@ return {
   -- Đồng thời Lazy.nvim sẽ CHỈ load Harpoon khi bro bấm 1 trong các phím này!
   keys = {
     {
-      "ha",
+      "<leader>ha",
       function()
         require("harpoon"):list():add()
       end,

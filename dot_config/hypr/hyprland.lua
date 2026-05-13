@@ -5,7 +5,6 @@ require("modules.monitors")
 require("modules.keybinds")
 require("modules.windowrules")
 
--- Core Engine configs (Hardware/Layout states that rarely change)
 hl.config({
   general = {
     gaps_in = 2,
@@ -36,6 +35,10 @@ hl.config({
   debug = {
     vfr = true,
   },
+
+  -- xwayland = {
+  --   enabled = false,
+  -- },
 
   input = {
     kb_layout = "us",

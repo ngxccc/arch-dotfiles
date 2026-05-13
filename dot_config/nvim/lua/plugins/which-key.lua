@@ -30,7 +30,7 @@ return {
       { "<leader>x", group = "Tools" },
       { "<leader>y", group = "Yank" },
       { "<leader>z", group = "Zen" },
-      { "h", group = "Harpoon" },
+      { "<leader>h", group = "Harpoon" },
     }, {})
     -- explicit non-existent mappings are not added to avoid duplicates; which-key will use `desc` from keymaps
 
