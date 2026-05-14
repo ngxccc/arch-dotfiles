@@ -6,6 +6,7 @@ local menu = "rofi -show drun"
 local mainMod = "SUPER"
 local screen_dir = "~/pictures/screenshots/"
 local timestamp = "$(date +%Y-%m-%d_%H-%M-%S).png"
+local monitor_zoom = {}
 
 -- App Launches
 hl.bind(
@@ -202,16 +203,71 @@ hl.bind(
 )
 
 -- Zoom Shortcut
-hl.bind(
-  mainMod .. " + equal",
-  hl.dsp.exec_cmd("hyprctl keyword misc:cursor_zoom_factor 2.0"),
-  { desc = "Zoom In" }
-)
-hl.bind(
-  mainMod .. " + minus",
-  hl.dsp.exec_cmd("hyprctl keyword misc:cursor_zoom_factor 1.0"),
-  { desc = "Zoom Out" }
-)
+local function adjust_zoom(operation)
+  local monitor_name = hl.get_active_monitor().name
+  local current = monitor_zoom[monitor_name] or 1.0
+  local new_zoom
+
+  if operation == "*" then
+    new_zoom = current * 1.1
+    if new_zoom > 3.0 then
+      new_zoom = 3.0
+    end
+  elseif operation == "/" then
+    new_zoom = current / 1.1
+    if new_zoom < 1.0 then
+      new_zoom = 1.0
+    end
+  else
+    new_zoom = 1.0
+  end
+
+  monitor_zoom[monitor_name] = new_zoom
+  hl.config({ cursor = { zoom_factor = new_zoom } })
+end
+
+hl.on("monitor.focused", function()
+  local monitor_name = hl.get_active_monitor().name
+  local zoom = monitor_zoom[monitor_name] or 1.0
+  hl.config({ cursor = { zoom_factor = zoom } })
+end)
+
+hl.bind(mainMod .. " + Z", function()
+  hl.dispatch(hl.dsp.submap("zoom_mode"))
+  hl.dispatch(
+    hl.dsp.exec_cmd(
+      "notify-send -t 1500 'Zoom mode' 'scroll to zoom. press E to exit.'"
+    )
+  )
+end, { desc = "Enter Zoom Mode" })
+
+hl.define_submap("zoom_mode", function()
+  hl.bind("k", function()
+    adjust_zoom("*")
+  end, { repeating = true, desc = "Zoom In" })
+  hl.bind("j", function()
+    adjust_zoom("/")
+  end, { repeating = true, desc = "Zoom Out" })
+
+  -- hl.bind("equal", function()
+  --   adjust_zoom("*")
+  -- end, { repeating = true })
+
+  -- hl.bind("minus", function()
+  --   adjust_zoom("/")
+  -- end, { repeating = true })
+
+  hl.bind("0", function()
+    adjust_zoom("1")
+  end)
+
+  hl.bind("e", function()
+    hl.dispatch(hl.dsp.submap("reset"))
+    hl.dispatch(
+      hl.dsp.exec_cmd("notify-send -t 1500 'Normal mode' 'Exited Zoom Mode.'")
+    )
+  end)
+end)
 
 -- Workspaces & Moving Windows to WS
 for i = 1, 10 do

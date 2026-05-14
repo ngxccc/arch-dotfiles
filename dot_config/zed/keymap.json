@@ -1,0 +1,29 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "ctrl+c": "vim::NormalBefore",
+    },
+  },
+  {
+    "context": "Editor && (vim_mode == insert || vim_mode == normal) && !menu",
+    "bindings": {
+      "ctrl-k": "editor::ShowSignatureHelp",
+    },
+  },
+
+  // unblind section
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-i": "editor::ShowSignatureHelp",
+    },
+  },
+]

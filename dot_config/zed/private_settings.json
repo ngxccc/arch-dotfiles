@@ -1,0 +1,237 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+
+  "auto_update": false,
+
+  "vim_mode": true,
+  "base_keymap": "VSCode",
+  "cli_default_open_behavior": "existing_window",
+  "proxy": "",
+
+  "project_panel": {
+    "dock": "right",
+    "auto_fold_dirs": false,
+    "git_status": true,
+    "show_diagnostics": "all",
+  },
+  "outline_panel": {
+    "dock": "right",
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
+  "git_panel": {
+    "dock": "right",
+  },
+  "agent": {
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+  },
+  "show_edit_predictions": false,
+
+  "active_pane_modifiers": {
+    "inactive_opacity": 0.85,
+    "border_size": 1.0,
+  },
+
+  "tab_bar": {
+    "show": true,
+    // keyblind ctrl+i(back) / ctrl+o (forward)
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false,
+  },
+
+  "tabs": {
+    "show_diagnostics": "all",
+  },
+
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "agent_review": true,
+    "code_actions": false,
+  },
+
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Dracula",
+  },
+  "icon_theme": "Material Icon Theme",
+  "ui_font_family": "Inter",
+  "ui_font_size": 16,
+
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_fallbacks": ["Courier New"],
+  "buffer_font_size": 15,
+  "buffer_line_height": "comfortable",
+
+  "tab_size": 2,
+  "hard_tabs": false,
+  "show_whitespaces": "all",
+  "line_ending": "prefer_lf",
+  "ensure_final_newline_on_save": true,
+  "colorize_brackets": true,
+  "linked_edits": true,
+
+  "preferred_line_length": 80,
+  "wrap_guides": [80],
+  "soft_wrap": "editor_width",
+  "remove_trailing_whitespace_on_save": true,
+
+  "mouse_wheel_zoom": true,
+  "vertical_scroll_margin": 8.0,
+  "hover_popover_delay": 1000,
+  "current_line_highlight": "all",
+  "cursor_blink": true,
+  // disable for vim mode
+  // "cursor_shape": "block",
+
+  "format_on_save": "on",
+  "auto_indent_on_paste": true,
+
+  "minimap": {
+    "show": "never",
+  },
+  "sticky_scroll": {
+    "enabled": false,
+  },
+  "scrollbar": {
+    "axes": {
+      "horizontal": false,
+      "vertical": true,
+    },
+  },
+
+  "gutter": {
+    "line_numbers": true,
+    "folds": true,
+  },
+  "relative_line_numbers": "enabled",
+
+  "file_types": {
+    "html": ["*.embeddedhtml"],
+    "tailwindcss": ["*.css"],
+    "dotenv": [".env*", ".env.local"],
+  },
+
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+  },
+  "auto_signature_help": false,
+  "show_completions_on_input": true,
+
+  "preview_tabs": {
+    "enabled": true,
+    "enable_preview_from_file_finder": true,
+    "enable_keep_preview_on_code_navigation": true,
+  },
+
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+      "delay_ms": 500,
+    },
+  },
+
+  "load_direnv": "shell_hook",
+
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font",
+    "max_scroll_history_lines": 5000,
+    "shell": "system",
+    "blinking": "off",
+    "cursor_shape": "block",
+  },
+
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.DS_Store",
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/.next",
+  ],
+
+  "languages": {
+    "JavaScript": {
+      "formatter": [
+        { "code_action": "source.organizeImports" },
+        { "code_action": "source.fixAll.eslint" },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": ["--stdin-filepath", "{buffer_path}"],
+          },
+        },
+      ],
+    },
+    "TypeScript": {
+      "formatter": [
+        { "code_action": "source.organizeImports" },
+        { "code_action": "source.fixAll.eslint" },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": ["--stdin-filepath", "{buffer_path}"],
+          },
+        },
+      ],
+    },
+    "TSX": {
+      "formatter": [
+        { "code_action": "source.organizeImports" },
+        { "code_action": "source.fixAll.eslint" },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": ["--stdin-filepath", "{buffer_path}"],
+          },
+        },
+      ],
+    },
+    "JSON": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+    },
+    "Lua": {
+      "formatter": {
+        "external": {
+          "command": "/home/ngxc/.local/share/nvim/mason/bin/stylua",
+          "arguments": [
+            "--search-parent-directories",
+            "--stdin-filepath",
+            "{buffer_path}",
+            "-",
+          ],
+        },
+      },
+    },
+  },
+}
