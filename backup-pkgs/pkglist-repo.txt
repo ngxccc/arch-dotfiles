@@ -24,6 +24,7 @@ fcitx5-qt
 fnm
 freerdp
 git
+gnome-keyring
 gst-plugin-pipewire
 gvfs
 htop
@@ -64,6 +65,7 @@ rofi
 rsync
 rustup
 sddm
+seahorse
 smartmontools
 sof-firmware
 sudo
@@ -92,6 +94,7 @@ xdg-utils
 xf86-video-amdgpu
 xf86-video-ati
 yazi
+zed
 zip
 zram-generator
 zsh

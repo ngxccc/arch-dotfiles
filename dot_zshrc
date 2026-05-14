@@ -57,9 +57,11 @@ function backup_pkgs() {
   print -P "%F{green}✔ Packages successfully dumped to %f%B$backup_dir%b"
 }
 
+# Alias
 alias bpkg='backup_pkgs'
 alias sudo='sudo '
 alias y='y'
 alias vim='nvim'
 alias v='nvim'
 alias vi='nvim'
+alias zed='zeditor'
