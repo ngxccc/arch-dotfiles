@@ -34,3 +34,5 @@
 	diff = false
 [difftool]
 	prompt = false
+[push]
+	autoSetupRemote = true

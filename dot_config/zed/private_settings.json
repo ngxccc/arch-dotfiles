@@ -35,6 +35,11 @@
     "dock": "right",
   },
   "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-haiku-4.5",
+      "enable_thinking": true
+    },
     "dock": "left",
     "favorite_models": [],
     "model_parameters": [],
@@ -134,8 +139,8 @@
   },
 
   "inlay_hints": {
-    "enabled": true,
-    "show_type_hints": true,
+    "enabled": false,
+    "show_type_hints": false,
     "show_parameter_hints": true,
     "show_other_hints": true,
   },

@@ -18,6 +18,72 @@
       "ctrl-k": "editor::ShowSignatureHelp",
     },
   },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      // H: move to start line (Tương đương ^)
+      "H": "vim::StartOfLine",
+
+      // L: move to end line (Tương đương $)
+      "L": "vim::EndOfLine",
+
+      // <leader>d: Xóa dòng (Tương đương dd)
+      // Giả sử Leader là Space
+      "space d": ["workspace::SendKeystrokes", "d d"],
+
+      // <leader>o: Thêm dòng trống bên dưới
+      "space o": ["workspace::SendKeystrokes", "o escape"],
+
+      // <leader>O: Thêm dòng trống bên trên
+      "space shift-o": ["workspace::SendKeystrokes", "O escape"],
+
+      // <leader>a: Chọn tất cả (Tương đương ggVG)
+      "space a": "editor::SelectAll",
+
+      // K: Hiển thị Hover
+      "shift-k": "editor::Hover",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      // Giữ vùng chọn khi thụt lề (> và <)
+      // Trong Zed, phím > và < mặc định đã giữ vùng chọn (khác Vim gốc)
+      // Nhưng để chắc chắn hành vi giống VS Code:
+      ">": "editor::Indent",
+      "<": "editor::Outdent",
+
+      // H: move to start line
+      "shift-h": "vim::StartOfLine",
+
+      // L: move to end line (Tương đương $, h)
+      // Zed tự xử lý viền chọn khi đến cuối dòng
+      "shift-l": "vim::EndOfLine",
+    },
+  },
+  {
+    "context": "Editor && vim_mode != visual",
+    "bindings": {
+      // HACK: Di chuyển dòng lên/xuống (Move Lines)
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+
+      // HACK: Copy dòng lên/xuống (Copy Lines)
+      "shift-alt-j": "editor::DuplicateLineDown",
+      "shift-alt-k": "editor::DuplicateLineUp",
+
+      // HACK: Đẻ thêm con trỏ Đa nhiệm (Multi-cursor)
+      "ctrl-alt-j": "editor::AddSelectionBelow",
+      "ctrl-alt-k": "editor::AddSelectionAbove",
+    },
+  },
+  {
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "ctrl-j": "editor::ContextMenuNext",
+      "ctrl-k": "editor::ContextMenuPrevious",
+    },
+  },
 
   // unblind section
   {

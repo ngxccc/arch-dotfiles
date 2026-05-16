@@ -1,37 +1,89 @@
-local terminal = "kitty"
-local browser = "brave"
-local fileManager = "thunar"
-local tuiFileManager = "kitty -e yazi"
-local menu = "rofi -show drun"
+-- ZONE 1: CONSTANTS & APP REGISTRY
 local mainMod = "SUPER"
+
+local apps = {
+  terminal = "kitty",
+  browser = "brave",
+  file_gui = "thunar",
+  file_tui = "kitty -e yazi",
+  launcher = "rofi -show drun",
+  wall_picker = "~/.config/hypr/scripts/wall-picker.sh",
+  logout = "~/.config/hypr/scripts/logout.sh",
+  key_help = "~/.config/hypr/scripts/hypr-keys.sh",
+}
+
+-- Screenshot configs
 local screen_dir = "~/pictures/screenshots/"
 local timestamp = "$(date +%Y-%m-%d_%H-%M-%S).png"
-local monitor_zoom = {}
+local notify_cmd = " && notify-send -u normal -i "
 
--- App Launches
+-- ZONE 2: HELPER SCRIPTS
+local cmd_scrot_region = string.format(
+  "grim -g \"$(slurp)\" -l 0 %sregion_%s && wl-copy < %sregion_%s%s%sregion_%s 'Screenshot' 'Selected region saved and copied!'",
+  screen_dir,
+  timestamp,
+  screen_dir,
+  timestamp,
+  notify_cmd,
+  screen_dir,
+  timestamp
+)
+
+local cmd_scrot_window = string.format(
+  'grim -g "$(hyprctl activewindow -j | jq -j \'.at[0], ",", .at[1], " ", .size[0], "x", .size[1]\')" -l 0 %swin_%s && wl-copy < %swin_%s%s%swin_%s \'Screenshot\' \'Window screenshot saved and copied!\'',
+  screen_dir,
+  timestamp,
+  screen_dir,
+  timestamp,
+  notify_cmd,
+  screen_dir,
+  timestamp
+)
+
+local cmd_scrot_monitor = string.format(
+  "grim -o $(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name') -l 0 %smon_%s && wl-copy < %smon_%s%s%smon_%s 'Screenshot' 'Full screen saved and copied!'",
+  screen_dir,
+  timestamp,
+  screen_dir,
+  timestamp,
+  notify_cmd,
+  screen_dir,
+  timestamp
+)
+
+-- ZONE 3: APPLICATION LAUNCHERS
 hl.bind(
   mainMod .. " + T",
-  hl.dsp.exec_cmd(terminal),
-  { desc = "Launch Terminal (" .. terminal .. ")" }
+  hl.dsp.exec_cmd(apps.terminal),
+  { desc = "Launch Terminal (" .. apps.terminal .. ")" }
 )
 hl.bind(
   mainMod .. " + E",
-  hl.dsp.exec_cmd(fileManager),
+  hl.dsp.exec_cmd(apps.file_gui),
   { desc = "Open File Manager (GUI)" }
 )
 hl.bind(
   mainMod .. " + SHIFT + E",
-  hl.dsp.exec_cmd(tuiFileManager),
+  hl.dsp.exec_cmd(apps.file_tui),
   { desc = "Open File Manager (TUI)" }
 )
 hl.bind(
   mainMod .. " + D",
-  hl.dsp.exec_cmd(menu),
+  hl.dsp.exec_cmd(apps.launcher),
   { desc = "Open Application Launcher" }
 )
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser), { desc = "Open browser" })
+hl.bind(
+  mainMod .. " + B",
+  hl.dsp.exec_cmd(apps.browser),
+  { desc = "Open Browser" }
+)
+hl.bind(
+  mainMod .. " + W",
+  hl.dsp.exec_cmd(apps.wall_picker),
+  { desc = "Open Wallpaper Picker" }
+)
 
--- Window Management & System
+-- ZONE 4: WINDOW & SYSTEM MANAGEMENT
 hl.bind(
   mainMod .. " + Q",
   hl.dsp.window.close(),
@@ -39,7 +91,7 @@ hl.bind(
 )
 hl.bind(
   mainMod .. " + SHIFT + Q",
-  hl.dsp.exec_cmd("~/.config/hypr/scripts/logout.sh"),
+  hl.dsp.exec_cmd(apps.logout),
   { desc = "Open Logout Menu" }
 )
 hl.bind(
@@ -52,16 +104,14 @@ hl.bind(
   hl.dsp.window.pseudo(),
   { desc = "Toggle Pseudo Mode" }
 )
-
 hl.bind(
   mainMod .. " + SHIFT + B",
   hl.dsp.exec_cmd("killall -SIGUSR2 waybar"),
   { desc = "Toggle Waybar" }
 )
-
 hl.bind(
   mainMod .. " + SHIFT + SLASH",
-  hl.dsp.exec_cmd("~/.config/hypr/scripts/hypr-keys.sh"),
+  hl.dsp.exec_cmd(apps.key_help),
   { desc = "Show Keybinds Help" }
 )
 hl.bind(
@@ -75,7 +125,8 @@ hl.bind(
   { desc = "Maximize Window (Keep Taskbar)" }
 )
 
--- Navigation (Focus) - Vim motions
+-- ZONE 5: NAVIGATION (Vim Motions & Workspaces)
+-- Focus Windows
 hl.bind(
   mainMod .. " + H",
   hl.dsp.focus({ direction = "left" }),
@@ -97,6 +148,7 @@ hl.bind(
   { desc = "Focus Down Window" }
 )
 
+-- Move Windows
 hl.bind(
   mainMod .. " + SHIFT + H",
   hl.dsp.window.move({ direction = "l" }),
@@ -118,6 +170,7 @@ hl.bind(
   { desc = "Move Window Down" }
 )
 
+-- Move Workspaces across Monitors
 hl.bind(
   mainMod .. " + ALT + K",
   hl.dsp.workspace.move({ monitor = "u" }),
@@ -129,108 +182,161 @@ hl.bind(
   { desc = "Move Workspace Down" }
 )
 
--- Open wall picker
 hl.bind(
-  mainMod .. " + W",
-  hl.dsp.exec_cmd("~/.config/hypr/scripts/wall-picker.sh"),
-  { desc = "Open Wallpaper Picker" }
+  mainMod .. " + S",
+  hl.dsp.workspace.toggle_special("magic"),
+  { desc = "Toggle Scratchpad" }
+)
+
+hl.bind(
+  mainMod .. " + SHIFT + S",
+  hl.dsp.window.move({ workspace = "special:magic" }),
+  { desc = "Move Window to Scratchpad" }
+)
+
+hl.bind(
+  mainMod .. " + ALT + S",
+  hl.dsp.window.move({ workspace = "e+0" }),
+  { desc = "Fetch Window from Scratchpad to Current WS" }
+)
+
+-- Workspace Binding Loop
+for i = 1, 10 do
+  local key = i % 10
+  hl.bind(
+    mainMod .. " + " .. key,
+    hl.dsp.focus({ workspace = i }),
+    { desc = "Focus Workspace " .. i }
+  )
+  hl.bind(
+    mainMod .. " + SHIFT + " .. key,
+    hl.dsp.window.move({ workspace = i }),
+    { desc = "Move Window to Workspace " .. i }
+  )
+end
+
+-- Relative Workspaces
+hl.bind(
+  mainMod .. " + NEXT",
+  hl.dsp.focus({ workspace = "e+1" }),
+  { desc = "Focus Next Workspace" }
+)
+hl.bind(
+  mainMod .. " + PRIOR",
+  hl.dsp.focus({ workspace = "e-1" }),
+  { desc = "Focus Previous Workspace" }
+)
+
+-- ZONE 6: MOUSE, MEDIA & HARDWARE CONTROLS
+-- Mouse
+hl.bind(
+  mainMod .. " + mouse_down",
+  hl.dsp.focus({ workspace = "e+1" }),
+  { desc = "Next Workspace", mouse = true }
+)
+hl.bind(
+  mainMod .. " + mouse_up",
+  hl.dsp.focus({ workspace = "e-1" }),
+  { desc = "Previous Workspace", mouse = false }
+)
+hl.bind(
+  mainMod .. " + mouse:272",
+  hl.dsp.window.drag(),
+  { mouse = true, desc = "Drag Window (Left Click)" }
+)
+hl.bind(
+  mainMod .. " + mouse:273",
+  hl.dsp.window.resize(),
+  { mouse = true, desc = "Resize Window (Right Click)" }
 )
 
 -- Screenshots
--- hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o ~/pictures/screenshots -z"))
--- hl.bind(mainMod .. " + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window -o ~/pictures/screenshots -z"))
-
-local notify_cmd = " && notify-send -u normal -i "
-
 hl.bind(
   mainMod .. " + PRINT",
-  hl.dsp.exec_cmd(
-    'grim -g "$(slurp)" -l 0 '
-      .. screen_dir
-      .. "region_"
-      .. timestamp
-      .. " && wl-copy < "
-      .. screen_dir
-      .. "region_"
-      .. timestamp
-      .. notify_cmd
-      .. screen_dir
-      .. "region_"
-      .. timestamp
-      .. " 'Screenshot' 'Selected region saved and copied!'"
-  ),
+  hl.dsp.exec_cmd(cmd_scrot_region),
   { desc = "Screenshot Region" }
 )
-
 hl.bind(
   mainMod .. " + SHIFT + PRINT",
-  hl.dsp.exec_cmd(
-    'grim -g "$(hyprctl activewindow -j | jq -r \'"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])"\')" -l 0 '
-      .. screen_dir
-      .. "win_"
-      .. timestamp
-      .. " && wl-copy < "
-      .. screen_dir
-      .. "win_"
-      .. timestamp
-      .. notify_cmd
-      .. screen_dir
-      .. "win_"
-      .. timestamp
-      .. " 'Screenshot' 'Window screenshot saved and copied!'"
-  ),
+  hl.dsp.exec_cmd(cmd_scrot_window),
   { desc = "Screenshot Window" }
 )
-
 hl.bind(
   mainMod .. " + ALT + PRINT",
-  hl.dsp.exec_cmd(
-    "grim -o $(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name') -l 0 "
-      .. screen_dir
-      .. "mon_"
-      .. timestamp
-      .. " && wl-copy < "
-      .. screen_dir
-      .. "mon_"
-      .. timestamp
-      .. notify_cmd
-      .. screen_dir
-      .. "mon_"
-      .. timestamp
-      .. " 'Screenshot' 'Full screen saved and copied!'"
-  ),
+  hl.dsp.exec_cmd(cmd_scrot_monitor),
   { desc = "Screenshot Full Screen" }
 )
 
--- Zoom Shortcut
-local function adjust_zoom(operation)
-  local monitor_name = hl.get_active_monitor().name
-  local current = monitor_zoom[monitor_name] or 1.0
-  local new_zoom
+-- Audio & Mic
+hl.bind(
+  "XF86AudioRaiseVolume",
+  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+  { locked = true, repeating = true, desc = "Increase Volume" }
+)
+hl.bind(
+  "XF86AudioLowerVolume",
+  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+  { locked = true, repeating = true, desc = "Decrease Volume" }
+)
+hl.bind(
+  "XF86AudioMute",
+  hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+  { locked = true, repeating = true, desc = "Toggle Mute" }
+)
+hl.bind(
+  "XF86AudioMicMute",
+  hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
+  { locked = true, repeating = true, desc = "Toggle Microphone Mute" }
+)
 
+-- Brightness
+hl.bind(
+  "XF86MonBrightnessUp",
+  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),
+  { locked = true, repeating = true, desc = "Increase Brightness" }
+)
+hl.bind(
+  "XF86MonBrightnessDown",
+  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
+  { locked = true, repeating = true, desc = "Decrease Brightness" }
+)
+
+-- Player Controls
+hl.bind(
+  "XF86AudioNext",
+  hl.dsp.exec_cmd("playerctl next"),
+  { locked = true, desc = "Next Track" }
+)
+hl.bind(
+  "XF86AudioPause",
+  hl.dsp.exec_cmd("playerctl play-pause"),
+  { locked = true, desc = "Play/Pause" }
+)
+hl.bind(
+  "XF86AudioPlay",
+  hl.dsp.exec_cmd("playerctl play-pause"),
+  { locked = true, desc = "Play/Pause" }
+)
+hl.bind(
+  "XF86AudioPrev",
+  hl.dsp.exec_cmd("playerctl previous"),
+  { locked = true, desc = "Previous Track" }
+)
+
+-- ZONE 7: ZOOM SUBMAP
+local global_zoom = 1.0
+
+local function adjust_zoom(operation)
   if operation == "*" then
-    new_zoom = current * 1.1
-    if new_zoom > 3.0 then
-      new_zoom = 3.0
-    end
+    global_zoom = math.min(global_zoom * 1.1, 3.0)
   elseif operation == "/" then
-    new_zoom = current / 1.1
-    if new_zoom < 1.0 then
-      new_zoom = 1.0
-    end
+    global_zoom = math.max(global_zoom / 1.1, 1.0)
   else
-    new_zoom = 1.0
+    global_zoom = 1.0
   end
 
-  monitor_zoom[monitor_name] = new_zoom
-  hl.config({ cursor = { zoom_factor = new_zoom } })
+  hl.config({ cursor = { zoom_factor = global_zoom } })
 end
-
-hl.on("monitor.focused", function()
-  local monitor_name = hl.get_active_monitor().name
-  local zoom = monitor_zoom[monitor_name] or 1.0
-  hl.config({ cursor = { zoom_factor = zoom } })
-end)
 
 hl.bind(mainMod .. " + Z", function()
   hl.dispatch(hl.dsp.submap("zoom_mode"))
@@ -268,109 +374,3 @@ hl.define_submap("zoom_mode", function()
     )
   end)
 end)
-
--- Workspaces & Moving Windows to WS
-for i = 1, 10 do
-  local key = i % 10
-  hl.bind(
-    mainMod .. " + " .. key,
-    hl.dsp.focus({ workspace = i }),
-    { desc = "Focus Workspace " .. i }
-  )
-  hl.bind(
-    mainMod .. " + SHIFT + " .. key,
-    hl.dsp.window.move({ workspace = i }),
-    { desc = "Move Window to Workspace " .. i }
-  )
-end
-
--- Special Workspace (Scratchpad)
--- hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("magic"))
--- hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:magic" }))
-
-hl.bind(
-  mainMod .. " + NEXT",
-  hl.dsp.focus({ workspace = "e+1" }),
-  { desc = "Focus Next Workspace" }
-)
-hl.bind(
-  mainMod .. " + PRIOR",
-  hl.dsp.focus({ workspace = "e-1" }),
-  { desc = "Focus Previous Workspace" }
-)
-
--- Mouse Bindings
-hl.bind(
-  mainMod .. " + mouse_down",
-  hl.dsp.focus({ workspace = "e+1" }),
-  { desc = "Next Workspace (Mouse Scroll Down)", mouse = true }
-)
-hl.bind(
-  mainMod .. " + mouse_up",
-  hl.dsp.focus({ workspace = "e-1" }),
-  { desc = "Previous Workspace (Mouse Scroll Up)", mouse = true }
-)
-hl.bind(
-  mainMod .. " + mouse:272",
-  hl.dsp.window.drag(),
-  { mouse = true, desc = "Drag Window (Left Click)" }
-)
-hl.bind(
-  mainMod .. " + mouse:273",
-  hl.dsp.window.resize(),
-  { mouse = true, desc = "Resize Window (Right Click)" }
-)
-
--- Media & Brightness (Fn keys)
-hl.bind(
-  "XF86AudioRaiseVolume",
-  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
-  { locked = true, repeating = true, desc = "Increase Volume" }
-)
-hl.bind(
-  "XF86AudioLowerVolume",
-  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
-  { locked = true, repeating = true, desc = "Decrease Volume" }
-)
-hl.bind(
-  "XF86AudioMute",
-  hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
-  { locked = true, repeating = true, desc = "Toggle Mute" }
-)
-hl.bind(
-  "XF86AudioMicMute",
-  hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-  { locked = true, repeating = true, desc = "Toggle Microphone Mute" }
-)
-hl.bind(
-  "XF86MonBrightnessUp",
-  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),
-  { locked = true, repeating = true, desc = "Increase Brightness" }
-)
-hl.bind(
-  "XF86MonBrightnessDown",
-  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
-  { locked = true, repeating = true, desc = "Decrease Brightness" }
-)
-
--- Player Controls
-hl.bind(
-  "XF86AudioNext",
-  hl.dsp.exec_cmd("playerctl next"),
-  { locked = true, desc = "Next Track" }
-)
-hl.bind(
-  "XF86AudioPause",
-  hl.dsp.exec_cmd("playerctl play-pause"),
-  { locked = true, desc = "Play/Pause" }
-)
-hl.bind(
-  "XF86AudioPlay",
-  hl.dsp.exec_cmd("playerctl play-pause"),
-  { locked = true, desc = "Play/Pause" }
-)
-hl.bind(
-  "XF86AudioPrev",
-  hl.dsp.exec_cmd("playerctl previous"),
-  { locked = true, desc = "Previous Track" }
-)

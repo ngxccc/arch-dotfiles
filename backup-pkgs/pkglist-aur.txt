@@ -5,6 +5,7 @@ fcitx5-lotus-bin
 google-chrome
 graphite-gtk-theme
 hyprland-git
+oh-my-posh
 sddm-theme-corners-git
 tela-circle-icon-theme-git
 ttf-google-fonts-typewolf

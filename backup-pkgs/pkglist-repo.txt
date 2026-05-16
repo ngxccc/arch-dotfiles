@@ -25,13 +25,14 @@ fnm
 freerdp
 git
 gnome-keyring
+grim
 gst-plugin-pipewire
 gvfs
 htop
 hyprlock
-hyprshot
 imv
 iwd
+jq
 keychain
 kitty
 libpulse
@@ -66,6 +67,7 @@ rsync
 rustup
 sddm
 seahorse
+slurp
 smartmontools
 sof-firmware
 sudo
