@@ -24,6 +24,8 @@
     "auto_fold_dirs": false,
     "git_status": true,
     "show_diagnostics": "all",
+    "hide_gitignore": false,
+    "hide_hidden": false,
   },
   "outline_panel": {
     "dock": "right",
@@ -38,7 +40,7 @@
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-haiku-4.5",
-      "enable_thinking": true
+      "enable_thinking": true,
     },
     "dock": "left",
     "favorite_models": [],
@@ -55,6 +57,8 @@
     "inactive_opacity": 0.85,
     "border_size": 1.0,
   },
+
+  // "file_scan_inclusions": ["**/*"],
 
   "tab_bar": {
     "show": true,
@@ -170,15 +174,15 @@
     "cursor_shape": "block",
   },
 
-  "file_scan_exclusions": [
-    "**/.git",
-    "**/.svn",
-    "**/.DS_Store",
-    "**/node_modules",
-    "**/dist",
-    "**/build",
-    "**/.next",
-  ],
+  // "file_scan_exclusions": [
+  //   "**/.git",
+  //   "**/.svn",
+  //   "**/.DS_Store",
+  //   "**/node_modules",
+  //   "**/dist",
+  //   "**/build",
+  //   "**/.next",
+  // ],
 
   "languages": {
     "JavaScript": {
