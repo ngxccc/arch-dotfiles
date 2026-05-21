@@ -1,3 +1,4 @@
+antigravity-cli
 batctl-tui
 bibata-cursor-theme-bin
 brave-bin
@@ -12,4 +13,3 @@ ttf-google-fonts-typewolf
 ttf-ms-fonts
 visual-studio-code-bin
 yay
-yay-debug

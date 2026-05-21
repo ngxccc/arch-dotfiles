@@ -83,7 +83,7 @@
         },
         {
           "label": "󰂯",
-          "command": "blueman-manager"
+          "command": "kitty --title bluetui -e bluetui"
         }
       ]
     },

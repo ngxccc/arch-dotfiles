@@ -1,0 +1,19 @@
+#!/bin/bash
+
+{{- $bluetoothDir := joinPath .chezmoi.sourceDir "dot_config/system-configs/bluetooth" }}
+
+{{- if stat $bluetoothDir }}
+# bluetooth_dir_hash: {{ output "find" $bluetoothDir "-type" "f" "-exec" "sha256sum" "{}" "+" | sha256sum }}
+{{- else }}
+# bluetooth_dir_hash: EMPTY_DIR_NO_HASH
+{{- end }}
+
+echo "Đang áp dụng cấu hình Bluetooth vào hệ thống..."
+
+{{- if stat $bluetoothDir }}
+sudo install -m 644 -o root -g root {{ $bluetoothDir }}/main.conf /etc/bluetooth/main.conf
+{{- end }}
+
+sudo systemctl restart bluetooth.service
+
+echo "Hoàn tất áp dụng cấu hình Bluetooth!"

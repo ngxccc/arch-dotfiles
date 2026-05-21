@@ -3,7 +3,7 @@ amd-ucode
 awww
 base
 base-devel
-blueman
+bluetui
 bluez
 bluez-utils
 bottom
@@ -14,7 +14,6 @@ chezmoi
 cliphist
 cups
 cups-pk-helper
-dunst
 efibootmgr
 fastfetch
 fcitx5
@@ -28,8 +27,8 @@ gnome-keyring
 grim
 gst-plugin-pipewire
 gvfs
-htop
 hyprlock
+impala
 imv
 iwd
 jq
@@ -42,7 +41,6 @@ linux-firmware
 mpv
 nano
 neovim
-network-manager-applet
 networkmanager
 noto-fonts
 noto-fonts-cjk
@@ -72,7 +70,6 @@ smartmontools
 sof-firmware
 sudo
 swaync
-system-config-printer
 thunar
 thunar-archive-plugin
 tree
@@ -90,11 +87,8 @@ wget
 wireplumber
 wl-clip-persist
 wl-clipboard
-wofi
 xdg-desktop-portal-hyprland
 xdg-utils
-xf86-video-amdgpu
-xf86-video-ati
 yazi
 zed
 zip

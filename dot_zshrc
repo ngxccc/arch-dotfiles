@@ -18,6 +18,7 @@ eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/porsche.omp.json)"
 eval "$(keychain --eval --quiet ngxc)"
 eval "$(fnm env --use-on-cd --shell zsh)"
 
+# SYNOPSIS: Vào yazi
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
 	yazi "$@" --cwd-file="$tmp"
@@ -27,6 +28,7 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+# SYNOPSIS: Xoá các file, dir không tồn tại trong chezmoi
 function cz-purge() {
     echo "[!] Đang quét toàn bộ hệ sinh thái (Files & Dirs)..."
 
@@ -51,6 +53,7 @@ function cz-purge() {
     echo "[v] Hệ thống đã sạch bóng quân thù!"
 }
 
+# SYNOPSIS: Export các pkg hệ thống
 function backup_pkgs() {
   local backup_dir="$HOME/backup-pkgs"
   mkdir -p "$backup_dir"
@@ -59,7 +62,73 @@ function backup_pkgs() {
   print -P "%F{green}✔ Packages successfully dumped to %f%B$backup_dir%b"
 }
 
+# SYNOPSIS: Tự động quét, đồng bộ và đẩy Dotfiles lên GitHub qua động cơ Chezmoi.
+function dot-sync() {
+  echo -e "\e[36m🚀 Đang kích hoạt Radar Chezmoi quét lõi hệ thống...\e[0m"
+
+  echo -e "\e[33m🔄 Đang đối chiếu Target State và Source State...\e[0m"
+  chezmoi re-add
+
+  local git_status=$(chezmoi git -- status --porcelain)
+
+  if [[ -z "$git_status" ]]; then
+      echo -e "\e[90m⚡ Config đang nguyên vẹn, hệ thống tĩnh lặng!\e[0m"
+  else
+      echo -e "\e[33m📦 Phát hiện biến động config trong hầm chứa! Đang đóng gói...\e[0m"
+      
+      chezmoi git -- add .
+      
+      local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+      chezmoi git -- commit -m "chore: auto-sync dotfiles at $timestamp" >/dev/null 2>&1
+      
+      echo -e "\e[36m🚀 Đang phóng tên lửa lên GitHub...\e[0m"
+      chezmoi git -- push
+      
+      echo -e "\e[32m✅ Sync Chezmoi thành công rực rỡ! Code đã được backup an toàn.\e[0m"
+  fi
+}
+
+# SYNOPSIS: Menu tổng hợp các bí thuật (Auto Generate Doc)
+function dot-help() {
+    clear
+    echo -e "\e[36m🚀 BẢNG PHONG THẦN - AUTO DOTFILES COMMANDS 🚀\e[0m\n"
+
+    # PERF: Sử dụng AWK để xây dựng Lexical Parser, tốc độ quét 10.000 dòng/giây
+    # Lưu ý: Thay ~/.zshrc bằng đường dẫn thư mục chứa script nếu chia nhỏ file. 
+    # Ví dụ: awk '...' ~/.config/zsh/scripts/*.zsh
+    awk '
+        # 1. Bắt tín hiệu Metadata
+        /^# SYNOPSIS:/ {
+            desc = substr($0, 13)
+            sub(/^[ \t]+/, "", desc)
+            next
+        }
+        
+        # 2. Bắt tín hiệu khởi tạo Hàm
+        /^(function [a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+\(\))/ {
+            if (desc != "") {
+                # FIX: Đổi biến func thành cmd_name để né Keyword Collision
+                if ($1 == "function") {
+                    cmd_name = $2
+                } else {
+                    cmd_name = $1
+                }
+                sub(/\(\)/, "", cmd_name)
+                
+                # Render UI
+                printf "\033[32m%-25s\033[0m %s\n", cmd_name, desc
+                desc = ""
+            }
+        }
+        
+        # 3. Reset state
+        /^[^# \t]/ { desc = "" }
+    ' ~/.zshrc
+}
+
 # Alias
+alias dh='dot-help'
+alias ds='dot-sync'
 alias bpkg='backup_pkgs'
 alias sudo='sudo '
 alias y='y'

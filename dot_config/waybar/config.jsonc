@@ -51,7 +51,7 @@
     "menu-actions": {
       "action-1": "kitty --title batctl -e bash -c 'batctl status; echo -e \"\n[Press q/Q to quit]\"; while read -s -n 1 key; do [[ \"$key\" == \"q\" || \"$key\" == \"Q\" ]] && exit; done'",
       "action-2": "kitty --title batctl -e batctl",
-    }
+    },
   },
 
   "network": {
@@ -65,15 +65,12 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "spacing": 1,
-    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    "on-click": "kitty --title impala -e impala",
     "menu": "on-click-right",
     "menu-file": "~/.config/waybar/context/wifi.xml",
     "menu-actions": {
-      "action-1": "orbit toggle top-right",
       "action-2": "nmcli radio wifi off",
       "action-3": "nmcli radio wifi on",
-      "action-4": "hyprctl dispatch exec '[float] kitty -e nmtui'",
-      "action-5": "hyprctl dispatch exec nm-connection-editor",
     },
   },
 

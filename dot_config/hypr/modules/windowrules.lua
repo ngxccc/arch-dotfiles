@@ -33,19 +33,13 @@ hl.window_rule({
 
 hl.window_rule({
   name = "float-batctl",
-  match = { class = "^(kitty)$", title = "^(batctl)$" },
+  match = {
+    class = "^(kitty)$",
+    title = "^(batctl|impala|bluetui|pulsemixer)$",
+  },
   float = true,
   center = true,
   size = "800 600",
-})
-
-hl.window_rule({
-  name = "float-pulsemixer",
-  match = { class = "^(kitty)$", title = "^(pulsemixer)$" },
-  float = true,
-  center = true,
-  size = "900 600",
-  opacity = "0.95 0.95",
 })
 
 hl.window_rule({

@@ -36,9 +36,9 @@ hl.config({
     vfr = true,
   },
 
-  -- xwayland = {
-  --   enabled = false,
-  -- },
+  xwayland = {
+    enabled = false,
+  },
 
   input = {
     kb_layout = "us",
