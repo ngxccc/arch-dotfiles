@@ -35,7 +35,7 @@
   },
 
   "niri/workspaces": {
-    "format": "{name}",
+    "format": "{value}",
     "on-scroll-up": "niri msg action focus-workspace-up",
     "on-scroll-down": "niri msg action focus-workspace-down",
   },

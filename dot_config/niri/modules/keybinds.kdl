@@ -10,8 +10,9 @@ binds {
   Mod+Shift+Q { spawn-sh "~/.config/hypr/scripts/logout.sh"; }
 
   Mod+Space { toggle-window-floating; }
-  Mod+F { maximize-column; }
+  Mod+F { maximize-window-to-edges; }
   Mod+Shift+F { fullscreen-window; }
+  Mod+Tab { toggle-overview; }
 
   Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
   Mod+Shift+Slash { spawn "/home/ngxc/.config/niri/scripts/niri-keys.py"; }
@@ -23,6 +24,8 @@ binds {
   Mod+L { focus-column-right; }
   Mod+K { focus-window-up; }
   Mod+J { focus-window-down; }
+  Mod+Ctrl+K { focus-workspace-up; }
+  Mod+Ctrl+J { focus-workspace-down; }
 
   Mod+Shift+H { move-column-left; }
   Mod+Shift+L { move-column-right; }
@@ -32,9 +35,8 @@ binds {
   Mod+Alt+K { move-workspace-to-monitor-up; }
   Mod+Alt+J { move-workspace-to-monitor-down; }
 
-  Mod+S { focus-workspace "special-magic"; }
-  Mod+Shift+S { move-column-to-workspace "special-magic"; }
-  Mod+Alt+S { focus-workspace "special-magic"; }
+  // HACK: Niri lacks 'special workspaces'. Using floating state to simulate scratchpads temporarily.
+  Mod+S { toggle-window-floating; }
 
   Mod+1 { focus-workspace 1; }
   Mod+Shift+1 { move-column-to-workspace 1; }
@@ -61,6 +63,8 @@ binds {
   // WHY: Mouse dragging (272) and resizing (273) are native to Niri by default holding Mod. No explicit binds needed.
   Mod+WheelScrollDown { focus-workspace-down; }
   Mod+WheelScrollUp { focus-workspace-up; }
+  Mod+Shift+WheelScrollDown { focus-column-right; }
+  Mod+Shift+WheelScrollUp { focus-column-left; }
 
   // PERF: Delegating complex bash substitution to sh subshell
   Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }

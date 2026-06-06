@@ -1,10 +1,8 @@
-workspace "special-magic" {
-    open-on-output "HDMI-A-1"
-}
-
 xwayland-satellite {
     off
 }
+
+prefer-no-csd
 
 include "modules/env.kdl"
 include "modules/autostart.kdl"
