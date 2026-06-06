@@ -52,8 +52,14 @@ if ! pgrep -x "awww-daemon" >/dev/null; then
   sleep 1
 fi
 
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+  TRANS_POS=$(hyprctl cursorpos)
+else
+  TRANS_POS="0.5,0.5"
+fi
+
 awww img "$FULL_PATH" \
   --transition-type center \
-  --transition-pos "$(hyprctl cursorpos)" \
+  --transition-pos "$TRANS_POS" \
   --transition-duration 1.2 \
   --transition-fps 60

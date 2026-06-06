@@ -4,10 +4,10 @@ binds {
   Mod+Shift+E { spawn "kitty" "-e" "yazi"; }
   Mod+D { spawn "rofi" "-show" "drun"; }
   Mod+B { spawn "brave"; }
-  Mod+W { spawn-sh "~/.config/hypr/scripts/wall-picker.sh"; }
+  Mod+W { spawn "/home/ngxc/.config/hypr/scripts/wall-picker.sh"; }
 
   Mod+Q { close-window; }
-  Mod+Shift+Q { spawn-sh "~/.config/hypr/scripts/logout.sh"; }
+  Mod+Shift+Q { spawn "/home/ngxc/.config/hypr/scripts/logout.sh"; }
 
   Mod+Space { toggle-window-floating; }
   Mod+F { maximize-window-to-edges; }
