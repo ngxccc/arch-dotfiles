@@ -1,7 +1,9 @@
 antigravity-cli
 batctl-tui
+beekeeper-studio-bin
 bibata-cursor-theme-bin
 brave-bin
+doppler-cli-bin
 fcitx5-lotus-bin
 google-chrome
 graphite-gtk-theme

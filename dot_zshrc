@@ -136,3 +136,5 @@ alias vim='nvim'
 alias v='nvim'
 alias vi='nvim'
 alias zed='zeditor'
+
+export PATH="/home/ngxc/.cache/.bun/bin:$PATH"

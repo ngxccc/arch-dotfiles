@@ -38,8 +38,9 @@
   },
   "agent": {
     "default_model": {
+      "effort": "high",
       "provider": "copilot_chat",
-      "model": "claude-haiku-4.5",
+      "model": "gemini-3.1-pro-preview",
       "enable_thinking": true,
     },
     "dock": "left",
@@ -82,7 +83,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Dracula",
+    "dark": "Catppuccin Mocha",
   },
   "icon_theme": "Material Icon Theme",
   "ui_font_family": "Inter",

@@ -3,6 +3,7 @@ amd-ucode
 awww
 base
 base-devel
+biome
 bluetui
 bluez
 bluez-utils
@@ -23,6 +24,7 @@ fcitx5-qt
 fnm
 freerdp
 git
+github-cli
 gnome-keyring
 grim
 gst-plugin-pipewire
@@ -56,6 +58,7 @@ playerctl
 polkit-kde-agent
 power-profiles-daemon
 pulsemixer
+qemu-desktop
 qt5-wayland
 qt5ct
 qt6-wayland
@@ -70,6 +73,13 @@ smartmontools
 sof-firmware
 sudo
 swaync
+texlive-basic
+texlive-binextra
+texlive-fontsrecommended
+texlive-langother
+texlive-latex
+texlive-latexextra
+texlive-mathscience
 thunar
 thunar-archive-plugin
 tree

@@ -43,6 +43,17 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "float-bitwarden",
+  match = {
+    class = "^(brave-.*)$",
+    title = "^(_crx_nngceckbapebfimnlniiiahkandclblb)$",
+  },
+  float = true,
+  center = true,
+  size = "600 700",
+})
+
+hl.window_rule({
   name = "move-hyprland-run",
   match = { class = "hyprland-run" },
   move = "20 monitor_h-120",
