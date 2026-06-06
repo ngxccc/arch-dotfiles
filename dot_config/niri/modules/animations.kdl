@@ -14,17 +14,17 @@ animations {
   }
 
   window-resize {
-      spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+      spring damping-ratio=1.0 stiffness=400 epsilon=0.0001
   }
 
   // HACK: Simulating your old 'easeOutQuint' speed=4 for window opening/closing using native curves.
   window-open {
-      duration-ms 250
+      duration-ms 300
       curve "ease-out-expo"
   }
 
   window-close {
-      duration-ms 200
+      duration-ms 250
       curve "ease-out-expo"
   }
 

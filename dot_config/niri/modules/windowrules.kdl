@@ -15,10 +15,8 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^brave-.*"# title="^_crx_nngceckbapebfimnlniiiahkandclblb$"
-    open-floating true
-    default-column-width { fixed 600; }
-    default-window-height { fixed 700; }
+  match app-id=r#"^brave-.*"# title="^_crx_nngceckbapebfimnlniiiahkandclblb$"
+  open-floating true
 }
 
 window-rule {
