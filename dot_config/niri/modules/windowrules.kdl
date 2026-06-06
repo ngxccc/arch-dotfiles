@@ -25,6 +25,7 @@ window-rule {
 window-rule {
     match app-id="kitty"
     opacity 0.85
+    default-column-width { proportion 1.0; }
 }
 
 window-rule {
@@ -45,11 +46,7 @@ window-rule {
 // Explicit state matchers for borders have been purged.
 
 window-rule {
-    geometry-corner-radius 10
-    clip-to-geometry true
+    geometry-corner-radius 0
+    draw-border-with-background false
 }
 
-window-rule {
-    match is-floating=true
-    geometry-corner-radius 0
-}

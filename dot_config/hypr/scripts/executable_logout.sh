@@ -6,5 +6,11 @@ case "$choice" in
 *Reboot*) systemctl reboot ;;
 *Power*) systemctl poweroff ;;
 *Lock*) hyprlock ;;
-*Logout*) uwsm stop ;;
+*Logout*)
+    if [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
+        niri msg action quit --skip-confirmation
+    else
+        uwsm stop
+    fi
+    ;;
 esac

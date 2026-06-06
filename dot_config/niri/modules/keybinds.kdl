@@ -14,7 +14,7 @@ binds {
   Mod+Shift+F { fullscreen-window; }
 
   Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
-  Mod+Shift+Slash { spawn-sh "~/.config/hypr/scripts/hypr-keys.sh"; }
+  Mod+Shift+Slash { spawn "/home/ngxc/.config/niri/scripts/niri-keys.py"; }
 
   // FIXME: 'Pseudo' mode doesn't exist in Niri's 1D scroll paradigm.
   // Mod+P { ... }

@@ -71,7 +71,7 @@
         },
         {
           "label": "󰗽",
-          "command": "uwsm stop"
+          "command": "sh -c 'if [ \"$XDG_CURRENT_DESKTOP\" = \"niri\" ]; then niri msg action quit --skip-confirmation; else uwsm stop; fi'"
         },
         {
           "label": "󰐥",

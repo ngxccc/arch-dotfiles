@@ -1,4 +1,6 @@
-workspace "special-magic"
+workspace "special-magic" {
+    open-on-output "HDMI-A-1"
+}
 
 xwayland-satellite {
     off
@@ -47,6 +49,10 @@ layout {
         width 1
         active-gradient from="#ffffffff" to="#888888ff" angle=45 relative-to="workspace-view"
         inactive-color "#313244aa"
+    }
+
+    focus-ring {
+        off
     }
 
     shadow {
