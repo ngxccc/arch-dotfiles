@@ -44,6 +44,7 @@ mpv
 nano
 neovim
 networkmanager
+niri
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -99,6 +100,7 @@ wl-clip-persist
 wl-clipboard
 xdg-desktop-portal-hyprland
 xdg-utils
+xwayland-satellite
 yazi
 zed
 zip
