@@ -18,9 +18,6 @@ binds {
   Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
   Mod+Shift+Slash { spawn "/home/ngxc/.config/niri/scripts/niri-keys.py"; }
 
-  // FIXME: 'Pseudo' mode doesn't exist in Niri's 1D scroll paradigm.
-  // Mod+P { ... }
-
   Mod+H { focus-column-left; }
   Mod+L { focus-column-right; }
   Mod+K { focus-window-up; }
@@ -36,7 +33,6 @@ binds {
   Mod+Alt+K { move-workspace-to-monitor-up; }
   Mod+Alt+J { move-workspace-to-monitor-down; }
 
-  // HACK: Niri lacks 'special workspaces'. Using floating state to simulate scratchpads temporarily.
   Mod+S { toggle-window-floating; }
 
   Mod+1 { focus-workspace 1; }
@@ -67,10 +63,18 @@ binds {
   Mod+Shift+WheelScrollDown { focus-column-right; }
   Mod+Shift+WheelScrollUp { focus-column-left; }
 
-  // PERF: Delegating complex bash substitution to sh subshell
-  Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }
-  Mod+Shift+Print { spawn-sh "FILE=~/pictures/screenshots/win_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(niri msg -j action focus-window | jq -r '\"\\(.x),\\(.y) \\(.width)x\\(.height)\"')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Window screenshot saved and copied!'"; }
-  Mod+Alt+Print { spawn-sh "FILE=~/pictures/screenshots/mon_$(date +%Y-%m-%d_%H-%M-%S).png && grim -o \"$(niri msg -j action focus-monitor | jq -r '.name')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Full screen saved and copied!'"; }
+  // Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy <
+  //     │\"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }
+  // Mod+Shift+Print { spawn-sh "FILE=~/pictures/screenshots/win_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(niri msg -j action focus-window | jq
+  //     │-r '\"\\(.x),\\(.y) \\(.width)x\\(.height)\"')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot'
+  //     │'Window screenshot saved and copied!'"; }
+  // Mod+Alt+Print { spawn-sh "FILE=~/pictures/screenshots/mon_$(date +%Y-%m-%d_%H-%M-%S).png && grim -o \"$(niri msg -j action focus-monitor | jq
+  //     │-r '.name')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Full screen saved and copied!'"; }
+
+  Print { screenshot; }
+  // Mod+Print { screenshot; }
+  Mod+Shift+Print { screenshot-window; }
+  Mod+Alt+Print { screenshot-screen; }
 
   Mod+Minus { set-column-width "-10%"; }
   Mod+Equal { set-column-width "+10%"; }

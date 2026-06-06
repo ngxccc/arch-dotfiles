@@ -1,6 +1,4 @@
 animations {
-  // WHY: Niri defaults to physical spring models for spatial movements to preserve momentum during rapid workspace switching.
-  // PERF: Damping-ratio exactly 1.0 creates a critically damped spring (fastest settling time without oscillation).
   workspace-switch {
     spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
   }

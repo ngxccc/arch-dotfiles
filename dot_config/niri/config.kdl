@@ -3,6 +3,7 @@ xwayland-satellite {
 }
 
 prefer-no-csd
+screenshot-path "/home/ngxc/pictures/screenshots/screenshot_%Y-%m-%d_%H-%M-%S.png"
 
 include "modules/env.kdl"
 include "modules/autostart.kdl"
