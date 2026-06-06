@@ -3,7 +3,7 @@
   "position": "top",
   "height": 42,
   "spacing": 8,
-  "modules-left": ["hyprland/workspaces"],
+  "modules-left": ["niri/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
     "custom/orbit",
@@ -32,6 +32,12 @@
     "format": "{name}",
     "on-scroll-up": "hyprctl dispatch workspace +1",
     "on-scroll-down": "hyprctl dispatch workspace -1",
+  },
+
+  "niri/workspaces": {
+    "format": "{name}",
+    "on-scroll-up": "niri msg action focus-workspace-up",
+    "on-scroll-down": "niri msg action focus-workspace-down",
   },
 
   "clock": {

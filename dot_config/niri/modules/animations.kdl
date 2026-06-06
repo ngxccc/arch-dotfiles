@@ -1,0 +1,37 @@
+animations {
+  // WHY: Niri defaults to physical spring models for spatial movements to preserve momentum during rapid workspace switching.
+  // PERF: Damping-ratio exactly 1.0 creates a critically damped spring (fastest settling time without oscillation).
+  workspace-switch {
+    spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+  }
+
+  horizontal-view-movement {
+      spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+  }
+
+  window-movement {
+      spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+  }
+
+  window-resize {
+      spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+  }
+
+  // HACK: Simulating your old 'easeOutQuint' speed=4 for window opening/closing using native curves.
+  window-open {
+      duration-ms 250
+      curve "ease-out-expo"
+  }
+
+  window-close {
+      duration-ms 200
+      curve "ease-out-expo"
+  }
+
+  config-notification-open-close {
+      spring damping-ratio=0.8 stiffness=1000 epsilon=0.0001
+  }
+
+  // FIXME: Granular controls like 'fadeLayersIn' or separate 'border' animations are completely discarded.
+  // Niri enforces structural integrity over visual bloat.
+}

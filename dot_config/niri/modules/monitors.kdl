@@ -1,0 +1,16 @@
+// PERF: HDMI Monitor (Top)
+output "HDMI-A-1" {
+    mode "1920x1080"
+    position x=0 y=0
+    scale 1
+}
+
+// PERF: Laptop Built-in Display (Bottom)
+output "eDP-1" {
+    mode "1920x1200"
+    position x=0 y=1080
+    scale 1
+}
+
+// HACK: Niri natively auto-configures rogue outputs via DRM EDID parsing.
+// The fallback rule has been intentionally purged to avoid syntax tree bloat.

@@ -1,0 +1,85 @@
+binds {
+  Mod+T { spawn "kitty"; }
+  Mod+E { spawn "thunar"; }
+  Mod+Shift+E { spawn "kitty" "-e" "yazi"; }
+  Mod+D { spawn "rofi" "-show" "drun"; }
+  Mod+B { spawn "brave"; }
+  Mod+W { spawn-sh "~/.config/hypr/scripts/wall-picker.sh"; }
+
+  Mod+Q { close-window; }
+  Mod+Shift+Q { spawn-sh "~/.config/hypr/scripts/logout.sh"; }
+
+  Mod+Space { toggle-window-floating; }
+  Mod+F { maximize-column; }
+  Mod+Shift+F { fullscreen-window; }
+
+  Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
+  Mod+Shift+Slash { spawn-sh "~/.config/hypr/scripts/hypr-keys.sh"; }
+
+  // FIXME: 'Pseudo' mode doesn't exist in Niri's 1D scroll paradigm.
+  // Mod+P { ... }
+
+  Mod+H { focus-column-left; }
+  Mod+L { focus-column-right; }
+  Mod+K { focus-window-up; }
+  Mod+J { focus-window-down; }
+
+  Mod+Shift+H { move-column-left; }
+  Mod+Shift+L { move-column-right; }
+  Mod+Shift+K { move-window-up; }
+  Mod+Shift+J { move-window-down; }
+
+  Mod+Alt+K { move-workspace-to-monitor-up; }
+  Mod+Alt+J { move-workspace-to-monitor-down; }
+
+  Mod+S { focus-workspace "special-magic"; }
+  Mod+Shift+S { move-column-to-workspace "special-magic"; }
+  Mod+Alt+S { focus-workspace "special-magic"; }
+
+  Mod+1 { focus-workspace 1; }
+  Mod+Shift+1 { move-column-to-workspace 1; }
+  Mod+2 { focus-workspace 2; }
+  Mod+Shift+2 { move-column-to-workspace 2; }
+  Mod+3 { focus-workspace 3; }
+  Mod+Shift+3 { move-column-to-workspace 3; }
+  Mod+4 { focus-workspace 4; }
+  Mod+Shift+4 { move-column-to-workspace 4; }
+  Mod+5 { focus-workspace 5; }
+  Mod+Shift+5 { move-column-to-workspace 5; }
+  Mod+6 { focus-workspace 6; }
+  Mod+Shift+6 { move-column-to-workspace 6; }
+  Mod+7 { focus-workspace 7; }
+  Mod+Shift+7 { move-column-to-workspace 7; }
+  Mod+8 { focus-workspace 8; }
+  Mod+Shift+8 { move-column-to-workspace 8; }
+  Mod+9 { focus-workspace 9; }
+  Mod+Shift+9 { move-column-to-workspace 9; }
+
+  Mod+Page_Down { focus-workspace-down; }
+  Mod+Page_Up { focus-workspace-up; }
+
+  // WHY: Mouse dragging (272) and resizing (273) are native to Niri by default holding Mod. No explicit binds needed.
+  Mod+WheelScrollDown { focus-workspace-down; }
+  Mod+WheelScrollUp { focus-workspace-up; }
+
+  // PERF: Delegating complex bash substitution to sh subshell
+  Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }
+  Mod+Shift+Print { spawn-sh "FILE=~/pictures/screenshots/win_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(niri msg -j action focus-window | jq -r '\"\\(.x),\\(.y) \\(.width)x\\(.height)\"')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Window screenshot saved and copied!'"; }
+  Mod+Alt+Print { spawn-sh "FILE=~/pictures/screenshots/mon_$(date +%Y-%m-%d_%H-%M-%S).png && grim -o \"$(niri msg -j action focus-monitor | jq -r '.name')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Full screen saved and copied!'"; }
+
+  XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+  XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+  XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+  XF86AudioMicMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+
+  XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "-e4" "-n2" "set" "5%+"; }
+  XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "-e4" "-n2" "set" "5%-"; }
+
+  XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
+  XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
+  XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
+  XF86AudioPrev allow-when-locked=true { spawn "playerctl" "previous"; }
+
+  // TODO: Niri does not support generic 'submaps' or native cursor zoom.
+  // Wait for upstream implementation or use wl-gammarelay-rs for screen adjustments.
+}

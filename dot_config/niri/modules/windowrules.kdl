@@ -1,0 +1,55 @@
+// WHY: Xwayland drag/maximize hacks are wlroots-specific artifacts. Niri's satellite proxy inherently fixes these at the root.
+
+window-rule {
+    match app-id=r#"^(?i)(thunar|nwg-look|blueman-manager|org\.fcitx\.fcitx5-config-qt)$"#
+    open-floating true
+    default-column-width { fixed 800; }
+    default-window-height { fixed 600; }
+}
+
+window-rule {
+    match app-id="kitty" title=r#"^(batctl|impala|bluetui|pulsemixer)$"#
+    open-floating true
+    default-column-width { fixed 800; }
+    default-window-height { fixed 600; }
+}
+
+// PERF: Isolating browser extensions to floating states to prevent column breakages
+window-rule {
+    match app-id=r#"^brave-.*"# title="^_crx_nngceckbapebfimnlniiiahkandclblb$"
+    open-floating true
+    default-column-width { fixed 600; }
+    default-window-height { fixed 700; }
+}
+
+window-rule {
+    match app-id="kitty"
+    opacity 0.85
+}
+
+window-rule {
+    match app-id="rofi"
+    open-floating true
+    geometry-corner-radius 16
+    clip-to-geometry true
+    border {
+        off
+    }
+    focus-ring {
+        off
+    }
+}
+
+// HACK: Hyprland requires manual state-checking to strip borders from floating/fullscreen windows.
+// Niri's rendering engine automatically un-draws borders for fullscreen and manages floating radii globally in the 'layout' block.
+// Explicit state matchers for borders have been purged.
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+window-rule {
+    match is-floating=true
+    geometry-corner-radius 0
+}
