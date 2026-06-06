@@ -12,52 +12,81 @@ include "modules/keybinds.kdl"
 include "modules/windowrules.kdl"
 
 input {
-    focus-follows-mouse
+  focus-follows-mouse
 
-    keyboard {
-        xkb {
-            layout "us"
-        }
-        repeat-delay 200
-        repeat-rate 40
+  keyboard {
+    xkb {
+        layout "us"
     }
+    repeat-delay 200
+    repeat-rate 40
+  }
 
-    touchpad {
-        natural-scroll
-        dwt
-        scroll-factor 0.5
-    }
+  touchpad {
+    natural-scroll
+    dwt
+    scroll-factor 0.5
+  }
 
-    mouse {
-        scroll-factor 1.5
-    }
+  mouse {
+    scroll-factor 1.5
+  }
 }
 
 layout {
-    gaps 2
-    struts {
-        left 3
-        right 3
-        top 3
-        bottom 3
-    }
+  center-focused-column "always"
+  always-center-single-column
+  background-color "transparent"
 
-    border {
-        on
-        width 1
-        active-gradient from="#ffffffff" to="#888888ff" angle=45 relative-to="workspace-view"
-        inactive-color "#313244aa"
-    }
+  gaps 2
+  struts {
+    left 3
+    right 3
+    top 3
+    bottom 3
+  }
 
-    focus-ring {
-        off
-    }
+  border {
+    on
+    width 1
+    active-gradient from="#ffffffff" to="#888888ff" angle=45 relative-to="workspace-view"
+    inactive-color "#313244aa"
+  }
 
-    shadow {
-        on
-        softness 4
-        color "#1a1a1aee"
-    }
+  focus-ring {
+    off
+  }
+
+  shadow {
+    on
+    softness 4
+    color "#1a1a1aee"
+  }
 }
 
-// WHY: 3-finger horizontal workspace swipes are hardcoded into Niri's physics engine. Explicit mapping is redundant.
+overview {
+  workspace-shadow {
+    off
+  }
+}
+
+// Settings for the "Important Hotkeys" overlay.
+hotkey-overlay {
+  skip-at-startup
+}
+
+blur {
+  off
+}
+
+gestures {
+  hot-corners {
+    top-right
+    top-left
+  }
+}
+
+layer-rule {
+    match namespace="^awww-daemon$"
+    place-within-backdrop true
+}

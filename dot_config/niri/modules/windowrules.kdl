@@ -24,7 +24,7 @@ window-rule {
 window-rule {
     match app-id="kitty"
     opacity 0.85
-    default-column-width { proportion 1.0; }
+    // default-column-width { proportion 1.0; }
 }
 
 window-rule {
@@ -41,7 +41,7 @@ window-rule {
 }
 
 window-rule {
-    geometry-corner-radius 0
-    draw-border-with-background false
-    clip-to-geometry true
+  geometry-corner-radius 0
+  draw-border-with-background false
+  clip-to-geometry true
 }

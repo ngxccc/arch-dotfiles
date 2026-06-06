@@ -12,6 +12,7 @@ binds {
   Mod+Space { toggle-window-floating; }
   Mod+F { maximize-window-to-edges; }
   Mod+Shift+F { fullscreen-window; }
+  Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
   Mod+Tab { toggle-overview; }
 
   Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
@@ -70,6 +71,12 @@ binds {
   Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }
   Mod+Shift+Print { spawn-sh "FILE=~/pictures/screenshots/win_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(niri msg -j action focus-window | jq -r '\"\\(.x),\\(.y) \\(.width)x\\(.height)\"')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Window screenshot saved and copied!'"; }
   Mod+Alt+Print { spawn-sh "FILE=~/pictures/screenshots/mon_$(date +%Y-%m-%d_%H-%M-%S).png && grim -o \"$(niri msg -j action focus-monitor | jq -r '.name')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Full screen saved and copied!'"; }
+
+  Mod+Minus { set-column-width "-10%"; }
+  Mod+Equal { set-column-width "+10%"; }
+  Mod+Shift+Minus { set-window-height "-10%"; }
+  Mod+Shift+Equal { set-window-height "+10%"; }
+  Mod+Ctrl+R { reset-window-height; }
 
   XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }
   XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
