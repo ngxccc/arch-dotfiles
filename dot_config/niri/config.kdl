@@ -39,12 +39,12 @@ layout {
   always-center-single-column
   background-color "transparent"
 
-  gaps 2
+  gaps 8
   struts {
-    left 3
-    right 3
-    top 3
-    bottom 3
+    left -8
+    right -8
+    top -8
+    bottom -8
   }
 
   border {
