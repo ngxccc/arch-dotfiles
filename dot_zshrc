@@ -67,7 +67,7 @@ function dot-sync() {
       echo -e "\e[90m⚡ Config đang nguyên vẹn, hệ thống tĩnh lặng!\e[0m"
   else
       echo -e "\e[33m📦 Phát hiện biến động config trong hầm chứa! Đang đóng gói...\e[0m"
-      bpkg
+      backup_pkgs
       chezmoi git -- add .
       
       local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
