@@ -12,8 +12,6 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-source $ZSH/oh-my-zsh.sh
-
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/porsche.omp.json)"
 eval "$(keychain --eval --quiet ngxc)"
 eval "$(fnm env --use-on-cd --shell zsh)"
@@ -38,13 +36,7 @@ function cz-purge() {
         # Nếu node không tồn tại vật lý (-e) và không phải broken symlink (-L)
         if [ ! -e "$target_path" ] && [ ! -L "$target_path" ]; then
             
-            # Kiểm tra xem nó là file hay thư mục để in log cho chuẩn
-            if [ -d "$HOME/$f" ]; then
-                echo "[D] Tiễn vong thư mục: $target_path"
-            else
-                echo "[F] Tiễn vong file: $target_path"
-            fi
-            
+           echo "[D] Tiễn vong target: $target_path"            
             # Thực hiện lệnh forget
             chezmoi forget "$target_path"
         fi
@@ -75,7 +67,7 @@ function dot-sync() {
       echo -e "\e[90m⚡ Config đang nguyên vẹn, hệ thống tĩnh lặng!\e[0m"
   else
       echo -e "\e[33m📦 Phát hiện biến động config trong hầm chứa! Đang đóng gói...\e[0m"
-      
+      bpkg
       chezmoi git -- add .
       
       local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
@@ -126,15 +118,18 @@ function dot-help() {
     ' ~/.zshrc
 }
 
+source $ZSH/oh-my-zsh.sh
+
 # Alias
 alias dh='dot-help'
 alias ds='dot-sync'
 alias bpkg='backup_pkgs'
 alias sudo='sudo '
-alias y='y'
 alias vim='nvim'
 alias v='nvim'
 alias vi='nvim'
 alias zed='zeditor'
+alias d-up="sudo systemctl start docker.service && echo \"Docker is ON\""
+alias d-down="sudo systemctl stop docker.service && echo \"Docker is OFF\""
 
 export PATH="/home/ngxc/.cache/.bun/bin:$PATH"

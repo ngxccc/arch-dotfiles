@@ -1,0 +1,25 @@
+#!/bin/bash
+
+{{- $relPath := "dot_config/system-configs/network-manager/NetworkManager.conf" }}
+{{- $networkConf := joinPath .chezmoi.sourceDir $relPath }}
+
+{{- if stat $networkConf }}
+# network_conf_hash: {{ include $relPath | sha256sum }}
+{{- else }}
+# network_conf_hash: EMPTY_FILE_NO_HASH
+{{- end }}
+
+sudo mkdir -p /etc/NetworkManager
+
+{{- if stat $networkConf }}
+sudo cp {{ $networkConf }} /etc/NetworkManager/NetworkManager.conf
+sudo systemctl restart NetworkManager
+echo "[v] Hoàn tất nạp và khởi động lại NetworkManager (iwd backend)!"
+{{- else }}
+if [ -f /etc/NetworkManager/NetworkManager.conf ]; then
+    sudo rm /etc/NetworkManager/NetworkManager.conf
+    sudo systemctl restart NetworkManager
+    echo "[!] Đã dọn dẹp cấu hình NetworkManager cũ do source bị xóa."
+fi
+{{- end }}
+

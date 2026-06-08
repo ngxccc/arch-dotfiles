@@ -57,4 +57,12 @@ sudo systemctl enable --now libvirtd.socket
 sudo systemctl enable --now sddm.service
 sudo systemctl enable --now "fcitx5-lotus-server@$(whoami).service"
 
+sudo systemctl disable --now cups.service
+sudo systemctl enable --now cups.socket
+
+sudo systemctl disable docker.service docker.socket
+sudo systemctl stop docker.service docker.socket
+sudo usermod -aG docker $USER
+newgrp docker
+
 echo "CHỐT ĐƠN! REBOOT LẠI MÁY ĐỂ HƯỞNG THÀNH QUẢ"
