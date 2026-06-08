@@ -1,0 +1,3 @@
+return {
+	"typescript-language-server",
+}

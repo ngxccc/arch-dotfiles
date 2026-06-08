@@ -1,0 +1,3 @@
+return {
+	"prisma-language-server",
+}
