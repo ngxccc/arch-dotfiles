@@ -56,6 +56,8 @@ function backup_pkgs() {
 
 # SYNOPSIS: Tự động quét, đồng bộ và đẩy Dotfiles lên GitHub qua động cơ Chezmoi.
 function dot-sync() {
+  backup_pkgs
+
   echo -e "\e[36m🚀 Đang kích hoạt Radar Chezmoi quét lõi hệ thống...\e[0m"
 
   echo -e "\e[33m🔄 Đang đối chiếu Target State và Source State...\e[0m"
@@ -67,7 +69,6 @@ function dot-sync() {
       echo -e "\e[90m⚡ Config đang nguyên vẹn, hệ thống tĩnh lặng!\e[0m"
   else
       echo -e "\e[33m📦 Phát hiện biến động config trong hầm chứa! Đang đóng gói...\e[0m"
-      backup_pkgs
       chezmoi git -- add .
       
       local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
