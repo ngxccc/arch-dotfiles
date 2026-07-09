@@ -1,0 +1,38 @@
+{
+  "React Arrow Function Component Export Default": {
+    "prefix": "rafce",
+    "body": [
+      "interface ${1:ComponentName}Props {",
+      "  $2",
+      "}",
+      "",
+      "const ${1:ComponentName} = ({}: ${1:ComponentName}Props) => {",
+      "  return (",
+      "    <div>",
+      "      ${0:Content}",
+      "    </div>",
+      "  );",
+      "};",
+      "",
+      "export default ${1:ComponentName};"
+    ],
+    "description": "Generate a modern React Arrow Function Component with TypeScript interface"
+  },
+  "React Arrow Function Component Named Export": {
+    "prefix": "rafc",
+    "body": [
+      "interface ${1:ComponentName}Props {",
+      "  $2",
+      "}",
+      "",
+      "export const ${1:ComponentName} = ({}: ${1:ComponentName}Props) => {",
+      "  return (",
+      "    <div>",
+      "      ${0:Content}",
+      "    </div>",
+      "  );",
+      "};"
+    ],
+    "description": "Generate React Component auto-filled with File Name (Named Export ONLY)"
+  }
+}

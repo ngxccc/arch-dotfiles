@@ -97,11 +97,14 @@ function dot-help() {
             next
         }
         
-        # 2. Bắt tín hiệu khởi tạo Hàm
-        /^(function [a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+\(\))/ {
+        # 2. Bắt tín hiệu khởi tạo Hàm hoặc Alias
+        /^(function [a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+\(\)|alias [a-zA-Z0-9_-]+=)/ {
             if (desc != "") {
-                # FIX: Đổi biến func thành cmd_name để né Keyword Collision
-                if ($1 == "function") {
+                if ($1 == "alias") {
+                    cmd_name = $2
+                    split(cmd_name, parts, "=")
+                    cmd_name = parts[1]
+                } else if ($1 == "function") {
                     cmd_name = $2
                 } else {
                     cmd_name = $1
@@ -122,19 +125,25 @@ function dot-help() {
 source $ZSH/oh-my-zsh.sh
 
 # Alias
+# SYNOPSIS: Xem menu hướng dẫn (Bảng Phong Thần)
 alias dh='dot-help'
+# SYNOPSIS: Đồng bộ hóa cấu hình (Chezmoi sync/backup)
 alias ds='dot-sync'
+# SYNOPSIS: Sao lưu danh sách các gói cài đặt hệ thống
 alias bpkg='backup_pkgs'
 alias sudo='sudo '
 alias vim='nvim'
 alias v='nvim'
 alias vi='nvim'
 alias zed='zeditor'
+# SYNOPSIS: Khởi động dịch vụ Docker
 alias d-up="sudo systemctl start docker.service && echo \"Docker is ON\""
+# SYNOPSIS: Tắt dịch vụ Docker
 alias d-down="sudo systemctl stop docker.service && echo \"Docker is OFF\""
 alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user mask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
 alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
-
+# SYNOPSIS: Dọn dẹp hệ thống & cấu hình rác (Arch Linux)
+alias sc='sysclean'
 export PATH="/home/ngxc/.bun/bin:$PATH"
 
 if [ -f "$HOME/.secrets.env" ]; then

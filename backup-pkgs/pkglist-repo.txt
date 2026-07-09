@@ -21,6 +21,7 @@ cups
 cups-pk-helper
 docker
 docker-compose
+dua-cli
 efibootmgr
 evtest
 fastfetch
@@ -28,6 +29,7 @@ fcitx5
 fcitx5-configtool
 fcitx5-gtk
 fcitx5-qt
+fd
 fnm
 freerdp
 git
@@ -42,6 +44,7 @@ iwd
 jq
 keychain
 kitty
+kondo
 libpulse
 libva-utils
 linux
@@ -70,6 +73,7 @@ qt5-wayland
 qt5ct
 qt6-wayland
 qt6ct
+ripgrep
 rofi
 rsync
 rustup

@@ -1,0 +1,102 @@
+#!/bin/bash
+# sysclean - Arch Linux System & User Cleanup Script
+# Thiết kế bởi Antigravity để dọn dẹp hệ thống Arch Linux & tìm cấu hình rác.
+
+set -euo pipefail
+
+echo "=================================================="
+echo "   BẮT ĐẦU DỌN DẸP HỆ THỐNG & FILE CẤU HÌNH RÁC   "
+echo "=================================================="
+
+# 1. Dọn dẹp cache của pacman & yay (giữ lại 2 bản gần nhất để có thể rollback nếu cần)
+if command -v paccache &> /dev/null; then
+    echo "--> [1/6] Đang dọn dẹp cache pacman (giữ lại 2 phiên bản gần nhất)..."
+    sudo paccache -r -k2
+    echo "--> [1/6] Đang dọn dẹp cache các package đã gỡ..."
+    sudo paccache -ruk0
+else
+    echo "--> [1/6] Không tìm thấy paccache. Đang dọn dẹp bằng pacman -Sc..."
+    sudo pacman -Sc --noconfirm
+fi
+
+# 2. Gỡ bỏ các package thừa (Orphans - package cài làm dependency nhưng không còn dùng)
+echo "--> [2/6] Đang kiểm tra các package thừa (Orphans)..."
+if pacman -Qdtq >/dev/null 2>&1; then
+    echo "Phát hiện các package thừa:"
+    pacman -Qdt
+    sudo pacman -Rns $(pacman -Qdtq) --noconfirm
+else
+    echo "Không phát hiện package thừa nào."
+fi
+
+# 3. Dọn dẹp Journald logs (giữ lại log trong vòng 7 ngày gần nhất)
+echo "--> [3/6] Đang giới hạn log hệ thống (journald) về 7 ngày gần nhất..."
+sudo journalctl --vacuum-time=7d
+
+# 4. Dọn dẹp cache cá nhân (~/.cache) quá hạn
+echo "--> [4/6] Đang dọn dẹp cache người dùng (~/.cache) không sử dụng trên 30 ngày..."
+if [ -d "$HOME/.cache" ]; then
+    find "$HOME/.cache" -type f -atime +30 -delete 2>/dev/null || true
+    echo "Đã dọn dẹp các file cache quá hạn."
+fi
+
+# 5. Dọn dẹp thùng rác (Trash bin) & các file rác ở thư mục Home
+echo "--> [5/6] Đang dọn dẹp thùng rác & các file rác ở thư mục Home..."
+if [ -d "$HOME/.local/share/Trash" ]; then
+    rm -rf "$HOME/.local/share/Trash/files/"* 2>/dev/null || true
+    rm -rf "$HOME/.local/share/Trash/info/"* 2>/dev/null || true
+fi
+# Xóa các file rác cụ thể
+rm -rf "$HOME/.mypy_cache" 2>/dev/null || true
+rm -f "$HOME/.shell.pre-oh-my-zsh" 2>/dev/null || true
+rm -f "$HOME/.viminfo" 2>/dev/null || true
+rm -f "$HOME/.wget-hsts" 2>/dev/null || true
+# Xóa cache zcompdump cũ (không tương thích với phiên bản zsh hiện tại)
+ZSH_VER=$(zsh --version 2>/dev/null | awk '{print $2}' || true)
+if [ -n "$ZSH_VER" ]; then
+    find "$HOME" -maxdepth 1 -name '.zcompdump-*' ! -name "*$ZSH_VER*" -delete 2>/dev/null || true
+fi
+echo "Đã dọn dẹp thùng rác và các file rác ở thư mục Home."
+
+# Kiểm tra thư mục cài đặt hệ thống cũ (bảo mật)
+if [ -d "$HOME/arch-configs" ]; then
+    echo "--------------------------------------------------"
+    echo "⚠️ CẢNH BÁO BẢO MẬT: Phát hiện thư mục ~/arch-configs!"
+    if [ -f "$HOME/arch-configs/user_credentials.json" ]; then
+        echo "File ~/arch-configs/user_credentials.json chứa mật khẩu của mày dạng plaintext!"
+    fi
+    echo "Khuyên dùng: Sao lưu mật khẩu và gỡ bỏ thư mục này: rm -rf ~/arch-configs"
+    echo "--------------------------------------------------"
+fi
+# 6. Quét và phát hiện các thư mục cấu hình rác của các ứng dụng đã gỡ
+echo "--> [6/6] Đang đối chiếu các thư mục trong ~/.config với các app đã cài..."
+echo "--------------------------------------------------"
+echo "LƯU Ý QUAN TRỌNG:"
+echo "Đây chỉ là gợi ý dựa trên việc đối chiếu tên thư mục với các gói cài đặt Pacman."
+echo "Một số thư mục cấu hình thuộc về công cụ cài global qua NPM/Cargo (như turborepo, copilot)"
+echo "hoặc các thư mục hệ thống đặc thù sẽ KHÔNG tương ứng với gói cài đặt pacman."
+echo "MÀY PHẢI XEM XÉT KỸ TRƯỚC KHI TỰ TAY XÓA BẤT KỲ THƯ MỤC NÀO!"
+echo "--------------------------------------------------"
+
+for dir in "$HOME/.config"/*; do
+    if [ -d "$dir" ]; then
+        dirname=$(basename "$dir")
+        
+        # Danh sách trắng các thư mục hệ thống, thư mục đặc thù và các công cụ global (NPM/Cargo/Pip) để tránh báo sai
+        if [[ "$dirname" =~ ^(hypr|niri|nvim|kitty|waybar|swaync|rofi|yazi|bottom|nwg-look|themes|oh-my-posh|gtk-3.0|gtk-4.0|system-configs|systemd-custom|ssh|chezmoi|git|pulse|systemd|user-dirs.dirs|user-dirs.locale|BraveSoftware|Code|Postman|google-chrome|mozilla|obsidian|fontconfig|mime|xfce4|xsettingsd|yay|zed|dconf|fcitx|fcitx5|Thunar|apidog|baloofileinformationrc|beekeeper-studio|configstore|create-next-app-nodejs|freerdp|gh|github-copilot|go|ibus|nautilus|nextjs-nodejs|pavucontrol.ini|spicy|tiptap-cli-nodejs|turborepo|vscode-sqltools|session)$ ]]; then
+            continue
+        fi
+        
+        # Chuyển tên thư mục về chữ thường để so sánh với tên package
+        pkgname=$(echo "$dirname" | tr '[:upper:]' '[:lower:]')
+        
+        # Kiểm tra xem package có tồn tại trên hệ thống không
+        if ! pacman -Qq "$pkgname" &>/dev/null && ! pacman -Qq "${pkgname}-bin" &>/dev/null && ! pacman -Qq "python-${pkgname}" &>/dev/null; then
+            echo "   ⚠️ Thư mục cấu hình nghi vấn: ~/.config/$dirname"
+        fi
+    fi
+done
+
+echo "--------------------------------------------------"
+echo "   QUÁ TRÌNH DỌN DẸP HỆ THỐNG HOÀN TẤT THÀNH CÔNG!   "
+echo "=================================================="
