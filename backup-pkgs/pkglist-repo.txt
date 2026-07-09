@@ -1,5 +1,8 @@
 7zip
 amd-ucode
+android-tools
+android-udev
+anki
 awww
 base
 base-devel
@@ -13,11 +16,13 @@ btrfs-progs
 bun
 chezmoi
 cliphist
+cloudflared
 cups
 cups-pk-helper
 docker
 docker-compose
 efibootmgr
+evtest
 fastfetch
 fcitx5
 fcitx5-configtool
@@ -31,7 +36,6 @@ gnome-keyring
 grim
 gst-plugin-pipewire
 gvfs
-hyprlock
 impala
 imv
 iwd

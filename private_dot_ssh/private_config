@@ -3,3 +3,9 @@ Host ngxc
     User git
     IdentityFile ~/.ssh/ngxc
     IdentitiesOnly yes
+
+Host ticket-booking-vm
+    HostName ssh-ticketbooking.ngxc.io.vn
+    User azureuser
+    ProxyCommand cloudflared access ssh --hostname %h
+    IdentityFile ~/.ssh/ticket-booking-v2_key.pem

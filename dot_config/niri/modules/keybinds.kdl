@@ -63,23 +63,14 @@ binds {
   Mod+Shift+WheelScrollDown { focus-column-right; }
   Mod+Shift+WheelScrollUp { focus-column-left; }
 
-  // Mod+Print { spawn-sh "FILE=~/pictures/screenshots/region_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" -l 0 \"$FILE\" && wl-copy <
-  //     │\"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Selected region saved and copied!'"; }
-  // Mod+Shift+Print { spawn-sh "FILE=~/pictures/screenshots/win_$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(niri msg -j action focus-window | jq
-  //     │-r '\"\\(.x),\\(.y) \\(.width)x\\(.height)\"')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot'
-  //     │'Window screenshot saved and copied!'"; }
-  // Mod+Alt+Print { spawn-sh "FILE=~/pictures/screenshots/mon_$(date +%Y-%m-%d_%H-%M-%S).png && grim -o \"$(niri msg -j action focus-monitor | jq
-  //     │-r '.name')\" -l 0 \"$FILE\" && wl-copy < \"$FILE\" && notify-send -u normal -i \"$FILE\" 'Screenshot' 'Full screen saved and copied!'"; }
-
   Print { screenshot; }
-  // Mod+Print { screenshot; }
-  Mod+Shift+Print { screenshot-window; }
+  Mod+Print { screenshot-window; }
   Mod+Alt+Print { screenshot-screen; }
 
-  Mod+Minus { set-column-width "-10%"; }
-  Mod+Equal { set-column-width "+10%"; }
-  Mod+Shift+Minus { set-window-height "-10%"; }
-  Mod+Shift+Equal { set-window-height "+10%"; }
+  Mod+Minus { set-column-width "-5%"; }
+  Mod+Equal { set-column-width "+5%"; }
+  Mod+Shift+Minus { set-window-height "-5%"; }
+  Mod+Shift+Equal { set-window-height "+5%"; }
   Mod+Ctrl+R { reset-window-height; }
 
   XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }

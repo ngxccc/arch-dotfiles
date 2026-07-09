@@ -28,6 +28,7 @@
   excludesfile = /home/ngxc/.gitignore_global
 	autocrlf = false
 	eol = lf
+	editor = nvim
 [fetch]
 	prune = true
 [pager]

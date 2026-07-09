@@ -132,5 +132,11 @@ alias vi='nvim'
 alias zed='zeditor'
 alias d-up="sudo systemctl start docker.service && echo \"Docker is ON\""
 alias d-down="sudo systemctl stop docker.service && echo \"Docker is OFF\""
+alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user mask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
+alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
 
-export PATH="/home/ngxc/.cache/.bun/bin:$PATH"
+export PATH="/home/ngxc/.bun/bin:$PATH"
+
+if [ -f "$HOME/.secrets.env" ]; then
+    source "$HOME/.secrets.env"
+fi

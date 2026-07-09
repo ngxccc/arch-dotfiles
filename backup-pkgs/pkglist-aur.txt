@@ -1,4 +1,5 @@
 antigravity-cli
+apidog-bin
 batctl-tui
 beekeeper-studio-bin
 bibata-cursor-theme-bin
@@ -7,8 +8,9 @@ doppler-cli-bin
 fcitx5-lotus-bin
 google-chrome
 graphite-gtk-theme
-hyprland-git
 oh-my-posh
+onlyoffice-bin
+postman-bin
 sddm-theme-corners-git
 tela-circle-icon-theme-git
 ttf-google-fonts-typewolf

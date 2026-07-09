@@ -37,6 +37,12 @@ return {
       builtin.buffers,
       { desc = "Telescope buffers" }
     )
+    vim.keymap.set(
+      "n",
+      "<leader>fk",
+      builtin.keymaps,
+      { desc = "Search Keymaps (Telescope)" }
+    )
 
     -- Rip grep + Fzf
     vim.keymap.set("n", "<leader>fg", function()

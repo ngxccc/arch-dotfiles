@@ -1,61 +1,41 @@
 return {
-	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x", -- Thực chiến: Luôn lock branch để tránh bị break config khi plugin update
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		{ -- 🚀 Động cơ V8 cho Telescope
-			"nvim-telescope/telescope-fzf-native.nvim",
-			build = "cmake", -- Yêu cầu máy bro phải cài gcc/make hoặc cmake
-		},
-	},
-	-- ⚡ LAZY LOADING: Telescope chỉ "tỉnh dậy" khi bro bấm các phím này
-	keys = {
-		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-		{ "<leader>fa", "<cmd>Telescope find_files hidden=true<cr>", desc = "Find All Files (Hidden)" },
-		{ "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
-		{ "<leader>fq", "<cmd>Telescope quickfix<cr>", desc = "Quickfix List" },
-		{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
-		{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-		{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep (Realtime)" }, -- Đã thay thế input() cồng kềnh
-		{ "<leader>fs", "<cmd>Telescope grep_string<cr>", desc = "Grep string under cursor" },
-		{
-			"<leader>fi",
-			function()
-				require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
-			end,
-			desc = "Find Neovim Config",
-		},
-		{
-			"<leader>fc",
-			function()
-				local filename = vim.fn.expand("%:t:r")
-				require("telescope.builtin").grep_string({ search = filename })
-			end,
-			desc = "Find occurrences of current file",
-		},
-	},
-	config = function()
-		local telescope = require("telescope")
-		local actions = require("telescope.actions")
+  "akinsho/toggleterm.nvim",
+  version = "*",
+  config = function()
+    require("toggleterm").setup({
+      size = 20,
+      open_mapping = [[<c-\>]], -- Sử dụng Ctrl + \ để bật/tắt terminal nhanh
+      hide_numbers = true,
+      shade_terminals = true,
+      shading_factor = 2,
+      start_in_insert = true,
+      insert_mappings = true,
+      persist_size = true,
+      direction = "horizontal", -- Terminal sẽ mở ở phía dưới dạng hàng ngang
+      close_on_exit = true,
+    })
 
-		telescope.setup({
-			defaults = {
-				-- UI mượt mà, layout xịn xò
-				prompt_prefix = "   ",
-				selection_caret = "👉 ",
-				path_display = { "truncate" }, -- Cắt bớt path nếu quá dài
-				mappings = {
-					i = {
-						["<C-k>"] = actions.move_selection_previous,
-						["<C-j>"] = actions.move_selection_next,
-						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-						["<esc>"] = actions.close, -- Mặc định Telescope bấm Esc trong Insert mode nó không thoát, nên map lại cho quen tay
-					},
-				},
-			},
-		})
+    -- Cấu hình phím tắt cho Terminal mode để dễ dàng thao tác di chuyển cửa sổ
+    function _G.set_terminal_keymaps()
+      local opts = { buffer = 0 }
+      -- Bấm Esc để chuyển từ Terminal mode về Normal mode
+      vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+      -- Bấm jk để chuyển nhanh về Normal mode
+      vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+      -- Di chuyển giữa các cửa sổ từ Terminal
+      vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+      -- Dùng Cmd j/k/l để di chuyển sang cửa sổ khác
+      vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+      vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+      vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+      -- Resize cửa sổ từ Terminal
+      vim.keymap.set("t", "<C-Up>", [[<Cmd>resize +2<CR>]], opts)
+      vim.keymap.set("t", "<C-Down>", [[<Cmd>resize -2<CR>]], opts)
+      vim.keymap.set("t", "<C-Left>", [[<Cmd>vertical resize -2<CR>]], opts)
+      vim.keymap.set("t", "<C-Right>", [[<Cmd>vertical resize +2<CR>]], opts)
+    end
 
-		-- Kích hoạt extension fzf
-		pcall(telescope.load_extension, "fzf")
-	end,
+    -- Tự động kích hoạt các phím tắt này khi mở terminal
+    vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+  end,
 }

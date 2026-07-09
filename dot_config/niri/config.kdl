@@ -1,5 +1,5 @@
 xwayland-satellite {
-    off
+  on
 }
 
 prefer-no-csd
@@ -27,6 +27,8 @@ input {
     natural-scroll
     dwt
     scroll-factor 0.5
+    tap
+    // tap-and-drag
   }
 
   mouse {
