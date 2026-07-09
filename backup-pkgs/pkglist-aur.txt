@@ -12,7 +12,7 @@ oh-my-posh
 onlyoffice-bin
 postman-bin
 sddm-theme-corners-git
-tela-circle-icon-theme-git
+tela-circle-icon-theme-black-git
 ttf-google-fonts-typewolf
 ttf-ms-fonts
 visual-studio-code-bin

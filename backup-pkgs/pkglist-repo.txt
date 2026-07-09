@@ -93,6 +93,7 @@ texlive-latexextra
 texlive-mathscience
 thunar
 thunar-archive-plugin
+tmux
 tree
 ttf-jetbrains-mono-nerd
 ttf-liberation
@@ -108,7 +109,6 @@ wget
 wireplumber
 wl-clip-persist
 wl-clipboard
-xdg-desktop-portal-hyprland
 xdg-utils
 xwayland-satellite
 yazi

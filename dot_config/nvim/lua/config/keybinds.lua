@@ -173,19 +173,6 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
 
--- 🌐 YANK (OSC52 cho SSH)
-vim.keymap.set(
-  "n",
-  "<leader>y",
-  "<Plug>OSCYankOperator",
-  { desc = "OSC Yank Operator (SSH Clipboard)" }
-)
-vim.keymap.set(
-  "v",
-  "<leader>y",
-  "<Plug>OSCYankVisual",
-  { desc = "OSC Yank Visual (SSH Clipboard)" }
-)
 
 -- 🔍 SEARCH & REPLACE
 -- Lưu ý: Lệnh :s/... chỉ replace trên *dòng hiện tại*. Nếu muốn toàn file, đổi thành :%s/...
@@ -251,6 +238,7 @@ vim.keymap.set(
   "<C-w>w",
   { desc = "Cycle through windows", silent = true }
 )
+
 
 vim.keymap.set(
   "n",

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+{{- $pacmanDir := joinPath .chezmoi.sourceDir "dot_config/system-configs/pacman" }}
+
+{{- if stat $pacmanDir }}
+# pacman_dir_hash: {{ output "find" $pacmanDir "-type" "f" "-exec" "sha256sum" "{}" "+" | sha256sum }}
+{{- else }}
+# pacman_dir_hash: EMPTY_DIR_NO_HASH
+{{- end }}
+
+echo "Đang áp dụng cấu hình Pacman vào hệ thống..."
+
+{{- if stat $pacmanDir }}
+sudo install -m 644 -o root -g root {{ $pacmanDir }}/pacman.conf /etc/pacman.conf
+{{- end }}
+
+echo "Hoàn tất áp dụng cấu hình Pacman!"

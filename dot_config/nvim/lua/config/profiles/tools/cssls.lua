@@ -1,3 +1,0 @@
-return {
-	"css-lsp",
-}

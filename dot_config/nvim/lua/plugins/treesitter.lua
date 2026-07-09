@@ -1,44 +1,47 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  branch = "master",
+  lazy = false, -- Treesitter mới trên main branch không hỗ trợ lazy-loading
   build = ":TSUpdate",
-  event = { "BufReadPost", "BufNewFile" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    -- Không cần pcall rườm rà, Lazy.nvim đã lo vụ bảo hiểm sinh mạng cho Neovim rồi!
+    -- Cài đặt đối số biên dịch parser
     local install = require("nvim-treesitter.install")
-    install.ts_generate_args = { "generate", "--abi", tostring(vim.treesitter.language_version) }
-    require("nvim-treesitter.configs").setup({
-      prefer_git = true,
-      -- Kích hoạt highlight dựa trên AST
-      highlight = {
-        enable = true,
-        -- Tắt highlight mặc định của Vim để tránh đụng độ và nặng máy
-        additional_vim_regex_highlighting = false,
-      },
-      indent = { enable = true },
+    install.prefer_git = true
+    -- Cấu hình setup theo chuẩn main branch mới (chỉ nhận install_dir)
+    require("nvim-treesitter").setup({
+      install_dir = vim.fn.stdpath("data") .. "/site",
+    })
 
-      -- Setup riêng cho autotag hoạt động mượt mà với HTML, TSX, JSX
-      autotag = { enable = true },
+    -- Cài đặt các parser mong muốn (thay cho ensure_installed)
+    require("nvim-treesitter").install({
+      "json",
+      "python",
+      "javascript",
+      "typescript",
+      "tsx",
+      "yaml",
+      "html",
+      "css",
+      "markdown",
+      "markdown_inline",
+      "bash",
+      "lua",
+      "vim",
+      "vimdoc",
+      "c",
+      "dockerfile",
+      "gitignore",
+      "php",
+      "sql",
+      "graphql",
+    })
 
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- Tự động nhảy tới function gần nhất nếu con trỏ chưa nằm trong function
-          keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            -- Nên thêm cái này để thao tác với class/struct
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-          },
-        },
-      },
-
-      ensure_installed = {
+    -- Tự động bật Highlighting & Indent bằng Autocmd (theo chuẩn Neovim 0.12+)
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {
         "json",
         "python",
         "javascript",
@@ -48,19 +51,44 @@ return {
         "html",
         "css",
         "markdown",
-        "markdown_inline",
         "bash",
         "lua",
         "vim",
-        "vimdoc",
-        "c",
-        "dockerfile",
-        "gitignore",
         "php",
         "sql",
         "graphql",
       },
-      auto_install = true,
+      callback = function()
+        vim.treesitter.start()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
+
+    -- Cấu hình độc lập cho các plugin bổ trợ (dependencies)
+    require("nvim-ts-autotag").setup({})
+
+    require("nvim-treesitter-textobjects").setup({
+      select = {
+        enable = true,
+        lookahead = true,
+      },
+    })
+
+    -- Cấu hình phím tắt cho Textobjects bằng vim.keymap.set theo API mới
+    vim.keymap.set({ "x", "o" }, "af", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+    end, { desc = "Select outer function" })
+
+    vim.keymap.set({ "x", "o" }, "if", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+    end, { desc = "Select inner function" })
+
+    vim.keymap.set({ "x", "o" }, "ac", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+    end, { desc = "Select outer class" })
+
+    vim.keymap.set({ "x", "o" }, "ic", function()
+      require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+    end, { desc = "Select inner class" })
   end,
 }

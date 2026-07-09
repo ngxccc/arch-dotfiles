@@ -18,10 +18,8 @@ return {
     -- Cấu hình phím tắt cho Terminal mode để dễ dàng thao tác di chuyển cửa sổ
     function _G.set_terminal_keymaps()
       local opts = { buffer = 0 }
-      -- Bấm Esc để chuyển từ Terminal mode về Normal mode
-      vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
-      -- Bấm jk để chuyển nhanh về Normal mode
-      vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+      -- Bấm Esc 2 lần để chuyển từ Terminal mode về Normal mode (không xung đột với lazygit/fzf)
+      vim.keymap.set("t", "<esc><esc>", [[<C-\><C-n>]], opts)
       -- Di chuyển giữa các cửa sổ từ Terminal
       vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
       -- Dùng Cmd j/k/l để di chuyển sang cửa sổ khác

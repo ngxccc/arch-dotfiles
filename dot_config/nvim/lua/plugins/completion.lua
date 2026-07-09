@@ -1,76 +1,47 @@
 return {
   {
-    "hrsh7th/nvim-cmp",
+    "saghen/blink.cmp",
+    version = "*", -- Tải sẵn prebuilt binary tương thích
+    dependencies = { "rafamadriz/friendly-snippets" },
     event = "InsertEnter",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-buffer",
-      "onsails/lspkind.nvim",
+    opts = {
+      keymap = {
+        preset = "none",
+        ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<C-e>"] = { "hide", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
+        ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "fallback" },
+        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+      },
+      sources = {
+        default = { "lsp", "path", "buffer" },
+      },
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = true,
+          },
+        },
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
+          },
+        },
+        menu = {
+          border = "rounded", -- Viền tròn giống nvim-cmp cũ
+        },
+        documentation = {
+          auto_show = true,
+          window = {
+            border = "rounded",
+          },
+        },
+      },
     },
-    config = function()
-      local cmp = require("cmp")
-
-      cmp.setup({
-        preselect = cmp.PreselectMode.noinsert,
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-
-        -- UI chanh sả, có viền cong giống VS Code
-        window = {
-          completion = cmp.config.window.bordered({ border = "rounded" }),
-          documentation = cmp.config.window.bordered({ border = "rounded" }),
-        },
-
-        mapping = cmp.mapping.preset.insert({
-          -- Chấp nhận completion
-          ["<CR>"] = cmp.mapping.confirm({ select = false }),
-
-          -- Hủy popup
-          ["<C-e>"] = cmp.mapping.abort(),
-
-          -- Gọi popup thủ công (thường dùng khi lỡ tay bấm Esc tắt popup)
-          ["<C-Space>"] = cmp.mapping.complete(),
-
-          -- Lướt lên/xuống danh sách
-          ["<C-j>"] = cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select,
-          }),
-          ["<C-k>"] = cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select,
-          }),
-
-          -- Cuộn docs (nếu documentation window đang mở)
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4), -- Nên dùng C-b thay vì C-u để chuẩn Vim motions (b = backward)
-
-          -- Super Tab logic (nhảy dòng hoặc chọn item)
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            else
-              fallback() -- Nếu ko có popup, gõ Tab bình thường
-            end
-          end, { "i", "s" }),
-
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        }),
-
-        -- 🚀 Nguồn dữ liệu (Sources) - Sắp xếp theo thứ tự ưu tiên
-        sources = cmp.config.sources({
-          { name = "nvim_lsp", priority = 1000 }, -- Ưu tiên LSP nhất
-          { name = "path", priority = 750 }, -- Gợi ý đường dẫn file
-        }, {
-          { name = "buffer", keyword_length = 3, priority = 500 }, -- Gợi ý từ đã gõ trong file
-        }),
-      })
-    end,
   },
 }

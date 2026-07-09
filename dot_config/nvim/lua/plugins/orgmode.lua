@@ -5,18 +5,12 @@ return {
 		cmd = { "DogeGenerate" }, -- Chỉ load plugin khi gõ lệnh tạo doc
 	},
 	{
-		"tpope/vim-fugitive",
-		cmd = { "G", "Git", "Gdiffsplit" }, -- Lazy load cho lệnh Git
-	},
-	{
-		"mbbill/undotree",
+		"jiaoshijie/undotree",
+		dependencies = "nvim-lua/plenary.nvim",
+		config = true,
 		keys = {
-			{ "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Toggle UndoTree" },
+			{ "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "Toggle UndoTree" },
 		},
-		config = function()
-			vim.opt.undofile = true
-			vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-		end,
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",

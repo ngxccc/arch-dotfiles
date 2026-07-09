@@ -23,23 +23,4 @@ return {
     },
   },
 
-  -- 🛠️ Thực chiến: Dùng `config` function CHỈ khi cần setup thêm logic nâng cao (hooking)
-  config = function(_, opts)
-    -- Bước 1: Vẫn để Lazy tự động setup các `opts` ở trên
-    require("nvim-autopairs").setup(opts)
-
-    -- Bước 2: Bắt tay (Handshake) với nvim-cmp để auto thêm ngoặc () khi chọn completion
-    local cmp_autopairs_status, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
-    if not cmp_autopairs_status then
-      return -- Tránh crash Neovim nếu chưa cài nvim-cmp
-    end
-
-    local cmp_status, cmp = pcall(require, "cmp")
-    if not cmp_status then
-      return
-    end
-
-    -- Lắng nghe event "confirm_done" của CMP để kích hoạt autopairs
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-  end,
 }

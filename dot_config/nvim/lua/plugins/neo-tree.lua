@@ -31,6 +31,7 @@ return {
       ["h"] = "close_node",
       ["l"] = "toggle_node",
       ["e"] = "open",
+      ["<LeftRelease>"] = "open",
       ["O"] = {
         "show_help",
         nowait = false,

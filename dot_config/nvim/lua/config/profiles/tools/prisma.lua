@@ -1,3 +1,0 @@
-return {
-	"prisma-language-server",
-}
