@@ -13,7 +13,7 @@
     },
   },
   {
-    "context": "Editor && (vim_mode == insert || vim_mode == normal) && !menu",
+    "context": "Editor && vim_mode == insert && !menu",
     "bindings": {
       "ctrl-k": "editor::ShowSignatureHelp",
     },
@@ -21,6 +21,13 @@
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
+      "space b d": "pane::CloseActiveItem",
+      "space shift-e": "pane::RevealInProjectPanel",
+      "space f f": "file_finder::Toggle",
+      "space f w": "pane::DeploySearch",
+      "space f b": "tab_switcher::Toggle",
+      "space n h": "editor::Cancel",
+      "ctrl-q": "pane::CloseActiveItem",
       // H: move to start line (Tương đương ^)
       "H": "vim::StartOfLine",
 
@@ -88,8 +95,19 @@
   // unblind section
   {
     "context": "Editor",
-    "unbind": {
-      "ctrl-i": "editor::ShowSignatureHelp",
+    "bindings": {
+      "ctrl-i": null,
+    },
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-q": "pane::CloseActiveItem",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "space e": "project_panel::ToggleFocus",
     },
   },
 ]

@@ -3,7 +3,7 @@ binds {
   Mod+E { spawn "thunar"; }
   Mod+Shift+E { spawn "kitty" "-e" "yazi"; }
   Mod+D { spawn "rofi" "-show" "drun"; }
-  Mod+B { spawn "brave"; }
+  Mod+B { spawn "google-chrome-stable"; }
   Mod+W { spawn "/home/ngxc/.config/hypr/scripts/wall-picker.sh"; }
 
   Mod+Q { close-window; }
