@@ -1,9 +1,9 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  branch = "v3.x",
+  branch = "master",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons",
+    "echasnovski/mini.icons",
     "MunifTanjim/nui.nvim",
   },
   keys = {
@@ -21,10 +21,6 @@ return {
     { "<leader>be", "<cmd>Neotree toggle buffers<cr>", desc = "Buffer list" },
   },
   config = function()
-    require("nvim-web-devicons").setup({
-      default = true,
-    })
-
     local common_mappings = {
       ["<bs>"] = "navigate_up",
       ["."] = "set_root",
@@ -67,9 +63,27 @@ return {
           expander_highlight = "NeoTreeExpander",
         },
         icon = {
-          folder_closed = "",
-          folder_open = "",
-          folder_empty = "",
+          folder_closed = "",
+          folder_open = "",
+          folder_empty = "󰜌",
+          provider = function(icon, node)
+            local ok, mini = pcall(require, "mini.icons")
+            if ok then
+              if node.type == "directory" then
+                local glyph, hl, is_default = mini.get("directory", node.name)
+                if not is_default then
+                  icon.text = glyph
+                  icon.highlight = hl
+                end
+              elseif node.type == "file" or node.type == "terminal" then
+                local name = node.type == "terminal" and "terminal" or node.name
+                local glyph, hl = mini.get("file", name)
+                icon.text = glyph or icon.text
+                icon.highlight = hl or icon.highlight
+              end
+            end
+            return icon
+          end,
           default = "*",
           highlight = "NeoTreeFileIcon",
         },
@@ -108,7 +122,7 @@ return {
 
       filesystem = {
         filtered_items = {
-          visible = false,
+          visible = true,
           hide_dotfiles = false,
           hide_gitignored = false,
           hide_hidden = true, -- Windows hidden files

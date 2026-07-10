@@ -38,6 +38,7 @@ return {
       "shellcheck",
       "tree-sitter-cli",
       "biome",
+      "markdownlint",
     }
     require("mason-tool-installer").setup({
       ensure_installed = tools,
@@ -45,6 +46,7 @@ return {
 
     -- 3. Config Diagnostics
     vim.diagnostic.config({
+      virtual_text = false,
       float = { border = "rounded" },
       signs = {
         text = {
@@ -56,9 +58,16 @@ return {
       },
     })
 
-    -- 4. Capabilities (cho blink.cmp)
+    -- 4. Capabilities (cho blink.cmp & lsp-file-operations)
     local capabilities = require("blink.cmp").get_lsp_capabilities()
-
+    local ok_file_ops, lsp_file_ops = pcall(require, "lsp-file-operations")
+    if ok_file_ops then
+      capabilities = vim.tbl_deep_extend(
+        "force",
+        capabilities,
+        lsp_file_ops.default_capabilities()
+      )
+    end
     local servers = {
       lua_ls = {
         cmd = { "lua-language-server" },
@@ -147,11 +156,19 @@ return {
       callback = function(ev)
         local opts = { buffer = ev.buf, silent = true }
         -- Keybindings
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, silent = true, desc = "LSP Definition (Go to definition)" })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = ev.buf, silent = true, desc = "LSP Hover Info" })
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = ev.buf, silent = true, desc = "LSP Implementation" })
+        vim.keymap.set("n", "gr", function()
+          local ok, builtin = pcall(require, "telescope.builtin")
+          if ok then
+            builtin.lsp_references()
+          else
+            vim.lsp.buf.references()
+          end
+        end, { buffer = ev.buf, silent = true, desc = "LSP References (Telescope)" })
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = ev.buf, silent = true, desc = "LSP Rename Symbol" })
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, silent = true, desc = "LSP Code Action" })
       end,
     })
   end,

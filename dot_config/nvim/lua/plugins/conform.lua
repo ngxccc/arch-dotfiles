@@ -16,6 +16,7 @@ return {
       html = { "prettier" },
       json = { "biome", "prettier", stop_after_first = true },
       jsonc = { "biome", "prettier", stop_after_first = true },
+      markdown = { "markdownlint", "prettier" },
     }
 
     require("conform").setup({

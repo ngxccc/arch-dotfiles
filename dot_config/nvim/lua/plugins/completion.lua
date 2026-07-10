@@ -18,7 +18,7 @@ return {
         ["<C-b>"] = { "scroll_documentation_up", "fallback" },
       },
       sources = {
-        default = { "lsp", "path", "buffer" },
+        default = { "lsp", "path", "snippets", "buffer" },
       },
       completion = {
         accept = {

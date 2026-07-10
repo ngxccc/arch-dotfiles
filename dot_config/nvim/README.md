@@ -1,127 +1,97 @@
-# **Neovim Keybinds Documentation**
+# 🚀 Neovim Core Features & 80/20 Cheatsheet
 
-This document provides a simple and organized overview of all the custom keybinds defined in my Neovim configuration. The `<leader>` key is `Space`.
+Tài liệu này tổng hợp **20% tính năng và phím tắt cốt lõi** nhưng mang lại **80% hiệu quả công việc** trong cấu hình Neovim hiện tại của bạn. Phím `<leader>` mặc định là nút **phím cách (Space)**.
 
-## **General Keybinds**
+---
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>cd | Open file explorer (`netrw`) in the current directory. |
-| n | J | Join lines while keeping the cursor in place. |
-| n | \<C-d\> | Scroll half-page down and keep the cursor centered. |
-| n | \<C-u\> | Scroll half-page up and keep the cursor centered. |
-| n | n | Move to next search result and keep it centered. |
-| n | N | Move to previous search result and keep it centered. |
-| n | \<leader\>nh | **(New)** Clear search highlight. |
-| n | Q | Disable Ex mode (noop). |
-| i | \<C-c> | Exit insert mode (acts like `Esc`). |
-| n | \<leader\>x | Make current file executable (`chmod +x`). |
-| n | \<leader\>u | Toggle Undotree (visualize undo history). |
-| n | \<leader\>rl | Reload the Neovim config. |
-| n | \<leader\>\<leader\> | Source (execute) the current file. |
+## 🔍 Mẹo tìm kiếm phím tắt nhanh (`<leader>fk`)
 
-## **Visual Mode & Editing Keybinds**
+Nếu bạn quên phím tắt, hãy nhấn:
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| v | J | Move selected block down. |
-| v | K | Move selected block up. |
-| x | \<leader\>p | Paste without overwriting the clipboard register. |
-| n, v | \<leader\>d | **(New)** Delete without yanking (sends to blackhole register). |
-| n, v | \<leader\>y | Yank into system clipboard (works over SSH). |
+- **`Space` + `f` + `k`** (`<leader>fk`) để mở bộ tìm kiếm phím tắt trực quan qua Telescope. Bạn chỉ cần gõ tên chức năng cần làm (ví dụ: `rename`, `find`, `git`...) để xem phím tắt tương ứng.
 
-## **Visual & Nomal & Insert Mode Keybinds**
+---
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n, i, v | \<C-s\> | Save file. |
-| n, i, v | \<C-q\> | Quit vim. |
+## 📂 1. Quản lý File & Thư mục (File Explorer)
 
-## **Buffers**
+| Phím tắt                | Chức năng        | Mô tả                                                                                                                                         |
+| :---------------------- | :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`Space` + `e`**       | Bật/tắt Neo-tree | Hiển thị cây thư mục trực quan ở cạnh trái. Mặc định hiển thị cả file ẩn (`visible = true`).                                                  |
+| **`Space` + `c` + `d`** | Mở Oil.nvim      | Trình chỉnh sửa file/thư mục dưới dạng buffer văn bản. Sửa tên, tạo mới, xóa file y hệt như soạn thảo văn bản bình thường rồi gõ `:w` để lưu. |
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader>bd | Close current buffer file. |
+- **Tính năng tự động sửa Import:** Khi bạn đổi tên (`r`) hoặc di chuyển file trong **Neo-tree**, hệ thống sẽ tự động quét dự án qua LSP và sửa lại toàn bộ đường dẫn `import` bị ảnh hưởng ở các file khác (giống VS Code).
 
-## **Quickfix List Keybinds**
+---
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>co | **(New)** Open the quickfix list. |
-| n | \<leader\>cl | **(New)** Close the quickfix list. |
-| n | \<C-j\> | Jump to **next** quickfix entry and center the view. |
-| n | \<C-k\> | Jump to **previous** quickfix entry and center the view. |
-| n | \<leader\>j | Jump to **previous** location list entry. |
-| n | \<leader\>k | Jump to **next** location list entry. |
+## 🔍 2. Tìm kiếm nhanh (Fuzzy Finder - Telescope)
 
-## **Telescope Keybinds (Fuzzy Finder)**
+| Phím tắt                | Chức năng               | Mô tả                                                                         |
+| :---------------------- | :---------------------- | :---------------------------------------------------------------------------- |
+| **`Space` + `f` + `f`** | Tìm kiếm File           | Tìm nhanh file theo tên trong dự án hiện tại.                                 |
+| **`Space` + `f` + `a`** | Tìm tất cả File         | Tìm file bao gồm cả các file ẩn (như `.env`, `.gitignore`...).                |
+| **`Space` + `f` + `w`** | Live Grep               | Tìm kiếm từ/cụm từ bất kỳ trong nội dung của tất cả các file trong workspace. |
+| **`Space` + `f` + `o`** | Mở file gần đây         | Xem danh sách các file vừa chỉnh sửa gần đây nhất.                            |
+| **`Space` + `f` + `b`** | Quản lý Buffer          | Xem danh sách các file đang mở (buffer) để nhảy qua lại nhanh.                |
+| **`Space` + `f` + `t`** | Tìm kiếm tất cả ghi chú | Tự động liệt kê toàn bộ các ghi chú TODO, FIXME... đang có trong dự án.       |
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>ff | Find files in the current directory. |
-| n | \<leader\>fa | **(New)** Find **all** files (including hidden files like `.gitignore`). |
-| n | \<leader\>fg | **(Corrected)** Live Grep for a string you input (uses `ripgrep`). |
-| n | \<leader\>fs | Grep for the string under the cursor. |
-| n | \<leader\>fc | Grep for instances of the current file's name. |
-| n | \<leader\>fo | Open recent files. |
-| n | \<leader\>fb | Open buffer list. |
-| n | \<leader\>fq | Open quickfix list in Telescope. |
-| n | \<leader\>fh | Open help tags. |
-| n | \<leader\>fi | Find files in your Neovim config directory. |
+---
 
-## **Harpoon Integration (File Bookmarking)**
+## 💻 3. Trình soạn thảo & LSP (Language Server Protocol)
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>a | Add (append) current file to the Harpoon list. |
-| n | \<C-e\> | Toggle the Harpoon quick menu UI. |
-| n | \<leader\>fl | Show the Harpoon list in a Telescope window. |
-| n | \<C-n\> | Go to the **next** Harpoon mark. |
-| n | \<C-p\> | Go to the **previous** Harpoon mark. |
+| Phím tắt                | Chức năng           | Mô tả                                                                                            |
+| :---------------------- | :------------------ | :----------------------------------------------------------------------------------------------- |
+| **`g` + `d`**           | Go to Definition    | Nhảy thẳng tới định nghĩa của hàm, biến, hoặc class dưới con trỏ.                                |
+| **`K`**                 | Hover Documentation | Hiện pop-up tài liệu chi tiết (types, mô tả) của hàm/biến dưới con trỏ.                          |
+| **`g` + `r`**           | Show References     | Tìm toàn bộ các vị trí đang sử dụng hàm/biến này trong dự án qua Telescope.                      |
+| **`Space` + `r` + `n`** | Rename Symbol       | Đổi tên biến/hàm và **tự động cập nhật ở tất cả các file liên quan** (giống `F2` trong VS Code). |
+| **`Space` + `c` + `a`** | Code Actions        | Xem các gợi ý sửa lỗi nhanh, tự động import... của LSP tại dòng code hiện tại.                   |
 
-## **LSP (Language Server) Keybinds**
+- **Formatter tích hợp:** Tự động format code bằng **Biome** (hoặc Prettier làm fallback) mỗi khi bạn lưu file (`Ctrl+S`).
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | K | Show hover information. |
-| n | gd | Go to definition. |
-| n | gD | Go to declaration. |
-| n | gi | Go to implementation. |
-| n | go | Go to type definition. |
-| n | gr | Show references. |
-| n | gs | Show signature help. |
-| n | gl | Show line diagnostics in a floating window. |
-| n | \<F2\> | Rename symbol. |
-| n, x | \<F3\> | Format code asynchronously. |
-| n | \<F4\> | Show code actions. |
-| n | \<leader\>li | **(New)** Show LSP server info for the current buffer (`:LspInfo`). |
+---
 
-## **Floating Terminal**
+## ⚡ 4. Terminal & Quản lý Windows
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>ft | **(New)** Toggle a floating terminal window. |
+### **Terminal Tích hợp (ToggleTerm)**
 
-## **Miscellaneous**
+- **`Ctrl` + `\`** : Bật / tắt Terminal tích hợp ở góc dưới màn hình.
+- **`Esc` + `Esc`** : Thoát khỏi Terminal Mode về Normal Mode (khi đang ở trong terminal) để bạn có thể copy text hoặc cuộn xem log.
 
-| Mode | Key | Action |
-| :---- | :---- | :---- |
-| n | \<leader\>dg | Generate comment documentation blocks (`DogeGenerate`). |
-| n | \<leader\>s | Replace all instances of the word under the cursor on the current line. |
-| n | \<leader\>cc | Run `php-cs-fixer` to lint and format the current PHP file. |
-| n | \<leader\>qq | **(New)** Reformat comma-separated content inside parentheses into multiple lines. |
+### **Di chuyển cửa sổ (Pane Navigation)**
 
-# **LSP Servers**
+- Trong cả Normal Mode và Terminal Mode, dùng tổ hợp **`Ctrl` + `h/j/k/l`** để di chuyển nhanh con trỏ qua lại giữa các cửa sổ split hoặc cửa sổ terminal:
+  - `Ctrl` + `h` $\rightarrow$ Sang cửa sổ bên trái.
+  - `Ctrl` + `l` $\rightarrow$ Sang cửa sổ bên phải.
+  - `Ctrl` + `j` $\rightarrow$ Xuống cửa sổ dưới.
+  - `Ctrl` + `k` $\rightarrow$ Lên cửa sổ trên.
 
-I am migrating my LSP config to `plugin/lsp.lua` because Neovim v0.11+ allows a very minimal, debloated way to set up language server protocols.
+---
 
-Below is a running list of what and how to install the LSPs that are configured in this build. I am avoiding Mason for now to have full control over my system. To use Mason, you can uncomment the `lsp.lua` file in the `plugins` directory.
+## 🌳 5. Git Integration (Neogit & Diffview)
 
-1. **lua-language-server**:  
-   * Install via your distribution's package manager (e.g., `lua-language-server` in Nixpkgs).  
-2. **css-language-server, html-language-server**:  
-   * `npm install \-g vscode-langservers-extracted  `
-3. **intelephense (PHP)**:  
-   * `npm install \-g intelephense  `
-4. **typescript-language-server**:  
-   * `npm install \-g typescript-language-server typescript`
+| Phím tắt                | Chức năng           | Mô tả                                                                                                           |
+| :---------------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------- |
+| **`Space` + `g` + `s`** | Git Status (Neogit) | Mở giao diện Git trực quan (y hệt Magit của Emacs). Nhấn `s` để stage, `c` để commit, `p` để push cực kỳ nhanh. |
+| **`Space` + `g` + `d`** | Diffview Open       | Xem so sánh (diff) toàn bộ các file thay đổi một cách trực quan theo dạng so sánh hai bên.                      |
+| **`Space` + `g` + `c`** | Diffview Close      | Đóng cửa sổ so sánh diffview lại.                                                                               |
+
+---
+
+## 📝 6. Markdown & Buffer Tabs
+
+- **Bufferline:** Hiển thị các tab ngang ở trên đầu màn hình đại diện cho các file đang mở. Bạn có thể dùng chuột click vào các tab để chuyển đổi nhanh hoặc nhấn `:bd` để đóng file hiện tại.
+- **Markdown Preview:** Khi đang làm việc với file `.md`:
+  - Nhập lệnh `:MarkdownPreview` để mở trình duyệt xem trực tiếp giao diện hiển thị markdown được tự động đồng bộ theo thời gian thực khi bạn gõ.
+  - Nhập lệnh `:MarkdownPreviewStop` để dừng xem trước.
+
+---
+
+## 🎨 7. Một số phím tắt soạn thảo nâng cao khác
+
+- **`Ctrl` + `s`** : Lưu file nhanh ở mọi chế độ (Insert, Normal, Visual).
+- **`Alt` + `j` / `k`** : Di chuyển dòng hiện tại (hoặc khối được bôi đen trong Visual mode) đi lên hoặc đi xuống.
+- **`Alt` + `Shift` + `j` / `k`** : Nhân bản (duplicate) dòng hiện tại đi lên hoặc đi xuống.
+- **`Space` + `u`** : Mở Undotree trực quan dạng cây để xem lịch sử undo/redo qua các mốc thời gian.
+- **`Space` + `s`** : Tìm và thay thế từ đang nằm dưới con trỏ trên toàn bộ file hiện tại.
+- **`Space` + `ss`** : Lưu trạng thái phiên làm việc hiện tại (Save Global Session).
+- **`Space` + `sr`** : Khôi phục lại toàn bộ phiên làm việc cũ (Restore Global Session).

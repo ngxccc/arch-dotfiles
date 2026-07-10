@@ -17,6 +17,7 @@ bun
 chezmoi
 cliphist
 cloudflared
+composer
 cups
 cups-pk-helper
 docker
@@ -60,6 +61,8 @@ noto-fonts-emoji
 nwg-look
 obsidian
 pavucontrol
+php
+php-sqlite
 pipewire
 pipewire-alsa
 pipewire-jack

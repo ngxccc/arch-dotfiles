@@ -107,6 +107,10 @@ vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 vim.keymap.set({ "n", "i", "v" }, "<C-q>", "<cmd>q<CR>", { desc = "Quit vim" })
 vim.keymap.set("n", "Q", "<nop>", { desc = "Disable annoying Ex mode" })
 
+-- 🗃️ SESSION MANAGEMENT (Save/Restore open files, tabs, splits)
+vim.keymap.set("n", "<leader>ss", "<cmd>Neotree close | mksession! ~/.local/share/nvim/last_session.vim<CR>", { desc = "Save Global Session" })
+vim.keymap.set("n", "<leader>sr", "<cmd>source ~/.local/share/nvim/last_session.vim<CR>", { desc = "Restore Global Session" })
+
 -- 📋 QUICKFIX & LOCATION LIST (Cực kỳ quan trọng khi tra Log/Diagnostics)
 vim.keymap.set(
   "n",
@@ -207,30 +211,6 @@ vim.keymap.set(
   "<C-Right>",
   "<cmd>vertical resize +2<cr>",
   { desc = "Increase Window Width" }
-)
-vim.keymap.set(
-  "n",
-  "<C-h>",
-  "<C-w>h",
-  { desc = "Move to left window", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<C-l>",
-  "<C-w>l",
-  { desc = "Move to right window", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<C-j>",
-  "<C-w>j",
-  { desc = "Move to bottom window", silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<C-k>",
-  "<C-w>k",
-  { desc = "Move to top window", silent = true }
 )
 vim.keymap.set(
   "n",

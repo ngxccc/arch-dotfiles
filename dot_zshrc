@@ -146,6 +146,11 @@ alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-port
 alias sc='sysclean'
 export PATH="/home/ngxc/.bun/bin:$PATH"
 
+alias gsr-gui="gpu-screen-recorder-gtk"
+alias gsr-record="gpu-screen-recorder -w screen -c mp4 -f 60 -a \"\$(pactl get-default-sink).monitor\" -a \"\$(pactl get-default-source)\" -o ~/videos/screen_\$(date +%Y%m%d_%H%M%S).mp4"
+alias gsr-record-sys="gpu-screen-recorder -w screen -c mp4 -f 60 -a \"\$(pactl get-default-sink).monitor\" -o ~/videos/screen_\$(date +%Y%m%d_%H%M%S).mp4"
+alias gsr-replay="gpu-screen-recorder -w screen -c mp4 -f 60 -a \"\$(pactl get-default-sink).monitor\" -r 30 -o ~/videos/"
+
 if [ -f "$HOME/.secrets.env" ]; then
     source "$HOME/.secrets.env"
 fi
