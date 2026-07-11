@@ -45,7 +45,7 @@ return {
             function()
               local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
               if next(buf_clients) == nil then
-                return " No LSP"
+                return "No LSP"
               end
               local buf_client_names = {}
               for _, client in ipairs(buf_clients) do
@@ -53,7 +53,7 @@ return {
               end
               return "LSP: " .. table.concat(buf_client_names, ", ")
             end,
-            icon = "",
+            icon = " ",
             color = { fg = "#cba6f7", gui = "bold" }, -- Mauve highlight color matching Catppuccin
           },
           "encoding",

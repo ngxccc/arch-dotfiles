@@ -124,7 +124,7 @@ return {
       },
       tailwindcss = {
         cmd = { "tailwindcss-language-server", "--stdio" },
-        filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
         settings = {
           tailwindCSS = {
             experimental = { classRegex = {} },
