@@ -1,21 +1,21 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  lazy = false, -- Treesitter mới trên main branch không hỗ trợ lazy-loading
+  lazy = false, -- Treesitter on the new main branch does not support lazy-loading
   build = ":TSUpdate",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    -- Cài đặt đối số biên dịch parser
+    -- Configure parser compilation arguments
     local install = require("nvim-treesitter.install")
     install.prefer_git = true
-    -- Cấu hình setup theo chuẩn main branch mới (chỉ nhận install_dir)
+    -- Setup according to the new main branch standard (accepts install_dir only)
     require("nvim-treesitter").setup({
       install_dir = vim.fn.stdpath("data") .. "/site",
     })
 
-    -- Cài đặt các parser mong muốn (thay cho ensure_installed)
+    -- Install desired parsers (replaces ensure_installed)
     require("nvim-treesitter").install({
       "json",
       "python",
@@ -39,7 +39,7 @@ return {
       "graphql",
     })
 
-    -- Tự động bật Highlighting & Indent bằng Autocmd (theo chuẩn Neovim 0.12+)
+    -- Automatically enable Highlighting & Indent via Autocmd (Neovim 0.12+ standard)
     vim.api.nvim_create_autocmd("FileType", {
       pattern = {
         "json",
@@ -69,7 +69,7 @@ return {
       end,
     })
 
-    -- Cấu hình độc lập cho các plugin bổ trợ (dependencies)
+    -- Standalone configuration for supplementary plugins (dependencies)
     require("nvim-ts-autotag").setup({})
 
     require("nvim-treesitter-textobjects").setup({
@@ -79,7 +79,7 @@ return {
       },
     })
 
-    -- Cấu hình phím tắt cho Textobjects bằng vim.keymap.set theo API mới
+    -- Configure Textobject keymaps using vim.keymap.set with the new API
     vim.keymap.set({ "x", "o" }, "af", function()
       require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
     end, { desc = "Select outer function" })

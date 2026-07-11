@@ -17,13 +17,24 @@ return {
       "<cmd>Neotree toggle reveal<cr>",
       desc = "Reveal file in Neo-tree",
     },
-    { "<leader>ge", "<cmd>Neotree float git_status<cr>", desc = "Git status" },
+    { "<leader>ge", "<cmd>Neotree float git_status<cr>", desc = "Git status (Float)" },
     { "<leader>be", "<cmd>Neotree toggle buffers<cr>", desc = "Buffer list" },
   },
   config = function()
     local common_mappings = {
-      ["<bs>"] = "navigate_up",
-      ["."] = "set_root",
+      ["Y"] = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        vim.fn.setreg("+", path)
+        vim.notify("Copied absolute path: " .. path, vim.log.levels.INFO)
+      end,
+      ["gy"] = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        local rel_path = vim.fn.fnamemodify(path, ":.")
+        vim.fn.setreg("+", rel_path)
+        vim.notify("Copied relative path: " .. rel_path, vim.log.levels.INFO)
+      end,
       ["h"] = "close_node",
       ["l"] = "toggle_node",
       ["e"] = "open",
@@ -98,12 +109,12 @@ return {
         },
         git_status = {
           symbols = {
-            added = "",
-            modified = "",
-            deleted = "",
+            added = "",
+            modified = "",
+            deleted = "",
             renamed = "󰁕",
             untracked = "",
-            ignored = "",
+            ignored = "",
             unstaged = "󰄱",
             staged = "",
             conflict = "",
@@ -148,9 +159,11 @@ return {
         },
         group_empty_dirs = false,
         hijack_netrw_behavior = "open_default",
-        use_libuv_file_watcher = true, -- Auto-refresh khi file thay đổi
+        use_libuv_file_watcher = true, -- Auto-refresh when files change
         window = {
           mappings = vim.tbl_extend("force", common_mappings, {
+            ["<bs>"] = "navigate_up",
+            ["."] = "set_root",
             ["H"] = "toggle_hidden",
             ["/"] = "fuzzy_finder",
             ["D"] = "fuzzy_finder_directory",

@@ -26,6 +26,7 @@ return {
       { "<leader>n", group = "No Highlight" },
       { "<leader>o", group = "Open" },
       { "<leader>s", group = "Search/Replace" },
+      { "<leader>S", group = "Session" },
       { "<leader>u", group = "Undo" },
       { "<leader>x", group = "Tools" },
       { "<leader>y", group = "Yank" },

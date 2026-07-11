@@ -1,5 +1,5 @@
 return {
-  -- 1. selimacerbas/markdown-preview.nvim: Xem preview Markdown thuần Lua (Không cần Node.js/npm)
+  -- 1. selimacerbas/markdown-preview.nvim: Pure Lua Markdown preview (no Node.js/npm required)
   {
     "selimacerbas/markdown-preview.nvim",
     dependencies = { "selimacerbas/live-server.nvim" },
@@ -18,10 +18,10 @@ return {
     end,
   },
 
-  -- 2. MeanderingProgrammer/render-markdown.nvim: Render Markdown trực quan ngay trong Neovim
+  -- 2. MeanderingProgrammer/render-markdown.nvim: Render Markdown visually directly inside Neovim
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- Yêu cầu Treesitter để render
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- Requires Treesitter for rendering
     ft = { "markdown" },
     opts = {},
   },

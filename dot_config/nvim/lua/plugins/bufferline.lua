@@ -7,8 +7,6 @@ return {
     keys = {
       { "<A-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
       { "<A-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-      { "<A-Left>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-      { "<A-Right>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
     },
     opts = {
       options = {

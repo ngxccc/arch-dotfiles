@@ -2,7 +2,7 @@ return {
 	{
 		"kkoomen/vim-doge",
 		build = ":call doge#install()",
-		cmd = { "DogeGenerate" }, -- Chỉ load plugin khi gõ lệnh tạo doc
+		cmd = { "DogeGenerate" }, -- Only load plugin when the doc generation command is invoked
 	},
 	{
 		"jiaoshijie/undotree",
@@ -14,11 +14,11 @@ return {
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",
-		event = "BufReadPre", -- Tối ưu startup: Chỉ load khi đã đọc file
+		event = "BufReadPre", -- Startup optimization: Only load after a file has been read
 		config = function()
 			require("nvim-highlight-colors").setup({
-				render = "background", -- Render màu background nhìn cho "slay"
-				enable_tailwind = true, -- Option ăn tiền nếu bro có dùng TailwindCSS
+				render = "background", -- Render colors as background highlights for clear visibility
+				enable_tailwind = true, -- Useful option if you are using TailwindCSS
 			})
 		end,
 	},

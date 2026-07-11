@@ -33,7 +33,7 @@ function M.pin_buffer(bufnr)
       vim.g.preview_buf = nil
     end
     vim.cmd("redrawtabline")
-    vim.notify("📌 Pin file thành công!", vim.log.levels.INFO)
+    vim.notify("📌 File pinned successfully!", vim.log.levels.INFO)
   end
 end
 

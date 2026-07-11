@@ -82,9 +82,6 @@
 # Disable keyboard shortcuts
 #disable_keys = false
 
-# Show memory values in the processes widget as values by default
-process_memory_as_value = true
-
 # Show tree mode by default in the processes widget.
 # tree = true
 
@@ -132,7 +129,8 @@ process_memory_as_value = true
 
 
 # Processes widget configuration
-#[processes]
+[processes]
+default_memory_value = true
 # The columns shown by the process widget. The following columns are supported (the GPU columns are only available if the GPU feature is enabled when built):
 # PID, Name, CPU%, Mem%, R/s, W/s, T.Read, T.Write, User, State, Time, GMem%, GPU%, Nice, Priority
 #columns = ["PID", "Name", "CPU%", "Mem%", "Virt", "R/s", "W/s", "T.Read", "T.Write", "User", "State", "GMem%", "GPU%", "Priority"]

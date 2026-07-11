@@ -5,16 +5,16 @@ return {
   opts = {
     check_ts = true,
     ts_config = {
-      lua = { "string", "source" }, -- bỏ qua pair trong cả string và source code thô của Lua
+      lua = { "string", "source" }, -- ignore pairs inside both string and raw source nodes in Lua
       javascript = { "template_string" },
-      java = false, -- Đôi khi TS check trên Java khá lag, có thể tắt đi (Edge case)
+      java = false, -- TS check on Java can be sluggish; disable to avoid edge-case lag
     },
-    disable_filetype = { "TelescopePrompt", "spectre_panel" }, -- Tránh autopair làm phiền ở thanh tìm kiếm
+    disable_filetype = { "TelescopePrompt", "spectre_panel" }, -- prevent autopairs from interfering in search prompts
     fast_wrap = {
-      map = "<M-e>", -- Bấm Alt + E để bọc ngoặc siêu tốc (FastWrap mechanism)
+      map = "<M-e>", -- press Alt + E to instantly wrap with brackets (FastWrap mechanism)
       chars = { "{", "[", "(", "\"", "'" },
       pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
-      offset = 0, -- Dịch chuyển con trỏ sau khi wrap
+      offset = 0, -- cursor offset after wrapping
       end_key = "$",
       keys = "qwertyuiopzxcvbnmasdfghjkl",
       check_comma = true,

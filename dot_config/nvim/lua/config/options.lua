@@ -2,7 +2,6 @@
 local set = vim.opt
 vim.opt.modeline = false
 
-vim.opt.termguicolors = true
 vim.opt.mouse = "a"
 
 --line nums
@@ -59,8 +58,11 @@ set.incsearch = true
 
 -- faster cursor hold
 set.updatetime = 50
--- Đưa thư mục cài đặt của Mason vào PATH của Neovim để các plugin khác (như nvim-lint) tìm thấy các tool
+-- Add Mason's installation directory to Neovim's PATH so other plugins (like nvim-lint) can find the tools
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 if not vim.env.PATH:find(mason_bin, 1, true) then
   vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 end
+
+-- Enable terminal window title updates
+vim.opt.title = true

@@ -1,6 +1,6 @@
 -- KEYBINDS
 vim.g.mapleader = " "
-
+vim.g.maplocalleader = ","
 -- 📂 FILE & EXPLORER
 vim.keymap.set(
   "n",
@@ -9,22 +9,22 @@ vim.keymap.set(
   { desc = "Open Netrw (File Explorer)" }
 )
 vim.keymap.set("n", "<leader><leader>", function()
-  -- Lấy định dạng file của cửa sổ hiện tại
+  -- Get the filetype of the current window
   local ft = vim.bo.filetype
 
-  -- Chỉ cho phép chạy lệnh source nếu nó thực sự là file config (Lua hoặc Vimscript)
+  -- Only allow the source command if it is actually a config file (Lua or Vimscript)
   if ft == "lua" or ft == "vim" then
-    vim.cmd("source %") -- % đại diện cho đường dẫn file hiện tại
+    vim.cmd("source %") -- % represents the current file path
     vim.notify(
-      "🚀 Đã nạp lại config: " .. vim.fn.expand("%:t"),
+      "🚀 Config reloaded: " .. vim.fn.expand("%:t"),
       vim.log.levels.INFO
     )
   else
-    -- Cảnh báo nhẹ nhàng nếu bro bấm nhầm lúc đang ở Neo-tree hoặc file PHP/JS
+    -- Warn if triggered on a non-config file (e.g., Neo-tree, PHP, JS)
     vim.notify(
-      "⚠️ Ảo thật đấy! Đang ở file '"
+      "⚠️ Cannot source: current filetype is '"
         .. ft
-        .. "' mà bắt source cái gì?",
+        .. "'. Source is only supported for Lua or Vimscript files.",
       vim.log.levels.WARN
     )
   end
@@ -76,11 +76,10 @@ vim.keymap.set(
   ":nohlsearch<CR>",
   { silent = true, desc = "Clear search highlights" }
 )
-vim.keymap.set("n", "<leader>a", "ggVG", { desc = "Select entire file" })
 vim.keymap.set("n", "<leader>o", "o<Esc>", { desc = "Open line below" })
 vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Open line above" })
 
--- 🛡️ CLIPBOARD & REGISTERS (Bí thuật giữ nguyên Clipboard)
+-- 🛡️ CLIPBOARD & REGISTERS (Preserve clipboard across operations)
 vim.keymap.set(
   "x",
   "<leader>p",
@@ -108,10 +107,18 @@ vim.keymap.set({ "n", "i", "v" }, "<C-q>", "<cmd>q<CR>", { desc = "Quit vim" })
 vim.keymap.set("n", "Q", "<nop>", { desc = "Disable annoying Ex mode" })
 
 -- 🗃️ SESSION MANAGEMENT (Save/Restore open files, tabs, splits)
-vim.keymap.set("n", "<leader>ss", "<cmd>Neotree close | mksession! ~/.local/share/nvim/last_session.vim<CR>", { desc = "Save Global Session" })
-vim.keymap.set("n", "<leader>sr", "<cmd>source ~/.local/share/nvim/last_session.vim<CR>", { desc = "Restore Global Session" })
+vim.keymap.set("n", "<leader>Ss", function()
+  vim.cmd("Neotree close")
+  vim.cmd("mksession! ~/.local/share/nvim/last_session.vim")
+  vim.notify("Global session saved successfully", vim.log.levels.INFO)
+end, { desc = "Save Global Session" })
 
--- 📋 QUICKFIX & LOCATION LIST (Cực kỳ quan trọng khi tra Log/Diagnostics)
+vim.keymap.set("n", "<leader>Sr", function()
+  vim.cmd("source ~/.local/share/nvim/last_session.vim")
+  vim.notify("Global session restored successfully", vim.log.levels.INFO)
+end, { desc = "Restore Global Session" })
+
+-- 📋 QUICKFIX & LOCATION LIST (Essential for navigating logs and diagnostics)
 vim.keymap.set(
   "n",
   "<leader>cl",
@@ -179,12 +186,12 @@ vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
 
 
 -- 🔍 SEARCH & REPLACE
--- Lưu ý: Lệnh :s/... chỉ replace trên *dòng hiện tại*. Nếu muốn toàn file, đổi thành :%s/...
+-- Note: The :s/... command only replaces on the *current line*. Use :%s/... to replace across the entire file.
 vim.keymap.set(
   "n",
-  "<leader>s",
+  "<leader>ss",
   [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]],
-  { desc = "Replace word under cursor (Current Line)" }
+  { desc = "Replace word under cursor (Current File)" }
 )
 
 -- Window Navigation
@@ -227,6 +234,41 @@ vim.keymap.set(
   { desc = "Show Line Diagnostics" }
 )
 
+vim.keymap.set(
+  "n",
+  "[d",
+  vim.diagnostic.goto_prev,
+  { desc = "Go to Previous Diagnostic" }
+)
+
+vim.keymap.set(
+  "n",
+  "]d",
+  vim.diagnostic.goto_next,
+  { desc = "Go to Next Diagnostic" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>cy",
+  function()
+    local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local diagnostics = vim.diagnostic.get(0, { lnum = line })
+    if #diagnostics == 0 then
+      vim.notify("No diagnostics on current line", vim.log.levels.WARN)
+      return
+    end
+    local messages = {}
+    for _, d in ipairs(diagnostics) do
+      table.insert(messages, string.format("[%s] %s", d.code or d.source or "LSP", d.message))
+    end
+    local text = table.concat(messages, "\n")
+    vim.fn.setreg("+", text)
+    vim.notify("Copied " .. #diagnostics .. " diagnostic(s) to clipboard")
+  end,
+  { desc = "Copy Line Diagnostics to Clipboard" }
+)
+
 vim.keymap.set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move line down" })
 vim.keymap.set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move line up" })
 vim.keymap.set(
@@ -246,3 +288,18 @@ vim.keymap.set("n", "<A-J>", "yyp", { desc = "Duplicate line down" })
 vim.keymap.set("n", "<A-K>", "yyP", { desc = "Duplicate line up" })
 vim.keymap.set("v", "<A-J>", "Y'>p", { desc = "Duplicate block down" })
 vim.keymap.set("v", "<A-K>", "Y'<P", { desc = "Duplicate block up" })
+
+vim.keymap.set(
+  "n",
+  "<leader>ga",
+  function()
+    local ok, gitsigns = pcall(require, "gitsigns")
+    if ok then
+      gitsigns.stage_buffer()
+      vim.notify("Staged current buffer successfully")
+    else
+      vim.notify("Gitsigns not loaded", vim.log.levels.ERROR)
+    end
+  end,
+  { desc = "Git stage (add) current file" }
+)

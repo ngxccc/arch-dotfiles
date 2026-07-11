@@ -1,10 +1,10 @@
 return {
 	-- {
 	-- 	"folke/tokyonight.nvim",
-	-- 	lazy = false, -- Đảm bảo theme load ngay từ đầu
+	-- 	lazy = false, -- Ensure the theme loads immediately at startup
 	-- 	priority = 1000,
 	-- 	opts = {
-	-- 		transparent = true, -- 🚀 Tokyonight tự động lo vụ trong suốt từ A-Z!
+	-- 		transparent = true, -- 🚀 Tokyonight automatically handles transparency from A to Z!
 	-- 		styles = {
 	-- 			sidebars = "transparent",
 	-- 			floats = "transparent",
@@ -30,6 +30,12 @@ return {
 						enabled = true,
 					},
 				},
+				custom_highlights = function(colors)
+					return {
+						NormalFloat = { bg = colors.mantle },
+						FloatBorder = { fg = colors.blue, bg = colors.mantle },
+					}
+				end,
 			})
 			vim.cmd.colorscheme("catppuccin")
 		end,

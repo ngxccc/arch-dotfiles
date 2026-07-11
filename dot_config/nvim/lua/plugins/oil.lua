@@ -5,7 +5,7 @@ return {
     opts = {
       default_file_explorer = true,
       view_options = {
-        show_hidden = true, -- Hiển thị cả các file ẩn (.env, .git...)
+        show_hidden = true, -- Show hidden files (.env, .git, etc.)
       },
     },
     keys = {

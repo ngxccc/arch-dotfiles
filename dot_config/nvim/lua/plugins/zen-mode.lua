@@ -2,23 +2,23 @@ return {
 	"folke/zen-mode.nvim",
 	cmd = "ZenMode",
 	keys = {
-		-- Bấm Space + z để Tắt/Bật chế độ Tu Tiên (Zen Mode)
+		-- Press Space + z to Toggle Zen Mode
 		{ "<leader>z", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },
 	},
 	opts = {
 		window = {
-			backdrop = 0.95, -- Làm tối các thành phần râu ria xung quanh (95%)
-			width = 100, -- Ép chiều rộng dòng code gọn gàng ở giữa màn (chuẩn đọc code)
+			backdrop = 0.95, -- Dim surrounding UI elements (95%)
+			width = 100, -- Constrain code width to a readable centered column
 			options = {
-				signcolumn = "no", -- Giấu luôn thanh báo lỗi
-				number = false, -- Giấu số dòng
+				signcolumn = "no", -- Hide the sign column
+				number = false, -- Hide line numbers
 				relativenumber = false,
 				cursorline = false,
 			},
 		},
 		plugins = {
-			-- Tích hợp: Tự động báo cho WezTerm biết đang bật Zen để nó tự làm mờ viền
-			wezterm = { enabled = true, font = "+4" }, -- Tự động tăng size chữ lên 4px cho dễ nhìn
+			-- Integration: Notify WezTerm when Zen Mode is active so it can dim its borders automatically
+			wezterm = { enabled = true, font = "+4" }, -- Automatically increase font size by 4px for better readability
 		},
 	},
 }

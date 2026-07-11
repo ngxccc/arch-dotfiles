@@ -4,7 +4,7 @@ return {
     "williamboman/mason.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     "b0o/schemastore.nvim",
-    "saghen/blink.cmp", -- Để lấy được capabilities
+    "saghen/blink.cmp", -- To retrieve LSP capabilities
   },
   config = function()
     -- 1. Setup Mason
@@ -20,6 +20,7 @@ return {
       "mypy",
       -- TypeScript
       "typescript-language-server",
+      "eslint-lsp",
       "prettier",
       -- HTML
       "html-lsp",
@@ -58,7 +59,31 @@ return {
       },
     })
 
-    -- 4. Capabilities (cho blink.cmp & lsp-file-operations)
+    -- 3.5 Set global borders for LSP float windows via utility wrapper
+    local orig_open_floating_preview = vim.lsp.util.open_floating_preview
+    vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
+      opts = opts or {}
+      opts.border = opts.border or "rounded"
+      return orig_open_floating_preview(contents, syntax, opts)
+    end
+
+    -- 3.6 Filter out disabled LSP code actions (prevent showing inapplicable refactorings)
+    local orig_code_action = vim.lsp.buf.code_action
+    vim.lsp.buf.code_action = function(opts)
+      opts = opts or {}
+      local orig_filter = opts.filter
+      opts.filter = function(action, client_id)
+        if action and action.disabled ~= nil then
+          return false
+        end
+        if orig_filter then
+          return orig_filter(action, client_id)
+        end
+        return true
+      end
+      return orig_code_action(opts)
+    end
+    -- 4. Capabilities (for blink.cmp & lsp-file-operations)
     local capabilities = require("blink.cmp").get_lsp_capabilities()
     local ok_file_ops, lsp_file_ops = pcall(require, "lsp-file-operations")
     if ok_file_ops then
@@ -134,17 +159,24 @@ return {
         cmd = { "biome", "lsp-server" },
         root_markers = { "biome.json", "biome.jsonc" },
       },
+      eslint = {
+        cmd = { "vscode-eslint-language-server", "--stdio" },
+        settings = {
+          workingDirectories = { mode = "location" },
+        },
+      },
     }
 
-    -- Vòng lặp thần thánh: Duyệt qua table và enable toàn bộ
+    -- Iterate over the servers table and enable all
     for server, config in pairs(servers) do
-      -- Trộn capabilities mặc định vào config của từng server
+      -- Merge default capabilities into each server's config
       config.capabilities = vim.tbl_deep_extend(
         "force",
         {},
         capabilities,
         config.capabilities or {}
       )
+
 
       vim.lsp.config(server, config)
       vim.lsp.enable(server)

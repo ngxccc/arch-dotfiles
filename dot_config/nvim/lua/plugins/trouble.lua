@@ -5,7 +5,7 @@ return {
   opts = {
     modes = {
       diagnostics = {
-        mode = "diagnostics", -- Hiển thị lỗi toàn dự án
+        mode = "diagnostics", -- Display project-wide diagnostics
       },
     },
   },

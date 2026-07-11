@@ -1,11 +1,11 @@
 return {
-  -- 1. vim-fugitive: Lệnh Git CLI quốc dân
+  -- 1. vim-fugitive: The go-to Git CLI command interface
   {
     "tpope/vim-fugitive",
     cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse" },
   },
 
-  -- 2. Diffview: Xem Diff & Giải quyết Conflict kiểu VS Code
+  -- 2. Diffview: VS Code-style diff viewer and conflict resolver
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles" },
@@ -18,7 +18,7 @@ return {
     }
   },
 
-  -- 3. Neogit: Giao diện Source Control Panel & Git Graph native
+  -- 3. Neogit: Native Source Control Panel interface and Git Graph
   {
     "NeogitOrg/neogit",
     dependencies = {
@@ -33,7 +33,7 @@ return {
     },
     opts = {
       disable_commit_confirmation = true,
-      graph_style = "unicode", -- Vẽ biểu đồ nhánh bằng ký tự Unicode siêu mượt
+      graph_style = "unicode", -- Render branch graph using Unicode characters for a smooth visual
       integrations = {
         diffview = true,
         telescope = true,

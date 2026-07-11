@@ -8,7 +8,7 @@ local function toggle_telescope(harpoon_files)
   end
 
   local opts = themes.get_ivy({
-    prompt_title = " 󰛔 Harpoon Working List ", -- Thêm icon cho chanh sả
+    prompt_title = " 󰛔 Harpoon Working List ", -- Add icon for the prompt title
   })
 
   require("telescope.pickers")
@@ -31,8 +31,8 @@ return {
     "nvim-telescope/telescope.nvim",
   },
 
-  -- 🚀 Raizo's Pro Tip: Dùng bảng `keys` để Which-Key tự động nhận diện desc
-  -- Đồng thời Lazy.nvim sẽ CHỈ load Harpoon khi bro bấm 1 trong các phím này!
+  -- 🚀 Raizo's Pro Tip: Use the `keys` table so Which-Key automatically recognizes desc
+  -- Lazy.nvim will ONLY load Harpoon when one of these keys is pressed!
   keys = {
     {
       "<leader>ha",
@@ -75,7 +75,7 @@ return {
   config = function()
     require("harpoon"):setup({
       settings = {
-        save_on_toggle = true, -- Tự động lưu trạng thái khi đóng/mở menu
+        save_on_toggle = true, -- Automatically save state on menu close/open
         sync_on_ui_close = true,
       },
     })

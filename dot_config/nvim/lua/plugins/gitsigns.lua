@@ -1,24 +1,24 @@
 return {
 	"lewis6991/gitsigns.nvim",
-	-- Load lazy: Chỉ kích hoạt plugin khi mở một file đã có nội dung hoặc tạo file mới
+	-- Lazy load: Only activate the plugin when opening a file with existing content or creating a new file
 	event = { "BufReadPre", "BufNewFile" },
 	opts = function()
 		return {
-			-- Bộ icon Nerd Font "quốc dân", gọn gàng và tinh tế
+			-- Standard Nerd Font icon set, clean and refined
 			signs = {
-				add = { text = "▎" }, -- Khối dọc dày (Code mới)
-				change = { text = "▎" }, -- Khối dọc dày (Code sửa)
-				delete = { text = "" }, -- Mũi tên tam giác chỉ sang phải (Code bị xóa)
-				topdelete = { text = "" }, -- Mũi tên tam giác (Xóa ở đầu file)
-				changedelete = { text = "▍" }, -- Khối dọc lùi vào 1 chút (Vừa sửa vừa xóa)
-				untracked = { text = "┆" }, -- Vạch đứt (File mới chưa git add)
+				add = { text = "▎" }, -- Thick vertical bar (Added lines)
+				change = { text = "▎" }, -- Thick vertical bar (Modified lines)
+				delete = { text = "" }, -- Right-pointing triangle arrow (Deleted lines)
+				topdelete = { text = "" }, -- Triangle arrow (Deletion at the top of the file)
+				changedelete = { text = "▍" }, -- Slightly indented vertical bar (Modified and deleted)
+				untracked = { text = "┆" }, -- Dashed bar (New file not yet git added)
 			},
 
-			-- Bật cột hiển thị icon
+			-- Enable the sign column to display icons
 			signcolumn = true,
 
-			-- [Thực chiến]: Tự động highlight background của số dòng (line number)
-			-- Giúp nhìn cực nhanh vùng code nào đang bị thay đổi mà không cần liếc sang trái
+			-- [Practical]: Automatically highlight the background of line numbers
+			-- Allows instant visual identification of changed code regions without looking to the left
 			numhl = false,
 
 			watch_gitdir = {
@@ -26,13 +26,13 @@ return {
 			},
 			attach_to_untracked = true,
 
-			-- [Pro Tip]: Bật tính năng Git Blame trên dòng hiện tại.
-			-- Cực kỳ hữu ích khi debug để biết ai là người commit dòng code này và vào lúc nào.
+			-- [Pro Tip]: Enable inline Git Blame for the current line.
+			-- Extremely useful when debugging to identify who committed a line and when.
 			current_line_blame = true,
 			current_line_blame_opts = {
 				virt_text = true,
-				virt_text_pos = "eol", -- Hiện text mờ ảo ở cuối dòng (End Of Line)
-				delay = 500, -- Delay 0.5s sau khi dừng con trỏ thì mới hiện chữ (tránh lag)
+				virt_text_pos = "eol", -- Display virtual ghost text at the End Of Line
+				delay = 500, -- Wait 0.5s after the cursor stops before rendering the text (prevents lag)
 			},
 		}
 	end,

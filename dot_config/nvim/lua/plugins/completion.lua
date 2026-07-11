@@ -1,7 +1,7 @@
 return {
   {
     "saghen/blink.cmp",
-    version = "*", -- Tải sẵn prebuilt binary tương thích
+    version = "*", -- Load prebuilt compatible binary
     dependencies = { "rafamadriz/friendly-snippets" },
     event = "InsertEnter",
     opts = {
@@ -33,7 +33,7 @@ return {
           },
         },
         menu = {
-          border = "rounded", -- Viền tròn giống nvim-cmp cũ
+          border = "rounded", -- Rounded border matching the old nvim-cmp style
         },
         documentation = {
           auto_show = true,
