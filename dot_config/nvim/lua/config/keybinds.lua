@@ -5,8 +5,8 @@ vim.g.maplocalleader = ","
 vim.keymap.set(
   "n",
   "<leader>cd",
-  vim.cmd.Ex,
-  { desc = "Open Netrw (File Explorer)" }
+  "<cmd>Oil<cr>",
+  { desc = "Open Oil (File Explorer)" }
 )
 vim.keymap.set("n", "<leader><leader>", function()
   -- Get the filetype of the current window

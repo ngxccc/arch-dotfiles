@@ -21,8 +21,29 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Setup lazy.nvim
+-- Setup lazy.nvim with structured subdirectories for better modularity
 require("lazy").setup({
-  spec = "plugins",
+  spec = {
+    { import = "plugins.ui" },
+    { import = "plugins.lsp" },
+    { import = "plugins.git" },
+    { import = "plugins.navigation" },
+    { import = "plugins.editor" },
+  },
   change_detection = { notify = false },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })

@@ -6,10 +6,23 @@ return {
 
 
 		lint.linters_by_ft = {
+			lua = { "luacheck" },
 			python = { "mypy" },
 			sh = { "shellcheck" },
 			bash = { "shellcheck" },
 			markdown = { "markdownlint" },
+		}
+
+		-- Configure luacheck to recognize Neovim's vim global and suppress false warnings
+		lint.linters.luacheck.args = {
+			"--globals",
+			"vim",
+			"--ignore",
+			"631",
+			"--formatter",
+			"plain",
+			"--codes",
+			"-",
 		}
 
 		-- Configure markdownlint arguments to use the global config file ~/.markdownlint.jsonc

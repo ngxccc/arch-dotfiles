@@ -1,8 +1,8 @@
 -- OPTIONS
 local set = vim.opt
-vim.opt.modeline = false
 
-vim.opt.mouse = "a"
+set.modeline = false
+set.mouse = "a"
 
 --line nums
 set.relativenumber = true
@@ -26,9 +26,7 @@ set.signcolumn = "yes"
 
 -- cursor line
 set.cursorline = true
-
--- 80th column
-set.colorcolumn = "80"
+-- set.colorline = "80"
 
 -- clipboard
 set.clipboard:append("unnamedplus")
@@ -48,16 +46,16 @@ set.scrolloff = 8
 
 -- undo dir settings
 set.swapfile = false
+-- backup
 set.backup = false
-local home = os.getenv("USERPROFILE") or os.getenv("HOME")
-set.undodir = home .. "/.vim/undodir"
+set.undodir = vim.fn.stdpath("data") .. "/undo"
 set.undofile = true
 
 -- incremental search
 set.incsearch = true
 
 -- faster cursor hold
-set.updatetime = 50
+set.updatetime = 250
 -- Add Mason's installation directory to Neovim's PATH so other plugins (like nvim-lint) can find the tools
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 if not vim.env.PATH:find(mason_bin, 1, true) then
@@ -65,4 +63,6 @@ if not vim.env.PATH:find(mason_bin, 1, true) then
 end
 
 -- Enable terminal window title updates
-vim.opt.title = true
+set.title = true
+-- Hide command-line area at the bottom when not in use
+set.cmdheight = 0

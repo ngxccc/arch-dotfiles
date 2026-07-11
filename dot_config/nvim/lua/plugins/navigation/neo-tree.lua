@@ -1,6 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  branch = "master",
+  branch = "v3.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "echasnovski/mini.icons",

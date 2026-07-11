@@ -39,7 +39,27 @@ return {
         },
 
         -- Right side
-        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_x = {
+          -- 🛠️ Custom component to show active LSP clients in the current buffer
+          {
+            function()
+              local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
+              if next(buf_clients) == nil then
+                return " No LSP"
+              end
+              local buf_client_names = {}
+              for _, client in ipairs(buf_clients) do
+                table.insert(buf_client_names, client.name)
+              end
+              return "LSP: " .. table.concat(buf_client_names, ", ")
+            end,
+            icon = "",
+            color = { fg = "#cba6f7", gui = "bold" }, -- Mauve highlight color matching Catppuccin
+          },
+          "encoding",
+          "fileformat",
+          "filetype",
+        },
         lualine_y = { "progress" },
         lualine_z = { "location" },
       },

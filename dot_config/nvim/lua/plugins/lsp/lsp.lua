@@ -68,20 +68,19 @@ return {
     end
 
     -- 3.6 Filter out disabled LSP code actions (prevent showing inapplicable refactorings)
-    local orig_code_action = vim.lsp.buf.code_action
-    vim.lsp.buf.code_action = function(opts)
-      opts = opts or {}
-      local orig_filter = opts.filter
-      opts.filter = function(action, client_id)
-        if action and action.disabled ~= nil then
-          return false
+    -- Intercepting at the protocol response level to cover all UI callers (Telescope, Dressing, etc.)
+    local orig_code_action_handler = vim.lsp.handlers["textDocument/codeAction"]
+    vim.lsp.handlers["textDocument/codeAction"] = function(err, result, ctx, config)
+      if result then
+        local filtered = {}
+        for _, action in ipairs(result) do
+          if not action.disabled then
+            table.insert(filtered, action)
+          end
         end
-        if orig_filter then
-          return orig_filter(action, client_id)
-        end
-        return true
+        result = filtered
       end
-      return orig_code_action(opts)
+      return orig_code_action_handler(err, result, ctx, config)
     end
     -- 4. Capabilities (for blink.cmp & lsp-file-operations)
     local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -186,7 +185,6 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
-        local opts = { buffer = ev.buf, silent = true }
         -- Keybindings
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, silent = true, desc = "LSP Definition (Go to definition)" })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = ev.buf, silent = true, desc = "LSP Hover Info" })

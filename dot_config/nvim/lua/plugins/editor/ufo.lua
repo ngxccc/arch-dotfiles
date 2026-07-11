@@ -47,7 +47,7 @@ return {
     end
 
     require("ufo").setup({
-      provider_selector = function(bufnr, filetype, buftype)
+      provider_selector = function()
         -- Prefer Treesitter (fast and accurate), with automatic fallback to Indent
         return { "treesitter", "indent" }
       end,

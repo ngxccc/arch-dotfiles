@@ -68,7 +68,9 @@ function M.setup()
         local prev = vim.g.preview_buf
         -- Delete the old preview buffer if it is valid, still a preview, and not visible
         vim.schedule(function()
-          if vim.api.nvim_buf_is_valid(prev) and vim.b[prev].is_preview == true then
+          if
+            vim.api.nvim_buf_is_valid(prev) and vim.b[prev].is_preview == true
+          then
             if not vim.bo[prev].modified and not is_buf_visible(prev) then
               pcall(vim.api.nvim_buf_delete, prev, { force = true })
             end
@@ -80,7 +82,7 @@ function M.setup()
       if vim.b[bufnr].is_preview == nil then
         vim.b[bufnr].is_preview = true
       end
-      
+
       -- Only track it as the active preview if it is indeed in preview state
       if vim.b[bufnr].is_preview == true then
         vim.g.preview_buf = bufnr
