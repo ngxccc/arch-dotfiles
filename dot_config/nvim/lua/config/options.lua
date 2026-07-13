@@ -66,3 +66,8 @@ end
 set.title = true
 -- Hide command-line area at the bottom when not in use
 set.cmdheight = 0
+
+-- Word wrap configurations (for long classes and HTML)
+set.wrap = true
+set.linebreak = true
+set.breakindent = true

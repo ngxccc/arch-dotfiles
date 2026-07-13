@@ -37,6 +37,7 @@ return {
       "php",
       "sql",
       "graphql",
+      "blade",
     })
 
     -- Automatically enable Highlighting & Indent via Autocmd (Neovim 0.12+ standard)
@@ -62,6 +63,7 @@ return {
         "c",
         "dockerfile",
         "gitignore",
+        "blade",
       },
       callback = function()
         vim.treesitter.start()

@@ -4,6 +4,12 @@ Host ngxc
     IdentityFile ~/.ssh/ngxc
     IdentitiesOnly yes
 
+Host shinclient
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/shinclient
+    IdentitiesOnly yes
+
 Host ticket-booking-vm
     HostName ssh-ticketbooking.ngxc.io.vn
     User azureuser

@@ -22,6 +22,7 @@ return {
       "typescript-language-server",
       "eslint-lsp",
       "prettier",
+      "blade-formatter",
       -- HTML
       "html-lsp",
       -- CSS
@@ -121,6 +122,13 @@ return {
       },
       cssls = {
         cmd = { "vscode-css-language-server", "--stdio" },
+        settings = {
+          css = {
+            lint = {
+              unknownAtRules = "ignore",
+            },
+          },
+        },
       },
       tailwindcss = {
         cmd = { "tailwindcss-language-server", "--stdio" },
