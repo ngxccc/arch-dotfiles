@@ -23,7 +23,7 @@ If you forget a keymap, press:
 | **`Space` + `fl`** | Harpoon: Telescope | Filter and quickly search the Harpoon file list via the Telescope interface. |
 | **`Ctrl` + `p`** | Harpoon: Previous File | Jump quickly to the previous bookmarked file in the Harpoon list. |
 | **`Ctrl` + `n`** | Harpoon: Next File | Jump quickly to the next bookmarked file in the Harpoon list. |
-| **`Space` + `bd`** | Close Buffer | Close the current file (buffer) while keeping the split window layout intact. |
+| **`Space` + `bd`** | Close Buffer | Close the current file (buffer) safely (prevents exiting Neovim even if it's the last buffer or splits are open). |
 | **`Space` + `c` + `d`** | Open Netrw (Explorer) | Open Vim's default file manager, Netrw. |
 
 > 💡 **Auto Import Fix:** When you rename or move a file directly in **Neo-tree**, the system will automatically scan the project via LSP and update all affected `import` paths in other files (similar to VS Code).
@@ -88,6 +88,7 @@ If you forget a keymap, press:
 | **`Ctrl` + `k`** | Move Up | Move the selection cursor up to the suggestion above. |
 | **`Ctrl` + `f`** | Scroll Docs Down | Scroll the documentation panel downward. |
 | **`Ctrl` + `b`** | Scroll Docs Up | Scroll the documentation panel upward. |
+| **`Ctrl` + `x`** | Toggle Signature Help | Show or hide the function parameters (signature help) popup. |
 
 ---
 

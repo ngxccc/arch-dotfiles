@@ -28,8 +28,59 @@ set.signcolumn = "yes"
 set.cursorline = true
 -- set.colorline = "80"
 
--- clipboard
-set.clipboard:append("unnamedplus")
+-- clipboard (Explicitly use wl-clipboard on Wayland or xclip/xsel on X11 to prevent tmux/OSC 52 clipboard-read prompts)
+local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 and vim.fn.executable("wl-paste") == 1
+local has_x11 = vim.env.DISPLAY ~= nil and (vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1)
+
+if has_wayland then
+  vim.g.clipboard = {
+    name = "wl-clipboard",
+    copy = {
+      ["+"] = "wl-copy",
+      ["*"] = "wl-copy",
+    },
+    paste = {
+      ["+"] = "wl-paste --no-newline",
+      ["*"] = "wl-paste --no-newline",
+    },
+    cache_enabled = 1,
+  }
+  set.clipboard:append("unnamedplus")
+elseif has_x11 then
+  if vim.fn.executable("xclip") == 1 then
+    vim.g.clipboard = {
+      name = "xclip",
+      copy = {
+        ["+"] = "xclip -quiet -i -selection clipboard",
+        ["*"] = "xclip -quiet -i -selection primary",
+      },
+      paste = {
+        ["+"] = "xclip -o -selection clipboard",
+        ["*"] = "xclip -o -selection primary",
+      },
+      cache_enabled = 1,
+    }
+  else
+    vim.g.clipboard = {
+      name = "xsel",
+      copy = {
+        ["+"] = "xsel --nodetach -i -b",
+        ["*"] = "xsel --nodetach -i -p",
+      },
+      paste = {
+        ["+"] = "xsel -o -b",
+        ["*"] = "xsel -o -p",
+      },
+      cache_enabled = 1,
+    }
+  end
+  set.clipboard:append("unnamedplus")
+else
+  -- No working system clipboard detected/active (e.g. stale tmux pane without WAYLAND_DISPLAY).
+  -- We do NOT enable unnamedplus to prevent Neovim from falling back to tmux/OSC 52, which
+  -- triggers Kitty security prompts and garbage character input.
+  set.clipboard = ""
+end
 
 -- backspace
 set.backspace = "indent,eol,start"

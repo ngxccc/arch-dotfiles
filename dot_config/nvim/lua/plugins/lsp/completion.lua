@@ -16,6 +16,7 @@ return {
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<C-f>"] = { "scroll_documentation_down", "fallback" },
         ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-x>"] = { "show_signature", "hide_signature", "fallback" },
       },
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
@@ -41,6 +42,10 @@ return {
             border = "rounded",
           },
         },
+      },
+      signature = {
+        enabled = true,
+        window = { border = "rounded" },
       },
     },
   },

@@ -182,7 +182,24 @@ vim.keymap.set(
   vim.cmd.UndotreeToggle,
   { desc = "Toggle UndoTree" }
 )
-vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>bd", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if vim.bo[bufnr].modified then
+    local ok, err = pcall(vim.cmd, "bd " .. bufnr)
+    if not ok then
+      vim.notify(err:match("E%d+:.*") or err, vim.log.levels.ERROR)
+    end
+    return
+  end
+
+  local listed_buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  if #listed_buffers <= 1 then
+    vim.cmd("enew")
+  else
+    vim.cmd("bp")
+  end
+  vim.cmd("bd " .. bufnr)
+end, { desc = "Close current buffer" })
 
 
 -- 🔍 SEARCH & REPLACE
