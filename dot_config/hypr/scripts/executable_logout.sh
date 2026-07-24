@@ -5,7 +5,17 @@ case "$choice" in
 *Suspend*) systemctl suspend ;;
 *Reboot*) systemctl reboot ;;
 *Power*) systemctl poweroff ;;
-*Lock*) hyprlock ;;
+*Lock*)
+    if command -v swaylock &>/dev/null; then
+        swaylock
+    elif command -v hyprlock &>/dev/null; then
+        hyprlock
+    elif command -v gtklock &>/dev/null; then
+        gtklock
+    else
+        loginctl lock-session
+    fi
+    ;;
 *Logout*)
     if [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
         niri msg action quit --skip-confirmation

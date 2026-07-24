@@ -68,6 +68,7 @@ If you forget a keymap, press:
 | **`]` + `d`** | Next Error/Warning | Jump to the next diagnostic error or warning in the active file. |
 | **`Space` + `c` + `y`** | Copy Error Message | Extract and copy all error/warning messages on the current line to the system clipboard. |
 | **`Space` + `l` + `i`** | LSP Healthcheck | Check the status of all currently connected LSP servers. |
+| **`Space` + `l` + `r`** | LSP Restart | Restart all active LSP clients (or specify a client, e.g. `:LspRestart eslint`). |
 | **`Space` + `d` + `g`** | Generate Docblock (Doge) | Automatically generate a documentation comment block (docstring) for a function/class using vim-doge. |
 
 > 🛠️ **Auto Formatter:** Code is automatically formatted by **Biome** (or Prettier as a fallback) every time you save a file (`Ctrl + s`).
@@ -178,6 +179,19 @@ If you forget a keymap, press:
 | **`Space` + `gD`** | Diffview Close | Close the Diffview interface. |
 | **`Space` + `g` + `a`** | Git Stage Current File | Add (stage) the currently active file to the Git index using Gitsigns. |
 | **`Space` + `g` + `e`** | Git Status Float | Open a floating window showing the current repository status via Neo-tree. |
+
+### **Neogit Diff Folding Tips**
+
+1. **Press `zc` twice**:
+   - First `zc`: Collapse the current hunk.
+   - Second `zc`: Collapse the parent file diff immediately.
+2. **Use `[z` (Vim fold motion)**:
+   - When inside a diff, press `[z` once to jump to the current hunk header (`@@ ... @@`).
+   - Press `[z` again to jump to the parent file header.
+   - Press `<Tab>` or `zc` to collapse the file diff.
+3. **Press `2` (Collapse all files)**:
+   - Press `2`: Fold the entire buffer to Depth 2 (hides all diffs, showing only file headers).
+   - Press `4`: Unfold everything back (Depth 4).
 
 ---
 

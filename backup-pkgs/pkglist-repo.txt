@@ -3,6 +3,8 @@ amd-ucode
 android-tools
 android-udev
 anki
+aspnet-runtime
+aspnet-targeting-pack
 awww
 base
 base-devel
@@ -22,6 +24,7 @@ cups
 cups-pk-helper
 docker
 docker-compose
+dotnet-sdk
 dua-cli
 efibootmgr
 evtest
@@ -87,6 +90,7 @@ slurp
 smartmontools
 sof-firmware
 sudo
+swaylock
 swaync
 texlive-basic
 texlive-binextra

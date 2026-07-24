@@ -11,6 +11,7 @@ return {
 			sh = { "shellcheck" },
 			bash = { "shellcheck" },
 			markdown = { "markdownlint" },
+			php = { "phpstan" },
 		}
 
 		-- Configure luacheck to recognize Neovim's vim global and suppress false warnings

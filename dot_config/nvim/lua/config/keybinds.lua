@@ -178,6 +178,12 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
+  "<leader>lr",
+  ":LspRestart<CR>",
+  { desc = "LSP Restart" }
+)
+vim.keymap.set(
+  "n",
   "<leader>u",
   vim.cmd.UndotreeToggle,
   { desc = "Toggle UndoTree" }

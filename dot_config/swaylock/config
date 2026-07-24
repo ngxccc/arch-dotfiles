@@ -1,0 +1,44 @@
+# Swaylock Porsche Theme Config
+color=000000
+indicator-radius=120
+indicator-thickness=10
+indicator-idle-visible
+show-keyboard-layout
+show-failed-attempts
+indicator-caps-lock
+
+# Base colors (OLED Black & Porsche Carmine Red)
+line-color=00000000
+separator-color=00000000
+inside-color=0d0d0d
+ring-color=333333
+text-color=f5f5f5
+
+# Key press highlight (highlights each key typed around the circle)
+key-hl-color=d50000
+bs-hl-color=ff3333
+
+# Verifying state
+inside-ver-color=0d0d0d
+ring-ver-color=d50000
+text-ver-color=f5f5f5
+
+# Wrong password state
+inside-wrong-color=0d0d0d
+ring-wrong-color=ff3333
+text-wrong-color=ff3333
+
+# Clear input state
+inside-clear-color=0d0d0d
+ring-clear-color=888888
+text-clear-color=888888
+
+# Caps lock state
+inside-caps-lock-color=0d0d0d
+ring-caps-lock-color=d50000
+text-caps-lock-color=d50000
+
+# Layout text box
+layout-bg-color=0d0d0d
+layout-border-color=333333
+layout-text-color=f5f5f5

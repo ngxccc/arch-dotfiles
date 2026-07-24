@@ -23,6 +23,10 @@ return {
       "eslint-lsp",
       "prettier",
       "blade-formatter",
+      -- PHP & Laravel
+      "intelephense",
+      "pint",
+      "phpstan",
       -- HTML
       "html-lsp",
       -- CSS
@@ -41,6 +45,9 @@ return {
       "tree-sitter-cli",
       "biome",
       "markdownlint",
+      -- .NET / C#
+      "omnisharp",
+      "csharpier",
     }
     require("mason-tool-installer").setup({
       ensure_installed = tools,
@@ -163,13 +170,45 @@ return {
         filetypes = { "sql" },
       },
       biome = {
-        cmd = { "biome", "lsp-server" },
+        cmd = { "biome", "lsp-proxy" },
         root_markers = { "biome.json", "biome.jsonc" },
       },
       eslint = {
         cmd = { "vscode-eslint-language-server", "--stdio" },
         settings = {
           workingDirectories = { mode = "location" },
+        },
+      },
+      omnisharp = {
+        cmd = { "omnisharp" },
+        settings = {
+          FormattingOptions = {
+            EnableEditorConfigSupport = true,
+            OrganizeImports = true,
+          },
+          MsBuild = {
+            LoadProjectsOnDemand = false,
+          },
+          RoslynExtensionsOptions = {
+            EnableDecompilationSupport = true,
+            EnableImportCompletion = true,
+            EnableAnalyzersSupport = true,
+          },
+        },
+      },
+      intelephense = {
+        cmd = { "intelephense", "--stdio" },
+        filetypes = { "php" },
+        root_markers = { "composer.json", ".git" },
+        settings = {
+          intelephense = {
+            files = { maxSize = 5000000 },
+            completion = {
+              insertUseDeclaration = true,
+              fullyQualifyImportNames = false,
+              triggerParameterHints = true,
+            },
+          },
         },
       },
     }
@@ -185,9 +224,100 @@ return {
       )
 
 
-      vim.lsp.config(server, config)
-      vim.lsp.enable(server)
+      pcall(function()
+        vim.lsp.config(server, config)
+        vim.lsp.enable(server)
+      end)
     end
+
+    -- Register LspStart, LspStop, and LspRestart commands for Neovim 0.11 native LSP
+    vim.api.nvim_create_user_command("LspRestart", function(opts)
+      local name = opts.args ~= "" and opts.args or nil
+      local active_clients = vim.lsp.get_clients(name and { name = name } or {})
+
+      if #active_clients == 0 then
+        local msg = name and ("No active LSP client named " .. name) or "No active LSP clients"
+        vim.notify(msg, vim.log.levels.WARN)
+        return
+      end
+
+      for _, client in ipairs(active_clients) do
+        local bufs = vim.lsp.get_buffers_by_client_id(client.id)
+        local client_name = client.name
+        client.stop()
+        vim.defer_fn(function()
+          for _, buf in ipairs(bufs) do
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.lsp.start(client.config, { bufs = { buf } })
+            end
+          end
+          vim.notify("Restarted LSP client: " .. client_name, vim.log.levels.INFO)
+        end, 200)
+      end
+    end, {
+      nargs = "?",
+      complete = function()
+        local clients = vim.lsp.get_clients()
+        local names = {}
+        for _, c in ipairs(clients) do
+          table.insert(names, c.name)
+        end
+        return names
+      end,
+    })
+
+    vim.api.nvim_create_user_command("LspStop", function(opts)
+      local name = opts.args ~= "" and opts.args or nil
+      local active_clients = vim.lsp.get_clients(name and { name = name } or {})
+
+      if #active_clients == 0 then
+        local msg = name and ("No active LSP client named " .. name) or "No active LSP clients"
+        vim.notify(msg, vim.log.levels.WARN)
+        return
+      end
+
+      for _, client in ipairs(active_clients) do
+        client.stop()
+        vim.notify("Stopped LSP client: " .. client.name, vim.log.levels.INFO)
+      end
+    end, {
+      nargs = "?",
+      complete = function()
+        local clients = vim.lsp.get_clients()
+        local names = {}
+        for _, c in ipairs(clients) do
+          table.insert(names, c.name)
+        end
+        return names
+      end,
+    })
+
+    vim.api.nvim_create_user_command("LspStart", function(opts)
+      local name = opts.args ~= "" and opts.args or nil
+      if not name then
+        vim.notify("Please specify an LSP client name to start", vim.log.levels.ERROR)
+        return
+      end
+
+      local config = servers[name]
+      if not config then
+        vim.notify("LSP client not configured: " .. name, vim.log.levels.ERROR)
+        return
+      end
+
+      local final_config = vim.tbl_deep_extend("force", { name = name }, config)
+      vim.lsp.start(final_config)
+      vim.notify("Started LSP client: " .. name, vim.log.levels.INFO)
+    end, {
+      nargs = "?",
+      complete = function()
+        local names = {}
+        for name, _ in pairs(servers) do
+          table.insert(names, name)
+        end
+        return names
+      end,
+    })
 
     -- 5. LspAttach (Keymaps & Settings)
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -206,7 +336,7 @@ return {
           end
         end, { buffer = ev.buf, silent = true, desc = "LSP References (Telescope)" })
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = ev.buf, silent = true, desc = "LSP Rename Symbol" })
-        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, silent = true, desc = "LSP Code Action" })
+        vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, silent = true, desc = "LSP Code Action" })
       end,
     })
   end,

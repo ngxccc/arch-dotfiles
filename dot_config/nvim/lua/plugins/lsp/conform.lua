@@ -15,9 +15,12 @@ return {
       css = { "prettier" },
       html = { "prettier" },
       blade = { "blade-formatter" },
+      php = { "pint", "php_cs_fixer", stop_after_first = true },
       json = { "biome", "prettier", stop_after_first = true },
       jsonc = { "biome", "prettier", stop_after_first = true },
       markdown = { "markdownlint", "prettier" },
+      cs = { "csharpier" },
+      razor = { "csharpier" },
     }
 
     require("conform").setup({

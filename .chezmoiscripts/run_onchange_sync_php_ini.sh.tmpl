@@ -1,0 +1,17 @@
+#!/bin/bash
+
+{{- $phpDir := joinPath .chezmoi.sourceDir "dot_config/system-configs/php" }}
+
+{{- if stat $phpDir }}
+# php_dir_hash: {{ output "find" $phpDir "-type" "f" "-exec" "sha256sum" "{}" "+" | sha256sum }}
+{{- else }}
+# php_dir_hash: EMPTY_DIR_NO_HASH
+{{- end }}
+
+echo "Đang áp dụng cấu hình PHP ini vào hệ thống..."
+
+{{- if stat $phpDir }}
+sudo install -m 644 -o root -g root {{ $phpDir }}/php.ini /etc/php/php.ini
+{{- end }}
+
+echo "Hoàn tất áp dụng cấu hình PHP ini!"

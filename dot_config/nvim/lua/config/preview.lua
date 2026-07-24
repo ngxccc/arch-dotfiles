@@ -54,6 +54,29 @@ function M.setup()
     callback = function(ev)
       local bufnr = ev.buf
 
+      -- If we enter a buffer that was unlisted by the preview manager, relist and pin it
+      if not vim.bo[bufnr].buflisted and vim.b[bufnr].is_preview == true then
+        vim.bo[bufnr].buflisted = true
+        vim.b[bufnr].is_preview = false -- pin it
+
+        -- Clean up the current preview buffer if we are switching away from it
+        if vim.g.preview_buf and vim.g.preview_buf ~= bufnr then
+          local prev = vim.g.preview_buf
+          vim.schedule(function()
+            if
+              vim.api.nvim_buf_is_valid(prev) and vim.b[prev].is_preview == true
+            then
+              if not vim.bo[prev].modified and not is_buf_visible(prev) then
+                vim.bo[prev].buflisted = false
+                vim.cmd("redrawtabline")
+              end
+            end
+          end)
+        end
+        vim.cmd("redrawtabline")
+        return
+      end
+
       if not is_preview_candidate(bufnr) then
         return
       end
@@ -66,13 +89,14 @@ function M.setup()
       -- If we are entering a new preview candidate
       if vim.g.preview_buf and vim.g.preview_buf ~= bufnr then
         local prev = vim.g.preview_buf
-        -- Delete the old preview buffer if it is valid, still a preview, and not visible
+        -- Unlist the old preview buffer if it is valid, still a preview, and not visible
         vim.schedule(function()
           if
             vim.api.nvim_buf_is_valid(prev) and vim.b[prev].is_preview == true
           then
             if not vim.bo[prev].modified and not is_buf_visible(prev) then
-              pcall(vim.api.nvim_buf_delete, prev, { force = true })
+              vim.bo[prev].buflisted = false
+              vim.cmd("redrawtabline")
             end
           end
         end)

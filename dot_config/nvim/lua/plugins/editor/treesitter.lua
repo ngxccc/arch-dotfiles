@@ -38,6 +38,9 @@ return {
       "sql",
       "graphql",
       "blade",
+      "c_sharp",
+      "xml",
+      "razor",
     })
 
     -- Automatically enable Highlighting & Indent via Autocmd (Neovim 0.12+ standard)

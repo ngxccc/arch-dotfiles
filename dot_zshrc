@@ -1,4 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
+export PATH="/home/ngxc/.local/share/nvim/mason/bin:/home/ngxc/.bun/bin:$PATH"
+export PATH="/home/ngxc/.local/bin:$PATH"
 
 # ZSH_THEME="robbyrussell"
 ZSH_THEME=""
@@ -144,7 +146,6 @@ alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-g
 alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
 # SYNOPSIS: Dọn dẹp hệ thống & cấu hình rác (Arch Linux)
 alias sc='sysclean'
-export PATH="/home/ngxc/.local/share/nvim/mason/bin:/home/ngxc/.bun/bin:$PATH"
 
 alias gsr-gui="gpu-screen-recorder-gtk"
 alias gsr-record="gpu-screen-recorder -w screen -c mp4 -f 60 -a \"\$(pactl get-default-sink).monitor\" -a \"\$(pactl get-default-source)\" -o ~/videos/screen_\$(date +%Y%m%d_%H%M%S).mp4"
@@ -154,3 +155,4 @@ alias gsr-replay="gpu-screen-recorder -w screen -c mp4 -f 60 -a \"\$(pactl get-d
 if [ -f "$HOME/.secrets.env" ]; then
     source "$HOME/.secrets.env"
 fi
+

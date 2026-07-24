@@ -1,5 +1,4 @@
 antigravity-cli
-apidog-bin
 batctl-tui
 beekeeper-studio-bin
 bibata-cursor-theme-bin

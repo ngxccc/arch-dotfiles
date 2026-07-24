@@ -28,59 +28,96 @@ set.signcolumn = "yes"
 set.cursorline = true
 -- set.colorline = "80"
 
--- clipboard (Explicitly use wl-clipboard on Wayland or xclip/xsel on X11 to prevent tmux/OSC 52 clipboard-read prompts)
-local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 and vim.fn.executable("wl-paste") == 1
-local has_x11 = vim.env.DISPLAY ~= nil and (vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1)
-
-if has_wayland then
-  vim.g.clipboard = {
-    name = "wl-clipboard",
-    copy = {
-      ["+"] = "wl-copy",
-      ["*"] = "wl-copy",
-    },
-    paste = {
-      ["+"] = "wl-paste --no-newline",
-      ["*"] = "wl-paste --no-newline",
-    },
-    cache_enabled = 1,
-  }
-  set.clipboard:append("unnamedplus")
-elseif has_x11 then
-  if vim.fn.executable("xclip") == 1 then
-    vim.g.clipboard = {
-      name = "xclip",
-      copy = {
-        ["+"] = "xclip -quiet -i -selection clipboard",
-        ["*"] = "xclip -quiet -i -selection primary",
-      },
-      paste = {
-        ["+"] = "xclip -o -selection clipboard",
-        ["*"] = "xclip -o -selection primary",
-      },
-      cache_enabled = 1,
+-- Sync environment variables from active tmux session to prevent stale X11/Wayland variables
+local function sync_tmux_env()
+  if not vim.env.TMUX then return end
+  local output = vim.fn.system("tmux show-environment")
+  if vim.v.shell_error == 0 then
+    local targets = {
+      DISPLAY = true,
+      WAYLAND_DISPLAY = true,
+      XAUTHORITY = true,
+      SSH_AUTH_SOCK = true,
     }
-  else
-    vim.g.clipboard = {
-      name = "xsel",
-      copy = {
-        ["+"] = "xsel --nodetach -i -b",
-        ["*"] = "xsel --nodetach -i -p",
-      },
-      paste = {
-        ["+"] = "xsel -o -b",
-        ["*"] = "xsel -o -p",
-      },
-      cache_enabled = 1,
-    }
+    for line in string.gmatch(output, "[^\r\n]+") do
+      if not line:match("^%-") then
+        local key, val = line:match("^([^=]+)=(.*)$")
+        if key and targets[key] then
+          vim.env[key] = val
+        end
+      end
+    end
   end
-  set.clipboard:append("unnamedplus")
-else
-  -- No working system clipboard detected/active (e.g. stale tmux pane without WAYLAND_DISPLAY).
-  -- We do NOT enable unnamedplus to prevent Neovim from falling back to tmux/OSC 52, which
-  -- triggers Kitty security prompts and garbage character input.
-  set.clipboard = ""
 end
+
+-- Clipboard setup based on current environment (using system tools rather than OSC 52 to avoid prompts)
+local function configure_clipboard()
+  local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 and vim.fn.executable("wl-paste") == 1
+  local has_x11 = vim.env.DISPLAY ~= nil and (vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1)
+
+  if has_wayland then
+    vim.g.clipboard = {
+      name = "wl-clipboard",
+      copy = {
+        ["+"] = "wl-copy",
+        ["*"] = "wl-copy",
+      },
+      paste = {
+        ["+"] = "wl-paste --no-newline",
+        ["*"] = "wl-paste --no-newline",
+      },
+      cache_enabled = 1,
+    }
+    set.clipboard = "unnamedplus"
+  elseif has_x11 then
+    if vim.fn.executable("xclip") == 1 then
+      vim.g.clipboard = {
+        name = "xclip",
+        copy = {
+          ["+"] = "xclip -quiet -i -selection clipboard",
+          ["*"] = "xclip -quiet -i -selection primary",
+        },
+        paste = {
+          ["+"] = "xclip -o -selection clipboard",
+          ["*"] = "xclip -o -selection primary",
+        },
+        cache_enabled = 1,
+      }
+    else
+      vim.g.clipboard = {
+        name = "xsel",
+        copy = {
+          ["+"] = "xsel --nodetach -i -b",
+          ["*"] = "xsel --nodetach -i -p",
+        },
+        paste = {
+          ["+"] = "xsel -o -b",
+          ["*"] = "xsel -o -p",
+        },
+        cache_enabled = 1,
+      }
+    end
+    set.clipboard = "unnamedplus"
+  else
+    -- No working system clipboard detected/active (e.g. stale tmux pane without WAYLAND_DISPLAY).
+    -- We do NOT enable unnamedplus to prevent Neovim from falling back to tmux/OSC 52, which
+    -- triggers Kitty security prompts and garbage character input.
+    set.clipboard = ""
+  end
+end
+
+-- Sync tmux environment and configure clipboard at startup
+sync_tmux_env()
+configure_clipboard()
+
+-- Autocmd to update environment and reconfigure clipboard when Neovim gains focus
+vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
+  desc = "Sync tmux environment variables and configure clipboard",
+  callback = function()
+    sync_tmux_env()
+    configure_clipboard()
+  end,
+})
 
 -- backspace
 set.backspace = "indent,eol,start"
@@ -122,3 +159,11 @@ set.cmdheight = 0
 set.wrap = true
 set.linebreak = true
 set.breakindent = true
+
+-- Filetype mapping for ASP.NET / Blazor Razor files
+vim.filetype.add({
+  extension = {
+    cshtml = "razor",
+    razor = "razor",
+  },
+})
