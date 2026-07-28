@@ -48,6 +48,12 @@ return {
       -- .NET / C#
       "omnisharp",
       "csharpier",
+      -- Go
+      "gopls",
+      "gofumpt",
+      "goimports",
+      "golangci-lint",
+      "delve",
     }
     require("mason-tool-installer").setup({
       ensure_installed = tools,
@@ -208,6 +214,23 @@ return {
               fullyQualifyImportNames = false,
               triggerParameterHints = true,
             },
+          },
+        },
+      },
+      gopls = {
+        cmd = { "gopls" },
+        filetypes = { "go", "gomod", "gowork", "gotmpl" },
+        root_markers = { "go.work", "go.mod", ".git" },
+        settings = {
+          gopls = {
+            gofumpt = true,
+            analyses = {
+              unusedparams = true,
+              shadow = true,
+            },
+            staticcheck = true,
+            completeUnimported = true,
+            usePlaceholders = true,
           },
         },
       },

@@ -21,6 +21,7 @@ return {
       markdown = { "markdownlint", "prettier" },
       cs = { "csharpier" },
       razor = { "csharpier" },
+      go = { "goimports", "gofumpt" },
     }
 
     require("conform").setup({

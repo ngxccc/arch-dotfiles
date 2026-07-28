@@ -1,6 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 export PATH="/home/ngxc/.local/share/nvim/mason/bin:/home/ngxc/.bun/bin:$PATH"
 export PATH="/home/ngxc/.local/bin:$PATH"
+export EDITOR="nvim"
 
 # ZSH_THEME="robbyrussell"
 ZSH_THEME=""

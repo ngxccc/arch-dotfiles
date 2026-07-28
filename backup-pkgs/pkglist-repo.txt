@@ -39,6 +39,7 @@ freerdp
 git
 github-cli
 gnome-keyring
+go
 grim
 gst-plugin-pipewire
 gvfs

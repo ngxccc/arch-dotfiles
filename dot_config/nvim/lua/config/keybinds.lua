@@ -206,6 +206,24 @@ vim.keymap.set("n", "<leader>bd", function()
   end
   vim.cmd("bd " .. bufnr)
 end, { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>ba", function()
+  local buffers = vim.api.nvim_list_bufs()
+  for _, bufnr in ipairs(buffers) do
+    if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted then
+      pcall(vim.cmd, "bd " .. bufnr)
+    end
+  end
+end, { desc = "Close all buffers" })
+
+vim.keymap.set("n", "<leader>bo", function()
+  local current = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+  for _, bufnr in ipairs(buffers) do
+    if bufnr ~= current and vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted then
+      pcall(vim.cmd, "bd " .. bufnr)
+    end
+  end
+end, { desc = "Close other buffers" })
 
 
 -- 🔍 SEARCH & REPLACE

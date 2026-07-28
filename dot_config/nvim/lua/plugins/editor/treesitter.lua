@@ -41,6 +41,10 @@ return {
       "c_sharp",
       "xml",
       "razor",
+      "go",
+      "gomod",
+      "gowork",
+      "gotmpl",
     })
 
     -- Automatically enable Highlighting & Indent via Autocmd (Neovim 0.12+ standard)
@@ -67,6 +71,10 @@ return {
         "dockerfile",
         "gitignore",
         "blade",
+        "go",
+        "gomod",
+        "gowork",
+        "gotmpl",
       },
       callback = function()
         vim.treesitter.start()
