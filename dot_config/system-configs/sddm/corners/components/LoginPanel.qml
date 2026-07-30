@@ -39,119 +39,26 @@ Item {
 
             height: inputHeight
             width: parent.width
-            onAccepted: loginButton.clicked();
+            onAccepted: sddm.login(user, password, session);
         }
 
-        Button {
-            id: loginButton
+        Rectangle {
+            id: loginAnim
 
-            height: inputHeight
-            width: parent.width
-            enabled: user !== "" && password !== ""
-            hoverEnabled: true
+            radius: parent.width / 2
+            anchors.centerIn: parent
+            color: "black"
+            opacity: 0
 
-            onClicked: {
-                sddm.login(user, password, session);
-            }
-            
-            states: [
-                State {
-                    name: "pressed"
-                    when: loginButton.down
+            NumberAnimation {
+                id: coverScreen
 
-                    PropertyChanges {
-                        target: buttonBackground
-                        color: Qt.darker(config.LoginButtonColor, 1.4)
-                        opacity: 1
-                    }
-
-                    PropertyChanges {
-                        target: buttonText
-                        opacity: 1
-                    }
-                },
-                State {
-                    name: "hovered"
-                    when: loginButton.hovered
-
-                    PropertyChanges {
-                        target: buttonBackground
-                        color: Qt.darker(config.LoginButtonColor, 1.2)
-                        opacity: 1
-                    }
-
-                    PropertyChanges {
-                        target: buttonText
-                        opacity: 1
-                    }
-                },
-                State {
-                    name: "enabled"
-                    when: loginButton.enabled
-
-                    PropertyChanges {
-                        target: buttonBackground
-                        opacity: 1
-                    }
-
-                    PropertyChanges {
-                        target: buttonText
-                        opacity: 1
-                    }
-                }
-            ]
-
-            Rectangle {
-                id: loginAnim
-
-                radius: parent.width / 2
-                anchors {centerIn: loginButton }
-                color: "black"
-                opacity: 1
-
-                NumberAnimation {
-                    id: coverScreen
-
-                    target: loginAnim
-                    properties: "height, width"
-                    from: 0
-                    to: root.width * 2
-                    duration: 1000
-                    easing.type: Easing.InExpo
-                }
-            }
-
-            contentItem: Text {
-                id: buttonText
-
-                font {
-                    family: config.FontFamily
-                    pointSize: config.FontSize
-                    bold: true
-                }
-
-                text: config.LoginButtonText
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                
-                opacity: 0.5
-                renderType: Text.NativeRendering
-                color: config.LoginButtonTextColor
-            }
-
-            background: Rectangle {
-                id: buttonBackground
-
-                color: config.LoginButtonColor
-                opacity: 0.5
-                radius: config.Radius
-            }
-
-            transitions: Transition {
-                PropertyAnimation {
-                    properties: "color, opacity"
-                    duration: 150
-                }
+                target: loginAnim
+                properties: "height, width"
+                from: 0
+                to: Screen.width * 2
+                duration: 1000
+                easing.type: Easing.InExpo
             }
         }
     }

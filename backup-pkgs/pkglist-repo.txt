@@ -114,6 +114,7 @@ uwsm
 vim
 vulkan-radeon
 waybar
+wf-recorder
 wget
 wireplumber
 wl-clip-persist

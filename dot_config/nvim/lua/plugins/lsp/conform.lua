@@ -20,7 +20,7 @@ return {
       jsonc = { "biome", "prettier", stop_after_first = true },
       markdown = { "markdownlint", "prettier" },
       cs = { "csharpier" },
-      razor = { "csharpier" },
+      razor = { "prettier" },
       go = { "goimports", "gofumpt" },
     }
 
@@ -70,6 +70,11 @@ return {
             -- If no biome config exists, prettier acts as fallback
             return not has_biome
           end,
+          options = {
+            ft_parsers = {
+              razor = "html",
+            },
+          },
         },
       },
     })

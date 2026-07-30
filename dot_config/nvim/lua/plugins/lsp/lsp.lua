@@ -132,6 +132,7 @@ return {
       },
       html = {
         cmd = { "vscode-html-language-server", "--stdio" },
+        filetypes = { "html", "razor" },
       },
       cssls = {
         cmd = { "vscode-css-language-server", "--stdio" },
@@ -144,8 +145,7 @@ return {
         },
       },
       tailwindcss = {
-        cmd = { "tailwindcss-language-server", "--stdio" },
-        filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
+        filetypes = { "html", "css", "javascriptreact", "typescriptreact", "razor" },
         settings = {
           tailwindCSS = {
             experimental = { classRegex = {} },
@@ -154,6 +154,7 @@ return {
               typescript = "typescript",
               javascriptreact = "html",
               typescriptreact = "html",
+              razor = "html",
             },
           },
         },
@@ -186,7 +187,6 @@ return {
         },
       },
       omnisharp = {
-        cmd = { "omnisharp" },
         settings = {
           FormattingOptions = {
             EnableEditorConfigSupport = true,
@@ -198,6 +198,7 @@ return {
           RoslynExtensionsOptions = {
             EnableDecompilationSupport = true,
             EnableImportCompletion = true,
+            EnableAsyncCompletion = true,
             EnableAnalyzersSupport = true,
           },
         },

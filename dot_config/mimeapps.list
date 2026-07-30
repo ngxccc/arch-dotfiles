@@ -30,3 +30,6 @@ application/x-extension-xhtml=zen.desktop;
 application/x-extension-xht=zen.desktop;
 application/x-shellscript=nvim.desktop;kitty-open.desktop;
 application/vnd.ms-excel=onlyoffice-desktopeditors.desktop;
+text/markdown=dev.zed.Zed.desktop;
+image/jpeg=imv.desktop;
+image/webp=imv.desktop;

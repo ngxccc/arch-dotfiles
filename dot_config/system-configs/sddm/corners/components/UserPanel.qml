@@ -137,8 +137,9 @@ Column {
     }
 
     Item {
+        visible: config.UserPictureEnabled === "true"
         width: inputWidth
-        implicitHeight: pictureBorder.height
+        implicitHeight: config.UserPictureEnabled === "true" ? pictureBorder.height : 0
 
         Rectangle {
             id: pictureBorder
