@@ -1,44 +1,46 @@
-# Swaylock Porsche Theme Config
-color=000000
-indicator-radius=120
-indicator-thickness=10
-indicator-idle-visible
-show-keyboard-layout
+# Swaylock Wallpaper & Indicator Configuration
+image=/home/ngxc/walls/circle-red-snake.png
+scaling=fill
+
+# Indicator (Thu nhỏ & chỉ hiện khi gõ phím)
+indicator-radius=40
+indicator-thickness=6
+hide-keyboard-layout
 show-failed-attempts
 indicator-caps-lock
 
-# Base colors (OLED Black & Porsche Carmine Red)
+# Base colors
 line-color=00000000
 separator-color=00000000
-inside-color=0d0d0d
+inside-color=0d0d0d88
 ring-color=333333
 text-color=f5f5f5
 
-# Key press highlight (highlights each key typed around the circle)
+# Key press highlight
 key-hl-color=d50000
 bs-hl-color=ff3333
 
 # Verifying state
-inside-ver-color=0d0d0d
+inside-ver-color=0d0d0d88
 ring-ver-color=d50000
 text-ver-color=f5f5f5
 
 # Wrong password state
-inside-wrong-color=0d0d0d
+inside-wrong-color=0d0d0d88
 ring-wrong-color=ff3333
 text-wrong-color=ff3333
 
 # Clear input state
-inside-clear-color=0d0d0d
+inside-clear-color=0d0d0d88
 ring-clear-color=888888
 text-clear-color=888888
 
 # Caps lock state
-inside-caps-lock-color=0d0d0d
+inside-caps-lock-color=0d0d0d88
 ring-caps-lock-color=d50000
 text-caps-lock-color=d50000
 
 # Layout text box
-layout-bg-color=0d0d0d
+layout-bg-color=0d0d0d88
 layout-border-color=333333
 layout-text-color=f5f5f5

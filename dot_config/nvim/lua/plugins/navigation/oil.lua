@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
+    cmd = { "Oil" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       default_file_explorer = true,
@@ -9,7 +10,8 @@ return {
       },
     },
     keys = {
-      { "-", "<cmd>Oil<CR>", desc = "Open parent directory in Oil" },
+      { "-", function() require("oil").open() end, desc = "Open parent directory in Oil" },
+      { "<leader>o", function() require("oil").open() end, desc = "Open Oil File Manager" },
     },
   },
 }

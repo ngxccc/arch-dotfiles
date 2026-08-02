@@ -125,6 +125,29 @@ function dot-help() {
     ' ~/.zshrc
 }
 
+# Video Compression (GPU AMD VA-API + H.265 / HEVC)
+# SYNOPSIS: Compress screen recording video using AMD GPU VA-API (H.265 / HEVC) with audio
+function compress-video() {
+    if [ -z "$1" ]; then
+        echo "Usage: compress-video <input_file.mp4> [output_file.mp4]"
+        return 1
+    fi
+    local input="$1"
+    local output="${2:-compressed_${input}}"
+    ffmpeg -nostdin -vaapi_device /dev/dri/renderD128 -i "$input" -vf 'format=nv12,hwupload' -c:v hevc_vaapi -rc_mode CQP -qp 28 -c:a aac -b:a 128k "$output"
+}
+
+# SYNOPSIS: Compress screen recording video using AMD GPU VA-API (H.265 / HEVC) without audio
+function compress-video-no-audio() {
+    if [ -z "$1" ]; then
+        echo "Usage: compress-video-no-audio <input_file.mp4> [output_file.mp4]"
+        return 1
+    fi
+    local input="$1"
+    local output="${2:-compressed_no_audio_${input}}"
+    ffmpeg -nostdin -vaapi_device /dev/dri/renderD128 -i "$input" -vf 'format=nv12,hwupload' -c:v hevc_vaapi -rc_mode CQP -qp 28 -an "$output"
+}
+
 source $ZSH/oh-my-zsh.sh
 
 # Alias
@@ -147,10 +170,10 @@ alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-g
 alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
 # SYNOPSIS: Dọn dẹp hệ thống & cấu hình rác (Arch Linux)
 alias sc='sysclean'
-
 # Screen Recording (wf-recorder + AMD VA-API 60fps + Audio)
 alias rec-screen='wf-recorder -a -r 60 -c h264_vaapi -d /dev/dri/renderD128 -f ~/videos/screen_$(date +%Y%m%d_%H%M%S).mp4'
 alias rec-screen-sys='wf-recorder --audio=alsa_output.pci-0000_33_00.6.HiFi__Headphones__sink.monitor -r 60 -c h264_vaapi -d /dev/dri/renderD128 -f ~/videos/screen_sys_$(date +%Y%m%d_%H%M%S).mp4'
+
 if [ -f "$HOME/.secrets.env" ]; then
     source "$HOME/.secrets.env"
 fi

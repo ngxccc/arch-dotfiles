@@ -17,23 +17,41 @@ return {
       "<cmd>Neotree toggle reveal<cr>",
       desc = "Reveal file in Neo-tree",
     },
-    { "<leader>ge", "<cmd>Neotree float git_status<cr>", desc = "Git status (Float)" },
+    {
+      "<leader>ge",
+      "<cmd>Neotree float git_status<cr>",
+      desc = "Git status (Float)",
+    },
     { "<leader>be", "<cmd>Neotree toggle buffers<cr>", desc = "Buffer list" },
   },
   config = function()
     local common_mappings = {
-      ["Y"] = function(state)
+      ["y"] = "none",
+      ["ya"] = function(state)
         local node = state.tree:get_node()
         local path = node:get_id()
         vim.fn.setreg("+", path)
         vim.notify("Copied absolute path: " .. path, vim.log.levels.INFO)
       end,
-      ["gy"] = function(state)
+      ["yr"] = function(state)
         local node = state.tree:get_node()
         local path = node:get_id()
         local rel_path = vim.fn.fnamemodify(path, ":.")
         vim.fn.setreg("+", rel_path)
         vim.notify("Copied relative path: " .. rel_path, vim.log.levels.INFO)
+      end,
+      ["yp"] = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        local rel_path = vim.fn.fnamemodify(path, ":.")
+        vim.fn.setreg("+", rel_path)
+        vim.notify("Copied relative path: " .. rel_path, vim.log.levels.INFO)
+      end,
+      ["yn"] = function(state)
+        local node = state.tree:get_node()
+        local name = node.name
+        vim.fn.setreg("+", name)
+        vim.notify("Copied file name: " .. name, vim.log.levels.INFO)
       end,
       ["h"] = "close_node",
       ["l"] = "toggle_node",
@@ -109,15 +127,15 @@ return {
         },
         git_status = {
           symbols = {
-            added = "",
+            added = "✚",
             modified = "",
-            deleted = "",
+            deleted = "✖",
             renamed = "󰁕",
-            untracked = "",
-            ignored = "",
+            untracked = "?",
+            ignored = "", -- 
             unstaged = "󰄱",
-            staged = "",
-            conflict = "",
+            staged = "",
+            conflict = "",
           },
         },
       },
@@ -202,6 +220,26 @@ return {
           }),
         },
       },
+      event_handlers = {
+        {
+          event = "neo_tree_buffer_enter",
+          handler = function()
+            pcall(function()
+              require("neo-tree.sources.manager").refresh("filesystem")
+              require("neo-tree.sources.manager").refresh("git_status")
+            end)
+          end,
+        },
+      },
+    })
+    vim.api.nvim_create_autocmd("User", {
+      pattern = { "NeogitStatusRefreshed", "NeogitGitStatusChanged" },
+      callback = function()
+        pcall(function()
+          require("neo-tree.sources.manager").refresh("filesystem")
+          require("neo-tree.sources.manager").refresh("git_status")
+        end)
+      end,
     })
   end,
 }

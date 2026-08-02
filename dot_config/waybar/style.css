@@ -4,7 +4,7 @@
   border: none;
   border-radius: 0;
   font-family: "JetBrainsMono Nerd Font", monospace;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   min-height: 0;
   margin: 0;
@@ -23,20 +23,20 @@ window#waybar.hidden {
 }
 
 #workspaces {
-  margin: 6px 10px 6px 12px;
-  padding: 2px 8px;
-  border-radius: 12px;
+  margin: 3px 6px;
+  padding: 1px 4px;
+  border-radius: 0;
   background: alpha(@surface, 0.9);
   border: 1px solid @surface-hover;
 }
 
 #workspaces button {
   min-width: 0;
-  padding: 0 8px;
+  padding: 0 6px;
   color: @text-muted;
   background-color: transparent;
-  border-radius: 8px;
-  margin: 3px 2px;
+  border-radius: 0;
+  margin: 2px 1px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -48,7 +48,7 @@ window#waybar.hidden {
 #workspaces button.active {
   color: @base;
   background-color: @accent;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 #workspaces button.active:hover {
@@ -69,9 +69,9 @@ window#waybar.hidden {
 #pulseaudio,
 #custom-orbit,
 #custom-notification {
-  padding: 0 14px;
-  margin: 6px 4px;
-  border-radius: 13px;
+  padding: 0 10px;
+  margin: 3px 2px;
+  border-radius: 0;
   background: alpha(@surface, 0.9);
   border: 1px solid @surface-hover;
   color: @text-primary;
@@ -81,7 +81,7 @@ window#waybar.hidden {
   background: @surface;
   border-color: @surface-hover;
   color: @accent;
-  padding: 0 16px;
+  padding: 0 12px;
 }
 
 #custom-orbit,
@@ -121,7 +121,7 @@ window#waybar.hidden {
 tooltip {
   background: alpha(@crust, 0.95);
   border: 1px solid @surface-hover;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 tooltip label {
@@ -132,12 +132,12 @@ tooltip label {
 menu {
   background: alpha(@crust, 0.95);
   border: 1px solid @surface-hover;
-  border-radius: 12px;
+  border-radius: 0;
   padding: 6px;
 }
 
 menuitem {
-  border-radius: 8px;
+  border-radius: 0;
   padding: 7px 10px;
   margin: 2px 0;
   color: @text-primary;

@@ -8,6 +8,7 @@ binds {
 
   Mod+Q { close-window; }
   Mod+Shift+Q { spawn "/home/ngxc/.config/hypr/scripts/logout.sh"; }
+  Mod+Alt+L { spawn "swaylock"; }
 
   Mod+Space { toggle-window-floating; }
   Mod+F { maximize-window-to-edges; }

@@ -1,16 +1,15 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 42,
-  "spacing": 8,
-  "modules-left": ["niri/workspaces"],
-  "modules-center": ["clock"],
+  "height": 30,
+  "spacing": 4,
+  "modules-left": ["clock"],
+  "modules-center": ["niri/workspaces"],
   "modules-right": [
-    "custom/orbit",
     "pulseaudio",
     "network",
     "battery",
-    "custom/notification",
+    "custom/notification"
   ],
 
   "custom/apps": {

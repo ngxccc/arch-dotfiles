@@ -167,3 +167,6 @@ vim.filetype.add({
     razor = "razor",
   },
 })
+
+-- Disable verbose LSP file logging to improve performance and clear checkhealth warning
+vim.lsp.log.set_level("OFF")

@@ -12,7 +12,7 @@ return {
 			bash = { "shellcheck" },
 			markdown = { "markdownlint" },
 			php = { "phpstan" },
-			go = { "golangci_lint" },
+			go = { "golangcilint" },
 		}
 
 		-- Configure luacheck to recognize Neovim's vim global and suppress false warnings
