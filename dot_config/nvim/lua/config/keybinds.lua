@@ -29,6 +29,7 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position"
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll half page down (centered)" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll half page up (centered)" })
 vim.keymap.set("n", "<leader>sh", ":nohlsearch<CR>", { silent = true, desc = "Search Highlight Clear" })
+vim.keymap.set("n", "<leader>o", "o<Esc>", { desc = "Open line below" })
 vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Open line above" })
 
 -- 🛡️ CLIPBOARD & REGISTERS
@@ -73,14 +74,17 @@ vim.keymap.set("n", "<leader>lp", "<cmd>lprev<CR>zz", { desc = "Location List Pr
 -- 🛠️ LSP & TOOLS (<leader>l group)
 vim.keymap.set("n", "<leader>li", ":checkhealth vim.lsp<CR>", { desc = "LSP Info Healthcheck" })
 vim.keymap.set("n", "<leader>lr", function()
-  vim.diagnostic.reset(0)
+  pcall(vim.diagnostic.reset, nil, 0)
   if vim.fn.executable("eslint_d") == 1 then
     vim.fn.jobstart({ "eslint_d", "restart" })
   end
+  if vim.fn.exists(":VtsExec") == 2 then
+    pcall(vim.cmd, "VtsExec restart_tsserver")
+  end
   vim.cmd("LspRestart")
   vim.cmd("edit")
-  vim.notify("LSP & Diagnostics reset successfully", vim.log.levels.INFO)
-end, { desc = "LSP & Diagnostics Restart" })
+  vim.notify("LSP & TS Cache reset successfully", vim.log.levels.INFO)
+end, { desc = "LSP & TS Diagnostics Restart" })
 
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle UndoTree" })
 

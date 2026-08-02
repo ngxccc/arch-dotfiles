@@ -56,6 +56,8 @@ return {
       ["h"] = "close_node",
       ["l"] = "toggle_node",
       ["e"] = "open",
+      ["zM"] = "close_all_nodes",
+      ["zR"] = "expand_all_nodes",
       ["<LeftRelease>"] = "open",
       ["O"] = {
         "show_help",
