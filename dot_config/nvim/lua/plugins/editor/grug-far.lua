@@ -2,6 +2,11 @@ return {
   "MagicDuck/grug-far.nvim",
   opts = {
     headerMaxWidth = 80,
+    engines = {
+      ripgrep = {
+        extraArgs = "--hidden --glob !.git",
+      },
+    },
   },
   cmd = { "GrugFar" },
   keys = {

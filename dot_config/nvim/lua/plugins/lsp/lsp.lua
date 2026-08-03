@@ -347,10 +347,19 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
-        -- Keybindings
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, silent = true, desc = "LSP Definition (Go to definition)" })
+        -- Remove Neovim 0.10 default gr... mappings to eliminate 300ms delay on `gr`
+        pcall(vim.keymap.del, "n", "gra", { buffer = ev.buf })
+        pcall(vim.keymap.del, "n", "gri", { buffer = ev.buf })
+        pcall(vim.keymap.del, "n", "grn", { buffer = ev.buf })
+        pcall(vim.keymap.del, "n", "grr", { buffer = ev.buf })
+        pcall(vim.keymap.del, "n", "grt", { buffer = ev.buf })
+        pcall(vim.keymap.del, "n", "grx", { buffer = ev.buf })
+
+        -- Clean Mnemonic LSP Keybindings
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, silent = true, desc = "LSP Definition" })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = ev.buf, silent = true, desc = "LSP Hover Info" })
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = ev.buf, silent = true, desc = "LSP Implementation" })
+        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = ev.buf, silent = true, desc = "LSP Type Definition" })
         vim.keymap.set("n", "gr", function()
           local ok, builtin = pcall(require, "telescope.builtin")
           if ok then
@@ -361,6 +370,7 @@ return {
         end, { buffer = ev.buf, silent = true, desc = "LSP References (Telescope)" })
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = ev.buf, silent = true, desc = "LSP Rename Symbol" })
         vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf, silent = true, desc = "LSP Code Action" })
+        vim.keymap.set("n", "<leader>cL", vim.lsp.codelens.run, { buffer = ev.buf, silent = true, desc = "LSP Run CodeLens" })
       end,
     })
   end,

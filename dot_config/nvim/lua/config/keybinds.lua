@@ -233,3 +233,60 @@ vim.keymap.set("n", "<leader>ga", function()
     vim.notify("Gitsigns not loaded", vim.log.levels.ERROR)
   end
 end, { desc = "Git Add (Stage) Current File" })
+
+-- 📤 AUTOMATIC KEYMAP EXPORT COMMAND
+vim.api.nvim_create_user_command("ExportKeymaps", function()
+  local keymaps = vim.api.nvim_get_keymap("n")
+  local lines = {
+    "# 🚀 Automatically Generated Neovim Keymaps",
+    "",
+    "Generated on: " .. os.date("%Y-%m-%d %H:%M:%S"),
+    "",
+    "| Keymap | Action / Description |",
+    "| :--- | :--- |",
+  }
+
+  local desc_overrides = {
+    ["vim.lsp.buf.code_action()"] = "LSP Code Action",
+    ["vim.lsp.buf.implementation()"] = "LSP Go to Implementation",
+    ["vim.lsp.buf.rename()"] = "LSP Rename Symbol",
+    ["vim.lsp.buf.references()"] = "LSP Show References",
+    ["vim.lsp.buf.type_definition()"] = "LSP Go to Type Definition",
+    ["vim.lsp.buf.document_symbol()"] = "LSP Document Symbols",
+    ["vim.lsp.codelens.run()"] = "LSP Run CodeLens",
+  }
+
+  local sorted_maps = {}
+  local seen = {}
+  for _, map in ipairs(keymaps) do
+    local desc = map.desc
+    if desc and (desc:sub(1, 6) == ":help " or desc:sub(1, 1) == ":") then
+      desc = nil
+    end
+
+    if desc and desc ~= "" then
+      desc = desc_overrides[desc] or desc
+      local lhs = map.lhs:gsub(" ", "<leader>")
+      if not seen[lhs] then
+        seen[lhs] = true
+        table.insert(sorted_maps, { lhs = lhs, desc = desc })
+      end
+    end
+  end
+
+  table.sort(sorted_maps, function(a, b) return a.lhs < b.lhs end)
+
+  for _, map in ipairs(sorted_maps) do
+    table.insert(lines, string.format("| **`%s`** | %s |", map.lhs, map.desc))
+  end
+
+  local file_path = vim.fn.stdpath("config") .. "/KEYMAPS_AUTOGEN.md"
+  local f = io.open(file_path, "w")
+  if f then
+    f:write(table.concat(lines, "\n") .. "\n")
+    f:close()
+    vim.notify("Successfully exported clean keymaps to " .. file_path, vim.log.levels.INFO)
+  else
+    vim.notify("Failed to write keymaps file", vim.log.levels.ERROR)
+  end
+end, { desc = "Export all active keymaps to Markdown" })
