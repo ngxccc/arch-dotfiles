@@ -18,8 +18,13 @@ return {
           return {
             NormalFloat = { bg = colors.mantle },
             FloatBorder = { fg = colors.blue, bg = colors.mantle },
+            ["@character.special"] = { fg = colors.peach, bold = true },
+            ["@string.special"] = { fg = colors.peach, bold = true },
+            ["@string.escape"] = { fg = colors.peach, bold = true },
+            ["@string.special.url"] = { fg = colors.blue, underline = true },
+            goFormatSpecifier = { fg = colors.peach, bold = true },
           }
-        end,
+        end
       })
       vim.cmd.colorscheme("catppuccin")
     end,

@@ -106,6 +106,7 @@ tmux
 tree
 ttf-jetbrains-mono-nerd
 ttf-liberation
+ttf-montserrat
 ufw
 unrar
 unzip

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Dịch vụ systemd TPM2 gây trễ boot ~3s trên máy không dùng mã hóa đĩa LUKS
+if [ ! -L /etc/systemd/system/systemd-tpm2-setup-early.service ] || [ "$(readlink -f /etc/systemd/system/systemd-tpm2-setup-early.service)" != "/dev/null" ]; then
+    echo "Masking systemd-tpm2-setup-early.service..."
+    sudo systemctl mask systemd-tpm2-setup-early.service
+fi
+
+if [ ! -L /etc/systemd/system/systemd-tpm2-setup.service ] || [ "$(readlink -f /etc/systemd/system/systemd-tpm2-setup.service)" != "/dev/null" ]; then
+    echo "Masking systemd-tpm2-setup.service..."
+    sudo systemctl mask systemd-tpm2-setup.service
+fi

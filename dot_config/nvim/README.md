@@ -27,7 +27,7 @@ Welcome to your modern, feature-packed Neovim setup! The `<leader>` key defaults
 ### 🌳 2. Syntax & Editing Enhancements (`lua/plugins/editor/`)
 
 - **`nvim-treesitter` & `textobjects`**: AST-based syntax highlighting, indentation, folding, and structural navigation (`]f`/`[f` for functions, `]c`/`[c` for classes).
-- **`vim-visual-multi`**: VS Code style multi-cursor editing (`Ctrl+n`, `Ctrl+j`, `Ctrl+k`).
+- **`vim-visual-multi`**: VS Code style multi-cursor editing (`Ctrl+n`, `Ctrl+Alt+j`, `Ctrl+Alt+k`).
 - **`nvim-ufo`**: Modern, fast code folding with fold count preview (`zM` to close all, `zR` to open all).
 - **`grug-far.nvim`**: Interactive global search and replace tool across the entire workspace (`<leader>sr`).
 - **`markdown-preview.nvim`**: Live Markdown browser preview (`<leader>mp`).

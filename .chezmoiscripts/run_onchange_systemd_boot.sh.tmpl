@@ -1,0 +1,16 @@
+#!/bin/bash
+
+{{- $relPath := "dot_config/system-configs/boot/loader.conf" }}
+{{- $bootConf := joinPath .chezmoi.sourceDir $relPath }}
+
+{{- if stat $bootConf }}
+# boot_conf_hash: {{ include $relPath | sha256sum }}
+{{- else }}
+# boot_conf_hash: EMPTY_FILE_NO_HASH
+{{- end }}
+
+if [ -d /boot/loader ]; then
+    echo "Đang áp dụng cấu hình systemd-boot (loader.conf)..."
+    sudo cp {{ $bootConf }} /boot/loader/loader.conf
+    echo "[v] Hoàn tất nạp loader.conf vào /boot/loader/loader.conf!"
+fi

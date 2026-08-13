@@ -71,6 +71,7 @@ return {
       ["Os"] = { "order_by_size", nowait = false },
       ["Ot"] = { "order_by_type", nowait = false },
     }
+    local has_mini, mini = pcall(require, "mini.icons")
 
     require("neo-tree").setup({
       close_if_last_window = true,
@@ -98,8 +99,7 @@ return {
           folder_open = "",
           folder_empty = "󰜌",
           provider = function(icon, node)
-            local ok, mini = pcall(require, "mini.icons")
-            if ok then
+            if has_mini then
               if node.type == "directory" then
                 local glyph, hl, is_default = mini.get("directory", node.name)
                 if not is_default then
@@ -178,6 +178,7 @@ return {
           leave_dirs_open = false,
         },
         group_empty_dirs = false,
+        async_directory_scan = "auto",
         hijack_netrw_behavior = "open_default",
         use_libuv_file_watcher = true, -- Auto-refresh when files change
         window = {

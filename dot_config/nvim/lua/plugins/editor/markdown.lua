@@ -23,6 +23,13 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- Requires Treesitter for rendering
     ft = { "markdown" },
-    opts = {},
+    opts = {
+      anti_conceal = {
+        enabled = false, -- Disable anti-conceal on CursorMoved to eliminate cursor movement lag
+      },
+      latex = {
+        enabled = false, -- Disable latex converter checks to avoid process overhead
+      },
+    },
   },
 }

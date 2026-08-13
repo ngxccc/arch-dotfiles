@@ -16,7 +16,7 @@ plugins=(
 )
 
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/porsche.omp.json)"
-eval "$(keychain --eval --quiet ngxc)"
+eval "$(keychain --eval --quiet --noask ngxc)"
 eval "$(fnm env --use-on-cd --shell zsh)"
 
 # SYNOPSIS: Vào yazi
