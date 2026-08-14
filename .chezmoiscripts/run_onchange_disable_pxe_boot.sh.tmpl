@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Tự động tìm và loại bỏ các mục Boot qua mạng (PXE, Network, Cloud, LAN, NIC) khỏi UEFI BootOrder
+if command -v efibootmgr >/dev/null 2>&1; then
+    raw_efibootmgr=$(efibootmgr 2>/dev/null)
+    current_bootorder=$(echo "$raw_efibootmgr" | grep -E "^BootOrder:" | awk '{print $2}')
+
+    if [ -n "$current_bootorder" ]; then
+        pxe_ids=$(echo "$raw_efibootmgr" | grep -Ei "Boot[0-9A-Fa-f]{4}\*.*(PXE|Network|LAN|Cloud|ON-PREMISE|HTTPSBOOT|NIC|IPv4|IPv6|UNDI)" | sed -E 's/Boot([0-9A-Fa-f]{4})\*.*/\1/' | tr '\n' '|' | sed 's/|$//')
+
+        if [ -n "$pxe_ids" ]; then
+            new_bootorder=$(echo "$current_bootorder" | tr ',' '\n' | grep -vEi "^($pxe_ids)$" | tr '\n' ',' | sed 's/,$//')
+
+            if [ "$current_bootorder" != "$new_bootorder" ] && [ -n "$new_bootorder" ]; then
+                echo "Cập nhật lại UEFI BootOrder (loại bỏ PXE/Cloud Boot): $new_bootorder"
+                sudo efibootmgr -o "$new_bootorder" || true
+            fi
+        fi
+    fi
+fi
