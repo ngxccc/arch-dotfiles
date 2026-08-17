@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>High Signal Engineering Feeds</title>
+  </head>
+  <body>
+    <outline text="Production Engineering Blogs" title="Production Engineering Blogs">
+      <outline text="Cloudflare Blog" xmlUrl="https://blog.cloudflare.com/rss/" />
+      <outline text="Netflix TechBlog" xmlUrl="https://netflixtechblog.com/feed" />
+      <outline text="Uber Engineering" xmlUrl="https://www.uber.com/en-US/blog/engineering/rss/" />
+      <outline text="GitHub Engineering" xmlUrl="https://github.blog/engineering.atom" />
+    </outline>
+    <outline text="Individual Masters" title="Individual Masters">
+      <outline text="Brendan Gregg" xmlUrl="https://www.brendangregg.com/blog/rss.xml" />
+      <outline text="Dan Luu" xmlUrl="https://danluu.com/atom.xml" />
+      <outline text="Antirez" xmlUrl="http://antirez.com/rss" />
+      <outline text="Martin Fowler" xmlUrl="https://martinfowler.com/feed.atom" />
+    </outline>
+    <outline text="Communities and Discussions" title="Communities and Discussions">
+      <outline text="Lobsters" xmlUrl="https://lobste.rs/rss" />
+      <outline text="Hacker News Best" xmlUrl="https://hnrss.org/best" />
+    </outline>
+    <outline text="Curated Weekly Newsletters" title="Curated Weekly Newsletters">
+      <outline text="Postgres Weekly" xmlUrl="https://postgresweekly.com/rss" />
+      <outline text="Golang Weekly" xmlUrl="https://golangweekly.com/rss" />
+      <outline text="Node Weekly" xmlUrl="https://nodeweekly.com/rss" />
+      <outline text="ByteByteGo" xmlUrl="https://blog.bytebytego.com/feed" />
+    </outline>
+  </body>
+</opml>

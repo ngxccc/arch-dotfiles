@@ -6,6 +6,7 @@ brave-bin
 doppler-cli-bin
 fcitx5-lotus-bin
 google-chrome
+gorss-bin
 graphite-gtk-theme
 oh-my-posh
 onlyoffice-bin

@@ -29,6 +29,7 @@
 	autocrlf = false
 	eol = lf
 	editor = nvim
+	pager = cat
 [fetch]
 	prune = true
 [pager]
