@@ -38,3 +38,5 @@
 	prompt = false
 [push]
 	autoSetupRemote = true
+[status]
+	showUntrackedFiles = all
