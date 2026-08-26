@@ -7,6 +7,31 @@ return {
     "williamboman/mason.nvim",
     "jay-babu/mason-nvim-dap.nvim",
   },
+  cmd = { "DapContinue", "DapToggleBreakpoint" },
+  keys = {
+    { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Debug: Toggle Breakpoint" },
+    {
+      "<leader>dB",
+      function()
+        vim.ui.input({ prompt = "Breakpoint condition: " }, function(condition)
+          if condition then require("dap").set_breakpoint(condition) end
+        end)
+      end,
+      desc = "Debug: Set Conditional Breakpoint",
+    },
+    { "<leader>dc", function() require("dap").continue() end, desc = "Debug: Start / Continue (F5)" },
+    { "<leader>do", function() require("dap").step_over() end, desc = "Debug: Step Over (F10)" },
+    { "<leader>di", function() require("dap").step_into() end, desc = "Debug: Step Into (F11)" },
+    { "<leader>dO", function() require("dap").step_out() end, desc = "Debug: Step Out (Shift+F11)" },
+    { "<leader>dt", function() require("dap").terminate() end, desc = "Debug: Terminate / Stop" },
+    { "<leader>du", function() require("dapui").toggle() end, desc = "Debug: Toggle DAP UI" },
+    { "<leader>dr", function() require("dap").repl.open() end, desc = "Debug: Open REPL" },
+    { "<leader>de", function() require("dapui").eval() end, mode = { "n", "v" }, desc = "Debug: Evaluate Expression" },
+    { "<F5>", function() require("dap").continue() end, desc = "Debug: Continue" },
+    { "<F10>", function() require("dap").step_over() end, desc = "Debug: Step Over" },
+    { "<F11>", function() require("dap").step_into() end, desc = "Debug: Step Into" },
+    { "<F12>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
+  },
   config = function()
     local dap = require("dap")
     local dapui = require("dapui")
@@ -69,26 +94,5 @@ return {
     vim.fn.sign_define("DapBreakpointRejected", { text = "⚪", texthl = "DapBreakpointRejected", linehl = "", numhl = "" })
     vim.fn.sign_define("DapLogPoint", { text = "📝", texthl = "DapBreakpoint", linehl = "", numhl = "" })
     vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
-
-    -- 7. Keymaps for Debugging (<leader>d group & F-keys)
-    vim.keymap.set("n", "<leader>db", function() dap.toggle_breakpoint() end, { desc = "Debug: Toggle Breakpoint" })
-    vim.keymap.set("n", "<leader>dB", function()
-      vim.ui.input({ prompt = "Breakpoint condition: " }, function(condition)
-        if condition then dap.set_breakpoint(condition) end
-      end)
-    end, { desc = "Debug: Set Conditional Breakpoint" })
-    vim.keymap.set("n", "<leader>dc", function() dap.continue() end, { desc = "Debug: Start / Continue (F5)" })
-    vim.keymap.set("n", "<leader>do", function() dap.step_over() end, { desc = "Debug: Step Over (F10)" })
-    vim.keymap.set("n", "<leader>di", function() dap.step_into() end, { desc = "Debug: Step Into (F11)" })
-    vim.keymap.set("n", "<leader>dO", function() dap.step_out() end, { desc = "Debug: Step Out (Shift+F11)" })
-    vim.keymap.set("n", "<leader>dt", function() dap.terminate() end, { desc = "Debug: Terminate / Stop" })
-    vim.keymap.set("n", "<leader>du", function() dapui.toggle() end, { desc = "Debug: Toggle DAP UI" })
-    vim.keymap.set("n", "<leader>dr", function() dap.repl.open() end, { desc = "Debug: Open REPL" })
-    vim.keymap.set({ "n", "v" }, "<leader>de", function() dapui.eval() end, { desc = "Debug: Evaluate Expression" })
-
-    vim.keymap.set("n", "<F5>", function() dap.continue() end, { desc = "Debug: Continue" })
-    vim.keymap.set("n", "<F10>", function() dap.step_over() end, { desc = "Debug: Step Over" })
-    vim.keymap.set("n", "<F11>", function() dap.step_into() end, { desc = "Debug: Step Into" })
-    vim.keymap.set("n", "<F12>", function() dap.step_out() end, { desc = "Debug: Step Out" })
   end,
 }

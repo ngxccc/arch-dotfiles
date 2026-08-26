@@ -8,7 +8,7 @@ local function toggle_telescope(harpoon_files)
   end
 
   local opts = themes.get_ivy({
-    prompt_title = " 󰛔 Harpoon Working List ", -- Add icon for the prompt title
+    prompt_title = " 󰛔 Harpoon Working List ",
   })
 
   require("telescope.pickers")
@@ -30,14 +30,12 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
   },
-
-  -- 🚀 Raizo's Pro Tip: Use the `keys` table so Which-Key automatically recognizes desc
-  -- Lazy.nvim will ONLY load Harpoon when one of these keys is pressed!
   keys = {
     {
       "<leader>ha",
       function()
         require("harpoon"):list():add()
+        vim.notify("󰛔 Added to Harpoon: " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
       end,
       desc = "Harpoon: Add File",
     },
@@ -70,12 +68,20 @@ return {
       end,
       desc = "Harpoon: Next File",
     },
+    -- Direct 1-4 index jumps (Instant 0ms file switching)
+    { "<leader>1", function() require("harpoon"):list():select(1) end, desc = "Harpoon: File 1" },
+    { "<leader>2", function() require("harpoon"):list():select(2) end, desc = "Harpoon: File 2" },
+    { "<leader>3", function() require("harpoon"):list():select(3) end, desc = "Harpoon: File 3" },
+    { "<leader>4", function() require("harpoon"):list():select(4) end, desc = "Harpoon: File 4" },
+    { "<leader>h1", function() require("harpoon"):list():select(1) end, desc = "Harpoon: File 1" },
+    { "<leader>h2", function() require("harpoon"):list():select(2) end, desc = "Harpoon: File 2" },
+    { "<leader>h3", function() require("harpoon"):list():select(3) end, desc = "Harpoon: File 3" },
+    { "<leader>h4", function() require("harpoon"):list():select(4) end, desc = "Harpoon: File 4" },
   },
-
   config = function()
     require("harpoon"):setup({
       settings = {
-        save_on_toggle = true, -- Automatically save state on menu close/open
+        save_on_toggle = true,
         sync_on_ui_close = true,
       },
     })

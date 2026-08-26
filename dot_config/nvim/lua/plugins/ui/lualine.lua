@@ -19,8 +19,16 @@ return {
         lualine_a = { "mode" },
         lualine_b = { "branch", "diff", "diagnostics" },
         lualine_c = {
-          "filename",
-
+          {
+            "filename",
+            fmt = function(name)
+              if name:match("^oil://") then
+                local dir = name:gsub("^oil://", "")
+                return vim.fn.fnamemodify(dir, ":~")
+              end
+              return name
+            end,
+          },
           -- 🛠️ Custom component to indicate when a macro is being recorded
           {
             function()

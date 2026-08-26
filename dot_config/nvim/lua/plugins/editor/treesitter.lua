@@ -1,84 +1,53 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  lazy = false, -- Treesitter on the new main branch does not support lazy-loading
+  event = { "BufReadPost", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    -- Configure parser compilation arguments
-    local install = require("nvim-treesitter.install")
-    install.prefer_git = true
     -- Setup according to the new main branch standard (accepts install_dir only)
     require("nvim-treesitter").setup({
       install_dir = vim.fn.stdpath("data") .. "/site",
     })
 
-    -- Install desired parsers (replaces ensure_installed)
-    require("nvim-treesitter").install({
-      "json",
-      "python",
-      "javascript",
-      "typescript",
-      "tsx",
-      "yaml",
-      "html",
-      "css",
-      "markdown",
-      "markdown_inline",
-      "bash",
-      "lua",
-      "vim",
-      "vimdoc",
-      "c",
-      "dockerfile",
-      "gitignore",
-      "php",
-      "sql",
-      "graphql",
-      "blade",
-      "c_sharp",
-      "xml",
-      "razor",
-      "go",
-      "gomod",
-      "gowork",
-      "gotmpl",
-    })
+    -- Register command to install default parsers on demand (instead of running on every startup)
+    vim.api.nvim_create_user_command("TSInstallDefaults", function()
+      require("nvim-treesitter.install").prefer_git = true
+      require("nvim-treesitter").install({
+        "json", "python", "javascript", "typescript", "tsx", "yaml",
+        "html", "css", "markdown", "markdown_inline", "bash", "lua",
+        "vim", "vimdoc", "c", "dockerfile", "gitignore", "php",
+        "sql", "graphql", "blade", "c_sharp", "xml", "razor",
+        "go", "gomod", "gowork", "gotmpl",
+      })
+    end, { desc = "Install all default Treesitter parsers" })
 
-    -- Automatically enable Highlighting & Indent via Autocmd (Neovim 0.12+ standard)
+    -- Automatically enable Highlighting & Indent with Big-File Safeguard
     vim.api.nvim_create_autocmd("FileType", {
       pattern = {
-        "json",
-        "python",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "yaml",
-        "html",
-        "css",
-        "markdown",
-        "bash",
-        "sh",
-        "lua",
-        "vim",
-        "php",
-        "sql",
-        "graphql",
-        "c",
-        "dockerfile",
-        "gitignore",
-        "blade",
-        "go",
-        "gomod",
-        "gowork",
-        "gotmpl",
+        "json", "python", "javascript", "javascriptreact", "typescript",
+        "typescriptreact", "yaml", "html", "css", "markdown", "bash",
+        "sh", "lua", "vim", "php", "sql", "graphql", "c", "dockerfile",
+        "gitignore", "blade", "go", "gomod", "gowork", "gotmpl",
       },
-      callback = function()
-        vim.treesitter.start()
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      callback = function(args)
+        local bufnr = args.buf
+        -- Big file safeguard: disable treesitter for files > 500KB or > 5000 lines
+        local name = vim.api.nvim_buf_get_name(bufnr)
+        if name ~= "" then
+          local ok, stats = pcall(vim.uv.fs_stat, name)
+          if ok and stats and stats.size > 500 * 1024 then
+            return
+          end
+        end
+        if vim.api.nvim_buf_line_count(bufnr) > 5000 then
+          return
+        end
+
+        pcall(vim.treesitter.start, bufnr)
+        vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end,
     })
 

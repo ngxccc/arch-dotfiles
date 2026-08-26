@@ -18,7 +18,7 @@ return {
         "help",
         "alpha",
         "dashboard",
-        "neo-tree",
+        "oil",
         "Trouble",
         "trouble",
         "lazy",

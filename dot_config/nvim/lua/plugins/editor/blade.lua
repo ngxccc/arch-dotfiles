@@ -1,8 +1,7 @@
 return {
   "EmranMR/tree-sitter-blade",
-  dependencies = { "nvim-treesitter/nvim-treesitter" },
-  config = function()
-    -- Register filetype
+  ft = "blade",
+  init = function()
     vim.filetype.add({
       pattern = {
         [".*%.blade%.php"] = "blade",

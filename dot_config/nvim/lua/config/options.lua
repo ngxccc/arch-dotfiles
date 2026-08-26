@@ -106,9 +106,7 @@ local function configure_clipboard()
   end
 end
 
--- Sync tmux environment and configure clipboard at startup
-sync_tmux_env()
-configure_clipboard()
+-- Defer sync tmux environment and clipboard configuration to VimEnter/FocusGained (removes startup I/O blocking)
 
 -- Autocmd to update environment and reconfigure clipboard when Neovim gains focus
 vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
@@ -150,15 +148,28 @@ if not vim.env.PATH:find(mason_bin, 1, true) then
   vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 end
 
--- Enable terminal window title updates
+-- Clean window title formatting
+function _G.get_clean_title()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname == "" then
+    return "[No Name] - Neovim"
+  end
+  if bufname:match("^oil://") then
+    local path = bufname:gsub("^oil://", "")
+    return vim.fn.fnamemodify(path, ":p:~") .. " - Neovim"
+  end
+  local file = vim.fn.fnamemodify(bufname, ":t")
+  local mod = vim.bo.modified and " [+]" or ""
+  return file .. mod .. " - Neovim"
+end
 set.title = true
+set.titlestring = "%{v:lua.get_clean_title()}"
 -- Hide command-line area at the bottom when not in use
 set.cmdheight = 0
-
--- Word wrap configurations (for long classes and HTML)
-set.wrap = true
-set.linebreak = true
-set.breakindent = true
+-- Disable word wrap by default for code performance (toggle when needed)
+set.wrap = false
+set.linebreak = false
+set.breakindent = false
 
 -- Filetype mapping for ASP.NET / Blazor Razor files
 vim.filetype.add({

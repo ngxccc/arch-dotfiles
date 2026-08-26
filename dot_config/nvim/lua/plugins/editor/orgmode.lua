@@ -14,7 +14,7 @@ return {
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",
-		event = "BufReadPre", -- Startup optimization: Only load after a file has been read
+		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact", "vue", "svelte", "blade" },
 		config = function()
 			require("nvim-highlight-colors").setup({
 				render = "background", -- Render colors as background highlights for clear visibility

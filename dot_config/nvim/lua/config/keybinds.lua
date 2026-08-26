@@ -18,7 +18,6 @@ vim.keymap.set("n", "<leader>cR", "<cmd>source ~/.config/nvim/init.lua<cr>", { d
 vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Code Make Executable (+x)" })
 
 -- 🚀 MOVEMENT & EDITING
-vim.keymap.set("n", "<leader>a", "ggVG", { desc = "Select entire file" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent and keep selection" })
 vim.keymap.set("v", "<", "<gv", { desc = "Outdent and keep selection" })
 vim.keymap.set("v", "H", "^", { desc = "Move to start of line" })
@@ -38,18 +37,12 @@ vim.keymap.set("n", "<leader>dl", "dd", { desc = "Delete current line" })
 vim.keymap.set({ "n", "v" }, "<leader>D", [[_d]], { desc = "Delete to blackhole register" })
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Escape insert mode properly" })
 
--- 💾 SAVE & QUIT
-vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
-vim.keymap.set({ "n", "i", "v" }, "<C-q>", "<cmd>q<CR>", { desc = "Quit vim" })
-
 -- 🚫 DISABLE MACROS
 vim.keymap.set("n", "q", "<nop>", { desc = "Disable macro recording" })
 vim.keymap.set({ "n", "x" }, "@", "<nop>", { desc = "Disable macro playback" })
 vim.keymap.set("n", "Q", "<nop>", { desc = "Disable macro replay / Ex mode" })
-
 -- 🗃️ SESSION MANAGEMENT (<leader>S group)
 vim.keymap.set("n", "<leader>Ss", function()
-  vim.cmd("Neotree close")
   vim.cmd("mksession! ~/.local/share/nvim/last_session.vim")
   vim.notify("Global session saved successfully", vim.log.levels.INFO)
 end, { desc = "Session Save" })
@@ -88,7 +81,9 @@ end, { desc = "LSP & TS Diagnostics Restart" })
 
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle UndoTree" })
 
--- 📦 BUFFERS (<leader>b group)
+-- 📦 BUFFERS (<leader>b group & Alternate Toggle)
+vim.keymap.set("n", "<leader><leader>", "<cmd>b#<cr>", { desc = "Toggle Previous Active Buffer (Alternate)" })
+vim.keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<cr>", { desc = "Buffer List (Telescope)" })
 vim.keymap.set("n", "<leader>bd", function()
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].modified then
@@ -166,17 +161,8 @@ end
 vim.keymap.set("n", "<leader>yd", copy_line_diagnostics, { desc = "Yank Line Diagnostics" })
 
 local function get_active_file_path()
-  if vim.bo.filetype == "neo-tree" then
-    local ok, state = pcall(require("neo-tree.sources.manager").get_state, "filesystem")
-    if ok and state and state.tree then
-      local node = state.tree:get_node()
-      if node then
-        return node:get_id(), node.name
-      end
-    end
-  end
   local path = vim.api.nvim_buf_get_name(0)
-  if path == "" then
+  if path == "" or vim.bo.buftype ~= "" then
     return nil, nil
   end
   return path, vim.fn.fnamemodify(path, ":t")
@@ -213,15 +199,6 @@ vim.keymap.set("n", "<leader>yn", function()
   vim.notify("Copied file name: " .. name, vim.log.levels.INFO)
 end, { desc = "Yank File Name" })
 
--- ↕️ MOVE & DUPLICATE LINES
-vim.keymap.set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move line down" })
-vim.keymap.set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move line up" })
-vim.keymap.set("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move line down" })
-vim.keymap.set("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move line up" })
-vim.keymap.set("n", "<A-J>", "yyp", { desc = "Duplicate line down" })
-vim.keymap.set("n", "<A-K>", "yyP", { desc = "Duplicate line up" })
-vim.keymap.set("v", "<A-J>", "Y'>p", { desc = "Duplicate block down" })
-vim.keymap.set("v", "<A-K>", "Y'<P", { desc = "Duplicate block up" })
 
 -- 🌿 GIT SHORTCUTS
 vim.keymap.set("n", "<leader>ga", function()

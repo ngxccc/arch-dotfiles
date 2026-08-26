@@ -1,17 +1,21 @@
 return {
   "akinsho/toggleterm.nvim",
   version = "*",
+  cmd = { "ToggleTerm", "TermExec" },
+  keys = {
+    { [[<C-t>]], desc = "Toggle terminal" },
+  },
   config = function()
     require("toggleterm").setup({
       size = 20,
-      open_mapping = [[<C-t>]], -- Use Ctrl + t to quickly toggle the terminal
+      open_mapping = [[<C-t>]],
       hide_numbers = true,
       shade_terminals = true,
       shading_factor = 2,
       start_in_insert = true,
       insert_mappings = true,
       persist_size = true,
-      direction = "horizontal", -- Terminal opens at the bottom in a horizontal split
+      direction = "horizontal",
       close_on_exit = true,
     })
 

@@ -36,6 +36,7 @@ fcitx5-qt
 fd
 fnm
 freerdp
+fzf
 git
 github-cli
 gnome-keyring
@@ -126,5 +127,6 @@ xwayland-satellite
 yazi
 zed
 zip
+zoxide
 zram-generator
 zsh

@@ -33,8 +33,8 @@ return {
 			"--config",
 			vim.fn.expand("~/.markdownlint.jsonc"),
 		}
-		-- Automatically run the linter on file save or when leaving insert mode (InsertLeave)
-		vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+		-- Automatically run the linter on file save only (removed InsertLeave to avoid high CPU churn on large repos)
+		vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 			group = vim.api.nvim_create_augroup("UserLinting", { clear = true }),
 			callback = function()
 				lint.try_lint()

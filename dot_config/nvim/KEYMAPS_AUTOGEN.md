@@ -1,50 +1,59 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-08-06 10:27:22
+Generated on: 2026-08-26 19:41:04
 
 | Keymap | Action / Description |
 | :--- | :--- |
-| **`-`** | Open parent directory in Oil |
+| **`-`** | Open Parent Directory (Oil) |
 | **`<C-D>`** | Scroll half page down (centered) |
 | **`<C-Down>`** | Decrease Window Height |
 | **`<C-E>`** | Harpoon: Quick Menu |
 | **`<C-Left>`** | Decrease Window Width |
 | **`<C-N>`** | Harpoon: Next File |
 | **`<C-P>`** | Harpoon: Previous File |
-| **`<C-Q>`** | Quit vim |
 | **`<C-Right>`** | Increase Window Width |
-| **`<C-S>`** | Save file |
-| **`<C-T>`** | Toggle Terminal |
+| **`<C-T>`** | Toggle terminal |
 | **`<C-U>`** | Scroll half page up (centered) |
 | **`<C-Up>`** | Increase Window Height |
 | **`<C-W><C-D>`** | Show diagnostics under the cursor |
 | **`<C-W>d`** | Show diagnostics under the cursor |
-| **`<M-J>`** | Duplicate line down |
-| **`<M-K>`** | Duplicate line up |
-| **`<M-h>`** | Prev Buffer |
-| **`<M-j>`** | Move line down |
-| **`<M-k>`** | Move line up |
-| **`<M-l>`** | Next Buffer |
+| **`<F10>`** | Debug: Step Over |
+| **`<F11>`** | Debug: Step Into |
+| **`<F12>`** | Debug: Step Out |
+| **`<F5>`** | Debug: Continue |
 | **`<Tab>`** | Cycle through windows |
+| **`<leader>1`** | Harpoon: File 1 |
+| **`<leader>2`** | Harpoon: File 2 |
+| **`<leader>3`** | Harpoon: File 3 |
+| **`<leader>4`** | Harpoon: File 4 |
+| **`<leader><leader>`** | Toggle Previous Active Buffer (Alternate) |
 | **`<leader>D`** | Delete to blackhole register |
-| **`<leader>E`** | Reveal file in Neo-tree |
+| **`<leader>E`** | File Explorer Fullscreen (Oil) |
 | **`<leader>O`** | Open line above |
 | **`<leader>Sr`** | Session Restore |
 | **`<leader>Ss`** | Session Save |
-| **`<leader>a`** | Select entire file |
 | **`<leader>ba`** | Buffer Delete All |
+| **`<leader>bb`** | Buffer List (Telescope) |
 | **`<leader>bd`** | Buffer Delete Current |
-| **`<leader>be`** | Buffer list |
 | **`<leader>bo`** | Buffer Delete Others |
-| **`<leader>bp`** | Pin current buffer |
 | **`<leader>cR`** | Config Reload All (init.lua) |
 | **`<leader>cd`** | Open Oil File Manager |
 | **`<leader>cl`** | LSP Definitions / references / ... (Trouble) |
 | **`<leader>cr`** | Config Reload Current File |
 | **`<leader>cs`** | Symbols (Trouble) |
 | **`<leader>cx`** | Code Make Executable (+x) |
+| **`<leader>dB`** | Debug: Set Conditional Breakpoint |
+| **`<leader>dO`** | Debug: Step Out (Shift+F11) |
+| **`<leader>db`** | Debug: Toggle Breakpoint |
+| **`<leader>dc`** | Debug: Start / Continue (F5) |
+| **`<leader>de`** | Debug: Evaluate Expression |
+| **`<leader>di`** | Debug: Step Into (F11) |
 | **`<leader>dl`** | Delete current line |
-| **`<leader>e`** | Toggle Neo-tree (Root Dir) |
+| **`<leader>do`** | Debug: Step Over (F10) |
+| **`<leader>dr`** | Debug: Open REPL |
+| **`<leader>dt`** | Debug: Terminate / Stop |
+| **`<leader>du`** | Debug: Toggle DAP UI |
+| **`<leader>e`** | File Explorer Float (Oil) |
 | **`<leader>fa`** | Find All Files (including hidden) |
 | **`<leader>fb`** | Telescope buffers |
 | **`<leader>fc`** | Find current file occurrences |
@@ -63,8 +72,11 @@ Generated on: 2026-08-06 10:27:22
 | **`<leader>ga`** | Git Add (Stage) Current File |
 | **`<leader>gc`** | Neogit Commit |
 | **`<leader>gd`** | Git Diffview Open |
-| **`<leader>ge`** | Git status (Float) |
 | **`<leader>gn`** | Open Neogit Panel |
+| **`<leader>h1`** | Harpoon: File 1 |
+| **`<leader>h2`** | Harpoon: File 2 |
+| **`<leader>h3`** | Harpoon: File 3 |
+| **`<leader>h4`** | Harpoon: File 4 |
 | **`<leader>ha`** | Harpoon: Add File |
 | **`<leader>lc`** | Location List Close |
 | **`<leader>li`** | LSP Info Healthcheck |
@@ -102,16 +114,10 @@ Generated on: 2026-08-06 10:27:22
 | **`Q`** | Disable macro replay / Ex mode |
 | **`[<leader>`** | Add empty line above cursor |
 | **`[D`** | Jump to the first diagnostic in the current buffer |
-| **`[F`** | Previous Function End |
-| **`[c`** | Previous Class Start |
 | **`[d`** | Go to Previous Diagnostic |
-| **`[f`** | Previous Function Start |
 | **`]<leader>`** | Add empty line below cursor |
 | **`]D`** | Jump to the last diagnostic in the current buffer |
-| **`]F`** | Next Function End |
-| **`]c`** | Next Class Start |
 | **`]d`** | Go to Next Diagnostic |
-| **`]f`** | Next Function Start |
 | **`gO`** | LSP Document Symbols |
 | **`gc`** | Toggle comment |
 | **`gcc`** | Toggle comment line |

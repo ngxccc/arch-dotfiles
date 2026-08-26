@@ -1,10 +1,11 @@
 return {
   "neovim/nvim-lspconfig",
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "williamboman/mason.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     "b0o/schemastore.nvim",
-    "saghen/blink.cmp", -- To retrieve LSP capabilities
+    "saghen/blink.cmp",
   },
   config = function()
     -- 1. Setup Mason
@@ -129,6 +130,9 @@ return {
         cmd = { "typescript-language-server", "--stdio" },
         filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
         root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+        init_options = {
+          maxTsServerMemory = 4096,
+        },
       },
       html = {
         cmd = { "vscode-html-language-server", "--stdio" },
@@ -161,9 +165,12 @@ return {
       },
       jsonls = {
         cmd = { "vscode-json-language-server", "--stdio" },
+        on_new_config = function(new_config)
+          new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+          vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+        end,
         settings = {
           json = {
-            schemas = require("schemastore").json.schemas(),
             validate = { enable = true },
           },
         },
