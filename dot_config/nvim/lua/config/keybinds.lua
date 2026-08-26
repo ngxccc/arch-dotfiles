@@ -213,14 +213,25 @@ end, { desc = "Git Add (Stage) Current File" })
 
 -- 📤 AUTOMATIC KEYMAP EXPORT COMMAND
 vim.api.nvim_create_user_command("ExportKeymaps", function()
-  local keymaps = vim.api.nvim_get_keymap("n")
+  -- Load lazy plugins so all keymaps are available in RAM
+  local ok_lazy, lazy = pcall(require, "lazy")
+  if ok_lazy then
+    pcall(lazy.load, { plugins = { "nvim-treesitter", "harpoon", "telescope.nvim", "oil.nvim", "gitsigns.nvim" } })
+  end
+
+  local modes = {
+    { mode = "n", label = "Normal" },
+    { mode = "x", label = "Visual" },
+    { mode = "o", label = "Operator" },
+  }
+
   local lines = {
     "# 🚀 Automatically Generated Neovim Keymaps",
     "",
     "Generated on: " .. os.date("%Y-%m-%d %H:%M:%S"),
     "",
-    "| Keymap | Action / Description |",
-    "| :--- | :--- |",
+    "| Keymap | Mode | Action / Description |",
+    "| :--- | :--- | :--- |",
   }
 
   local desc_overrides = {
@@ -235,26 +246,36 @@ vim.api.nvim_create_user_command("ExportKeymaps", function()
 
   local sorted_maps = {}
   local seen = {}
-  for _, map in ipairs(keymaps) do
-    local desc = map.desc
-    if desc and (desc:sub(1, 6) == ":help " or desc:sub(1, 1) == ":") then
-      desc = nil
-    end
 
-    if desc and desc ~= "" then
-      desc = desc_overrides[desc] or desc
-      local lhs = map.lhs:gsub(" ", "<leader>")
-      if not seen[lhs] then
-        seen[lhs] = true
-        table.insert(sorted_maps, { lhs = lhs, desc = desc })
+  for _, m in ipairs(modes) do
+    local keymaps = vim.api.nvim_get_keymap(m.mode)
+    for _, map in ipairs(keymaps) do
+      local desc = map.desc
+      if desc and (desc:sub(1, 6) == ":help " or desc:sub(1, 1) == ":") then
+        desc = nil
+      end
+
+      if desc and desc ~= "" then
+        desc = desc_overrides[desc] or desc
+        local lhs = map.lhs:gsub(" ", "<leader>")
+        local key_id = m.mode .. ":" .. lhs
+        if not seen[key_id] then
+          seen[key_id] = true
+          table.insert(sorted_maps, { lhs = lhs, mode = m.label, desc = desc })
+        end
       end
     end
   end
 
-  table.sort(sorted_maps, function(a, b) return a.lhs < b.lhs end)
+  table.sort(sorted_maps, function(a, b)
+    if a.lhs == b.lhs then
+      return a.mode < b.mode
+    end
+    return a.lhs < b.lhs
+  end)
 
   for _, map in ipairs(sorted_maps) do
-    table.insert(lines, string.format("| **`%s`** | %s |", map.lhs, map.desc))
+    table.insert(lines, string.format("| **`%s`** | %s | %s |", map.lhs, map.mode, map.desc))
   end
 
   local file_path = vim.fn.stdpath("config") .. "/KEYMAPS_AUTOGEN.md"

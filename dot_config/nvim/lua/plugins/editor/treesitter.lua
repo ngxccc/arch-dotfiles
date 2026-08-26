@@ -2,6 +2,18 @@ return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPost", "BufNewFile" },
   build = ":TSUpdate",
+  keys = {
+    { "]f", desc = "Next Function Start" },
+    { "[f", desc = "Previous Function Start" },
+    { "]F", desc = "Next Function End" },
+    { "[F", desc = "Previous Function End" },
+    { "]c", desc = "Next Class Start" },
+    { "[c", desc = "Previous Class Start" },
+    { "af", mode = { "x", "o" }, desc = "Select outer function" },
+    { "if", mode = { "x", "o" }, desc = "Select inner function" },
+    { "ac", mode = { "x", "o" }, desc = "Select outer class" },
+    { "ic", mode = { "x", "o" }, desc = "Select inner class" },
+  },
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "windwp/nvim-ts-autotag",
