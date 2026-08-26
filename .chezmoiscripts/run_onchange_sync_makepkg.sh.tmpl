@@ -1,0 +1,38 @@
+#!/bin/bash
+set -eo pipefail
+
+{{- $makepkgDir := joinPath .chezmoi.sourceDir "dot_config/system-configs/makepkg" }}
+
+{{- if stat $makepkgDir }}
+# makepkg_dir_hash: {{ output "find" $makepkgDir "-type" "f" "-exec" "sha256sum" "{}" "+" | sha256sum }}
+{{- else }}
+# makepkg_dir_hash: EMPTY_DIR_NO_HASH
+{{- end }}
+
+echo "=================================================="
+echo "  ĐANG ÁP DỤNG CẤU HÌNH MAKEPKG VÀO HỆ THỐNG...  "
+echo "=================================================="
+
+{{- if stat $makepkgDir }}
+if [ -f "{{ $makepkgDir }}/makepkg.conf" ]; then
+    echo "--> [1/2] Đồng bộ cấu hình /etc/makepkg.conf (tắt tính năng debug)..."
+    sudo install -m 644 -o root -g root "{{ $makepkgDir }}/makepkg.conf" /etc/makepkg.conf
+    echo "[v] Đã cập nhật /etc/makepkg.conf thành công!"
+fi
+{{- end }}
+
+echo "--> [2/2] Kiểm tra và gỡ bỏ các package debug thừa trên hệ thống..."
+DEBUG_PKGS=$(pacman -Qsq -- "-debug$" 2>/dev/null || true)
+if [ -n "$DEBUG_PKGS" ]; then
+    echo "Phát hiện các package debug đã cài đặt:"
+    echo "$DEBUG_PKGS"
+    echo "Đang tiến hành gỡ bỏ..."
+    sudo pacman -Rns --noconfirm $DEBUG_PKGS
+    echo "[v] Đã gỡ bỏ sạch sẽ các package debug!"
+else
+    echo "[v] Không có package debug nào trên hệ thống."
+fi
+
+echo "=================================================="
+echo "   HOÀN TẤT ĐỒNG BỘ MAKEPKG & DỌN DẸP DEBUG PKGS  "
+echo "=================================================="

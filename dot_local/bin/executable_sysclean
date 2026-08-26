@@ -29,6 +29,16 @@ else
     echo "Không phát hiện package thừa nào."
 fi
 
+# 2.1 Gỡ bỏ các package debug (-debug)
+echo "--> [2.1] Đang kiểm tra các package debug (*-debug)..."
+if pacman -Qsq -- "-debug$" >/dev/null 2>&1; then
+    echo "Phát hiện các package debug:"
+    pacman -Qsq -- "-debug$"
+    sudo pacman -Rns $(pacman -Qsq -- "-debug$") --noconfirm
+else
+    echo "Không phát hiện package debug nào."
+fi
+
 # 3. Dọn dẹp Journald logs (giữ lại log trong vòng 7 ngày gần nhất)
 echo "--> [3/6] Đang giới hạn log hệ thống (journald) về 7 ngày gần nhất..."
 sudo journalctl --vacuum-time=7d
