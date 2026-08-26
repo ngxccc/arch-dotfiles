@@ -28,8 +28,6 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position"
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll half page down (centered)" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll half page up (centered)" })
 vim.keymap.set("n", "<leader>sh", ":nohlsearch<CR>", { silent = true, desc = "Search Highlight Clear" })
-vim.keymap.set("n", "<leader>o", "o<Esc>", { desc = "Open line below" })
-vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Open line above" })
 
 -- 🛡️ CLIPBOARD & REGISTERS
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without overwriting register" })
@@ -64,6 +62,15 @@ vim.keymap.set("n", "<leader>lc", "<cmd>lclose<CR>", { desc = "Location List Clo
 vim.keymap.set("n", "<leader>ln", "<cmd>lnext<CR>zz", { desc = "Location List Next item" })
 vim.keymap.set("n", "<leader>lp", "<cmd>lprev<CR>zz", { desc = "Location List Prev item" })
 
+-- 📑 TAB MANAGEMENT (<leader>t group & bracket motions)
+vim.keymap.set("n", "<leader>ta", "<cmd>tabnew<CR>", { silent = true, desc = "Tab New" })
+vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
+vim.keymap.set("n", "<leader>to", "<cmd>tabonly<CR>", { silent = true, desc = "Tab Only (Close others)" })
+vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<CR>", { silent = true, desc = "Tab Next" })
+vim.keymap.set("n", "<leader>tp", "<cmd>tabprevious<CR>", { silent = true, desc = "Tab Previous" })
+vim.keymap.set("n", "]t", "gt", { desc = "Next Tab" })
+vim.keymap.set("n", "[t", "gT", { desc = "Previous Tab" })
+
 -- 🛠️ LSP & TOOLS (<leader>l group)
 vim.keymap.set("n", "<leader>li", ":checkhealth vim.lsp<CR>", { desc = "LSP Info Healthcheck" })
 vim.keymap.set("n", "<leader>lr", function()
@@ -79,7 +86,7 @@ vim.keymap.set("n", "<leader>lr", function()
   vim.notify("LSP & TS Cache reset successfully", vim.log.levels.INFO)
 end, { desc = "LSP & TS Diagnostics Restart" })
 
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle UndoTree" })
+vim.keymap.set("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle UndoTree" })
 
 -- 📦 BUFFERS (<leader>b group & Alternate Toggle)
 vim.keymap.set("n", "<leader><leader>", "<cmd>b#<cr>", { desc = "Toggle Previous Active Buffer (Alternate)" })
@@ -123,7 +130,7 @@ vim.keymap.set("n", "<leader>bo", function()
   end
 end, { desc = "Buffer Delete Others" })
 -- 🔍 SEARCH & REPLACE (<leader>s group)
-vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], { desc = "Search & Replace word in file" })
+vim.keymap.set("n", "<leader>sb", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], { desc = "Search & Replace word in buffer" })
 
 -- 🪟 WINDOW MANAGEMENT & NAVIGATION
 vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Split Window Vertically" })

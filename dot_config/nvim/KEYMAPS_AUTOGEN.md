@@ -1,6 +1,6 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-08-26 20:43:47
+Generated on: 2026-08-26 21:01:51
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
@@ -30,7 +30,6 @@ Generated on: 2026-08-26 20:43:47
 | **`<leader>D`** | Normal | Delete to blackhole register |
 | **`<leader>D`** | Visual | Delete to blackhole register |
 | **`<leader>E`** | Normal | File Explorer Fullscreen (Oil) |
-| **`<leader>O`** | Normal | Open line above |
 | **`<leader>Sr`** | Normal | Session Restore |
 | **`<leader>Ss`** | Normal | Session Save |
 | **`<leader>ba`** | Normal | Buffer Delete All |
@@ -88,15 +87,20 @@ Generated on: 2026-08-26 20:43:47
 | **`<leader>lr`** | Normal | LSP & TS Diagnostics Restart |
 | **`<leader>mS`** | Normal | Stop Markdown Preview Server |
 | **`<leader>mp`** | Normal | Toggle Markdown Preview (Browser) |
-| **`<leader>o`** | Normal | Open line below |
 | **`<leader>p`** | Visual | Paste without overwriting register |
 | **`<leader>qc`** | Normal | Quickfix Close |
 | **`<leader>qn`** | Normal | Quickfix Next item |
 | **`<leader>qo`** | Normal | Quickfix Open |
 | **`<leader>qp`** | Normal | Quickfix Prev item |
+| **`<leader>sb`** | Normal | Search & Replace word in buffer |
 | **`<leader>sh`** | Normal | Search Highlight Clear |
 | **`<leader>sr`** | Normal | Search and Replace (GrugFar) |
 | **`<leader>sr`** | Visual | Search and Replace (GrugFar) |
+| **`<leader>ta`** | Normal | Tab New |
+| **`<leader>tc`** | Normal | Tab Close |
+| **`<leader>tn`** | Normal | Tab Next |
+| **`<leader>to`** | Normal | Tab Only (Close others) |
+| **`<leader>tp`** | Normal | Tab Previous |
 | **`<leader>u`** | Normal | Toggle UndoTree |
 | **`<leader>wc`** | Normal | Close Current Window |
 | **`<leader>wo`** | Normal | Close Other Windows |
@@ -135,6 +139,7 @@ Generated on: 2026-08-26 20:43:47
 | **`[f`** | Operator | Previous Function Start |
 | **`[f`** | Visual | Previous Function Start |
 | **`[n`** | Visual | Select previous node |
+| **`[t`** | Normal | Previous Tab |
 | **`]<leader>`** | Normal | Add empty line below cursor |
 | **`]D`** | Normal | Jump to the last diagnostic in the current buffer |
 | **`]F`** | Normal | Next Function End |
@@ -149,6 +154,7 @@ Generated on: 2026-08-26 20:43:47
 | **`]f`** | Operator | Next Function Start |
 | **`]f`** | Visual | Next Function Start |
 | **`]n`** | Visual | Select next node |
+| **`]t`** | Normal | Next Tab |
 | **`ac`** | Operator | Select outer class |
 | **`ac`** | Visual | Select outer class |
 | **`af`** | Operator | Select outer function |

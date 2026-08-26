@@ -16,17 +16,16 @@ return {
     wk.add({
       { "<leader>b", group = "Buffers" },
       { "<leader>c", group = "Config / Code" },
-      { "<leader>e", group = "Explorer" },
       { "<leader>f", group = "Find (Telescope)" },
       { "<leader>g", group = "Git" },
+      { "<leader>h", group = "Harpoon" },
       { "<leader>l", group = "LSP / Location" },
       { "<leader>q", group = "Quickfix" },
       { "<leader>s", group = "Search / Replace" },
       { "<leader>S", group = "Session" },
-      { "<leader>y", group = "Yank / Copy" },
-      { "<leader>u", group = "Undo" },
-      { "<leader>h", group = "Harpoon" },
+      { "<leader>t", group = "Tabs" },
       { "<leader>w", group = "Window" },
+      { "<leader>y", group = "Yank / Copy" },
     }, {})
 
     wk.add({ { "gc", group = "Comment" } }, { mode = "n" })

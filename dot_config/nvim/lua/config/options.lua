@@ -164,6 +164,54 @@ function _G.get_clean_title()
 end
 set.title = true
 set.titlestring = "%{v:lua.get_clean_title()}"
+
+-- Clean tabline formatting (supports custom :TabRename and automatic file/folder fallback)
+vim.api.nvim_create_user_command("TabRename", function(opts)
+  vim.t.tab_title = opts.args
+  vim.cmd("redrawtabline")
+end, { nargs = 1, desc = "Rename current tab workspace" })
+
+function _G.get_tabline()
+  local s = ""
+  local current_tab = vim.fn.tabpagenr()
+  local total_tabs = vim.fn.tabpagenr("$")
+
+  for i = 1, total_tabs do
+    local tab_hl = (i == current_tab) and "%#TabLineSel#" or "%#TabLine#"
+    s = s .. "%" .. i .. "T" .. tab_hl .. " " .. i .. " "
+
+    local winnr = vim.fn.tabpagewinnr(i)
+    local buflist = vim.fn.tabpagebuflist(i)
+    local bufnr = buflist[winnr]
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+
+    local custom_title = vim.t[i].tab_title
+    local title = "[No Name]"
+    if custom_title and custom_title ~= "" then
+      title = "󰓩 " .. custom_title
+    elseif bufname:match("^oil://") then
+      local path = bufname:gsub("^oil://", ""):gsub("/$", "")
+      title = " " .. vim.fn.fnamemodify(path, ":t")
+    elseif bufname ~= "" then
+      title = vim.fn.fnamemodify(bufname, ":t")
+    end
+
+    local mod = ""
+    for _, b in ipairs(buflist) do
+      if vim.api.nvim_get_option_value("modified", { buf = b }) then
+        mod = " "
+        break
+      end
+    end
+
+    s = s .. title .. mod .. " "
+  end
+
+  s = s .. "%#TabLineFill#%T"
+  return s
+end
+set.tabline = "%!v:lua.get_tabline()"
+
 -- Hide command-line area at the bottom when not in use
 set.cmdheight = 0
 -- Disable word wrap by default for code performance (toggle when needed)
