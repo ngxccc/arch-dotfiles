@@ -15,6 +15,7 @@ application/x-shellscript=kitty-open.desktop
 x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/apidog=apidog.desktop
 inode/directory=thunar.desktop
+application/pdf=com.google.Chrome.desktop
 
 [Added Associations]
 image/png=imv.desktop;
@@ -33,3 +34,4 @@ application/vnd.ms-excel=onlyoffice-desktopeditors.desktop;
 text/markdown=dev.zed.Zed.desktop;
 image/jpeg=imv.desktop;
 image/webp=imv.desktop;
+application/pdf=google-chrome.desktop;com.google.Chrome.desktop;

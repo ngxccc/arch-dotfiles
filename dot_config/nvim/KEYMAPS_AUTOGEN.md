@@ -1,6 +1,6 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-08-26 21:01:51
+Generated on: 2026-08-27 08:30:39
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
@@ -37,7 +37,6 @@ Generated on: 2026-08-26 21:01:51
 | **`<leader>bd`** | Normal | Buffer Delete Current |
 | **`<leader>bo`** | Normal | Buffer Delete Others |
 | **`<leader>cR`** | Normal | Config Reload All (init.lua) |
-| **`<leader>cd`** | Normal | Open Oil File Manager |
 | **`<leader>cl`** | Normal | LSP Definitions / references / ... (Trouble) |
 | **`<leader>cr`** | Normal | Config Reload Current File |
 | **`<leader>cs`** | Normal | Symbols (Trouble) |

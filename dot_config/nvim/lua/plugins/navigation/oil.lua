@@ -12,7 +12,6 @@ return {
       { "-", "<cmd>Oil<cr>", desc = "Open Parent Directory (Oil)" },
       { "<leader>e", "<cmd>Oil --float<cr>", desc = "File Explorer Float (Oil)" },
       { "<leader>E", "<cmd>Oil<cr>", desc = "File Explorer Fullscreen (Oil)" },
-      { "<leader>cd", "<cmd>Oil<cr>", desc = "Open Oil File Manager" },
     },
     opts = function()
       local detail = false
@@ -33,7 +32,7 @@ return {
           rm = function(path) return true end,
         },
         win_options = {
-          signcolumn = "yes:2",
+          signcolumn = "auto:2",
           winbar = "%!v:lua.get_oil_winbar()",
         },
         view_options = {
@@ -46,6 +45,7 @@ return {
           border = "rounded",
           win_options = {
             winblend = 0,
+            signcolumn = "auto:2",
           },
         },
         keymaps = {
