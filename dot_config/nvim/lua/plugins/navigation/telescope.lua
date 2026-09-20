@@ -3,6 +3,13 @@ return {
   branch = "master",
   dependencies = {
     "nvim-lua/plenary.nvim",
+    {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+      cond = function()
+        return vim.fn.executable("make") == 1
+      end,
+    },
   },
   cmd = "Telescope",
   keys = {
@@ -52,16 +59,40 @@ return {
   },
   config = function()
     local actions = require("telescope.actions")
-    require("telescope").setup({
+    local telescope = require("telescope")
+
+    telescope.setup({
       defaults = {
+        file_ignore_patterns = {
+          "node_modules",
+          "%.turbo/",
+          "%.next/",
+          "%.dist/",
+          "build/",
+          "dist/",
+          "coverage/",
+          "%.git/",
+        },
         mappings = {
           i = {
-            ["<C-k>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<C-d>"] = actions.preview_scrolling_down,
+            ["<C-u>"] = actions.preview_scrolling_up,
             ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+          },
+          n = {
+            ["j"] = actions.move_selection_next,
+            ["k"] = actions.move_selection_previous,
+            ["<C-d>"] = actions.preview_scrolling_down,
+            ["<C-u>"] = actions.preview_scrolling_up,
+            ["q"] = actions.close,
+            ["<Esc>"] = actions.close,
           },
         },
       },
     })
+
+    pcall(telescope.load_extension, "fzf")
   end,
 }

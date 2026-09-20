@@ -6,21 +6,19 @@ return {
     },
     opts = {
       options = {
-        -- 🚀 "auto" automatically extracts colors from the current theme (Tokyonight, VSCode, etc.)
         theme = "auto",
-        -- 🚀 Modern standard: Use a single status bar for the entire Neovim instance
         globalstatus = true,
-
         component_separators = { left = "│", right = "│" },
         section_separators = { left = "", right = "" },
       },
       sections = {
         -- Left side
         lualine_a = { "mode" },
-        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_b = { "diagnostics" },
         lualine_c = {
           {
             "filename",
+            path = 1, -- 🚀 1: Relative Path (ví dụ: src/database/database.module.ts)
             fmt = function(name)
               if name:match("^oil://") then
                 local dir = name:gsub("^oil://", "")
@@ -35,25 +33,24 @@ return {
               local reg = vim.fn.reg_recording()
               if reg == "" then
                 return ""
-              end -- Hidden when not recording
+              end
               return "⏺ Recording @" .. reg
             end,
-            -- The `cond` flag tells Lualine when to render this component
             cond = function()
               return vim.fn.reg_recording() ~= ""
             end,
-            color = { fg = "#ff9e64", gui = "bold" }, -- Orange alert color
+            color = { fg = "#ff9e64", gui = "bold" },
           },
         },
 
         -- Right side
         lualine_x = {
-          -- 🛠️ Custom component to show active LSP clients in the current buffer
+          -- 🛠️ Custom component to show active LSP clients (đã loại bỏ utf-8, fileformat, filetype rác)
           {
             function()
               local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
               if next(buf_clients) == nil then
-                return "No LSP"
+                return ""
               end
               local buf_client_names = {}
               for _, client in ipairs(buf_clients) do
@@ -62,11 +59,12 @@ return {
               return "LSP: " .. table.concat(buf_client_names, ", ")
             end,
             icon = " ",
-            color = { fg = "#cba6f7", gui = "bold" }, -- Mauve highlight color matching Catppuccin
+            color = { fg = "#cba6f7", gui = "bold" },
+            -- 🚀 Ẩn bớt text LSP khi màn hình quá hẹp (< 80 cột) để ưu tiên số 1 cho File Path
+            cond = function()
+              return vim.o.columns > 80
+            end,
           },
-          "encoding",
-          "fileformat",
-          "filetype",
         },
         lualine_y = { "progress" },
         lualine_z = { "location" },

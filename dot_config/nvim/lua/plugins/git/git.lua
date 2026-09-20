@@ -8,14 +8,10 @@ return {
   -- 2. Diffview: VS Code-style diff viewer and conflict resolver
   {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles" },
-    keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diffview Open" },
-      { "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Git Diffview Close" },
-    },
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFileHistory" },
     opts = {
       enhanced_diff_hl = true,
-    }
+    },
   },
 
   -- 3. Neogit: Native Source Control Panel interface and Git Graph
@@ -27,13 +23,9 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     cmd = { "Neogit" },
-    keys = {
-      { "<leader>gn", "<cmd>Neogit<cr>", desc = "Open Neogit Panel" },
-      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
-    },
     opts = {
       disable_commit_confirmation = true,
-      graph_style = "unicode", -- Render branch graph using Unicode characters for a smooth visual
+      graph_style = "unicode",
       integrations = {
         diffview = true,
         telescope = true,

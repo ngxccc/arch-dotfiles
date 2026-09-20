@@ -20,7 +20,7 @@ return {
       "ruff",
       "mypy",
       -- TypeScript
-      "typescript-language-server",
+      "vtsls",
       "eslint-lsp",
       "prettier",
       "blade-formatter",
@@ -126,12 +126,54 @@ return {
         filetypes = { "python" },
         root_markers = { "pyproject.toml", ".git" },
       },
-      ts_ls = {
-        cmd = { "typescript-language-server", "--stdio" },
+      vtsls = {
+        cmd = { "vtsls", "--stdio" },
         filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-        root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-        init_options = {
-          maxTsServerMemory = 4096,
+        root_markers = { "turbo.json", "pnpm-workspace.yaml", "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+        settings = {
+          typescript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = {
+              completeFunctionCalls = true,
+            },
+            inlayHints = {
+              parameterNames = { enabled = "literals" },
+              parameterTypes = { enabled = true },
+              variableTypes = { enabled = false },
+              propertyDeclarationTypes = { enabled = true },
+              functionLikeReturnTypes = { enabled = false },
+              enumMemberValues = { enabled = true },
+            },
+            tsserver = {
+              maxTsServerMemory = 2048, -- 🚀 Cấp đủ 2048MB headroom cho Monorepo Next.js lớn không bị OOM crash
+              disableAutomaticTypingAcquisition = true,
+            },
+            preferences = {
+              includePackageJsonAutoImports = "auto",
+            },
+          },
+          javascript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = {
+              completeFunctionCalls = true,
+            },
+            inlayHints = {
+              parameterNames = { enabled = "literals" },
+              parameterTypes = { enabled = true },
+              variableTypes = { enabled = false },
+              propertyDeclarationTypes = { enabled = true },
+              functionLikeReturnTypes = { enabled = false },
+              enumMemberValues = { enabled = true },
+            },
+          },
+          vtsls = {
+            autoUseWorkspaceTsdk = true,
+            experimental = {
+              completion = {
+                enableServerSideFuzzyMatch = true,
+              },
+            },
+          },
         },
       },
       html = {
@@ -189,8 +231,11 @@ return {
       },
       eslint = {
         cmd = { "vscode-eslint-language-server", "--stdio" },
+        root_markers = { "turbo.json", "pnpm-workspace.yaml", "package.json", ".git" },
         settings = {
-          workingDirectories = { mode = "location" },
+          workingDirectories = { mode = "auto" }, -- 🚀 "auto" respects subpackage boundaries in Monorepos
+          run = "onSave", -- 🚀 Run only on file save to prevent continuous AST memory churn
+          format = false,
         },
       },
       omnisharp = {

@@ -1,6 +1,6 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-08-27 08:30:39
+Generated on: 2026-08-29 22:13:03
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
@@ -35,6 +35,7 @@ Generated on: 2026-08-27 08:30:39
 | **`<leader>ba`** | Normal | Buffer Delete All |
 | **`<leader>bb`** | Normal | Buffer List (Telescope) |
 | **`<leader>bd`** | Normal | Buffer Delete Current |
+| **`<leader>bi`** | Normal | Buffer / File Info Popup |
 | **`<leader>bo`** | Normal | Buffer Delete Others |
 | **`<leader>cR`** | Normal | Config Reload All (init.lua) |
 | **`<leader>cl`** | Normal | LSP Definitions / references / ... (Trouble) |
@@ -70,9 +71,11 @@ Generated on: 2026-08-27 08:30:39
 | **`<leader>fw`** | Normal | Find Word in Workspace (Live Grep) |
 | **`<leader>gD`** | Normal | Git Diffview Close |
 | **`<leader>ga`** | Normal | Git Add (Stage) Current File |
-| **`<leader>gc`** | Normal | Neogit Commit |
+| **`<leader>gb`** | Normal | Git Branches Popup |
 | **`<leader>gd`** | Normal | Git Diffview Open |
-| **`<leader>gn`** | Normal | Open Neogit Panel |
+| **`<leader>gg`** | Normal | Open Neogit Panel |
+| **`<leader>gl`** | Normal | Git Commit Log Popup |
+| **`<leader>gs`** | Normal | Git Status (Changed Files Popup) |
 | **`<leader>h1`** | Normal | Harpoon: File 1 |
 | **`<leader>h2`** | Normal | Harpoon: File 2 |
 | **`<leader>h3`** | Normal | Harpoon: File 3 |

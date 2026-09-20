@@ -18,15 +18,7 @@ return {
         ["<C-b>"] = { "scroll_documentation_up", "fallback" },
         ["<C-x>"] = { "show_signature", "hide_signature", "fallback" },
       },
-      sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
-      },
       completion = {
-        accept = {
-          auto_brackets = {
-            enabled = true,
-          },
-        },
         list = {
           selection = {
             preselect = false,
@@ -34,10 +26,18 @@ return {
           },
         },
         menu = {
-          border = "rounded", -- Rounded border matching the old nvim-cmp style
+          border = "rounded",
+          draw = {
+            columns = {
+              { "kind_icon" },
+              { "label", "label_description", gap = 1 },
+              { "kind" },
+            },
+          },
         },
         documentation = {
           auto_show = true,
+          auto_show_delay_ms = 50,
           window = {
             border = "rounded",
           },
