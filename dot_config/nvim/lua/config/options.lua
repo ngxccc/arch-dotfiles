@@ -56,18 +56,8 @@ local function configure_clipboard()
   local has_x11 = vim.env.DISPLAY ~= nil and (vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1)
 
   if has_wayland then
-    vim.g.clipboard = {
-      name = "wl-clipboard",
-      copy = {
-        ["+"] = "wl-copy",
-        ["*"] = "wl-copy",
-      },
-      paste = {
-        ["+"] = "wl-paste --no-newline",
-        ["*"] = "wl-paste --no-newline",
-      },
-      cache_enabled = 1,
-    }
+    -- Use native built-in provider for wl-clipboard (lets Neovim invoke wl-copy cleanly without stale internal caching)
+    vim.g.clipboard = nil
     set.clipboard = "unnamedplus"
   elseif has_x11 then
     if vim.fn.executable("xclip") == 1 then
@@ -106,6 +96,9 @@ local function configure_clipboard()
   end
 end
 
+-- Configure clipboard immediately on startup
+configure_clipboard()
+
 -- Defer sync tmux environment and clipboard configuration to VimEnter/FocusGained (removes startup I/O blocking)
 
 -- Autocmd to update environment and reconfigure clipboard when Neovim gains focus
@@ -114,6 +107,17 @@ vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
   callback = function()
     sync_tmux_env()
     configure_clipboard()
+  end,
+})
+
+-- Ensure any yank in normal/visual mode (including terminal buffers) syncs to system clipboard
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("UserClipboardSync", { clear = true }),
+  desc = "Sync yanked content to system clipboard",
+  callback = function()
+    if vim.v.event.operator == "y" then
+      pcall(vim.fn.setreg, "+", vim.fn.getreg('"'))
+    end
   end,
 })
 

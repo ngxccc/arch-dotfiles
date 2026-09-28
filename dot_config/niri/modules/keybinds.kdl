@@ -5,6 +5,7 @@ binds {
   Mod+D { spawn "rofi" "-show" "drun"; }
   Mod+B { spawn "google-chrome-stable"; }
   Mod+W { spawn "/home/ngxc/.config/hypr/scripts/wall-picker.sh"; }
+  Mod+P repeat=false { spawn "/home/ngxc/.config/niri/scripts/display-menu.sh"; }
 
   Mod+Q { close-window; }
   Mod+Shift+Q { spawn "/home/ngxc/.config/hypr/scripts/logout.sh"; }
@@ -33,8 +34,6 @@ binds {
 
   Mod+Alt+K { move-workspace-to-monitor-up; }
   Mod+Alt+J { move-workspace-to-monitor-down; }
-
-  Mod+S { toggle-window-floating; }
 
   Mod+1 { focus-workspace 1; }
   Mod+Shift+1 { move-column-to-workspace 1; }

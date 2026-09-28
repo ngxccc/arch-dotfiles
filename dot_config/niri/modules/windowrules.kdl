@@ -1,6 +1,12 @@
 // WHY: Xwayland drag/maximize hacks are wlroots-specific artifacts. Niri's satellite proxy inherently fixes these at the root.
 
 window-rule {
+  match app-id=r#"^(wl-mirror|at\.yrlf\.wl_mirror)$"#
+  open-on-output "HDMI-A-1"
+  open-fullscreen true
+}
+
+window-rule {
     match app-id=r#"^(?i)(thunar|nwg-look|blueman-manager|org\.fcitx\.fcitx5-config-qt)$"#
     open-floating true
     default-column-width { fixed 800; }

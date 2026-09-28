@@ -122,6 +122,7 @@ wget
 wireplumber
 wl-clip-persist
 wl-clipboard
+wl-mirror
 xdg-utils
 xwayland-satellite
 yazi

@@ -22,6 +22,7 @@ return {
       cs = { "csharpier" },
       razor = { "prettier" },
       go = { "goimports", "gofumpt" },
+      sql = { "sql_formatter" },
     }
 
     require("conform").setup({
@@ -75,6 +76,9 @@ return {
               razor = "html",
             },
           },
+        },
+        sql_formatter = {
+          prepend_args = { "-l", "postgresql" },
         },
       },
     })

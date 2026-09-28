@@ -40,3 +40,5 @@
 	autoSetupRemote = true
 [status]
 	showUntrackedFiles = all
+[merge]
+	conflictstyle = diff3

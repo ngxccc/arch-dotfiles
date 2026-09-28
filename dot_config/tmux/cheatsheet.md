@@ -62,19 +62,19 @@ Tmux has powerful built-in lookup tools so you never forget a keybinding:
 
 Each project should run in its own Session. To switch projects, detach from the current session and attach to another.
 
-| Terminal Command                    | Function                                                                                          |
-| :---------------------------------- | :------------------------------------------------------------------------------------------------ |
-| `tmux new -s <name>`                | Create a new named session (e.g., `tmux new -s project-A`)                                        |
-| `tmux ls`                           | List all currently running background sessions                                                    |
-| `tmux a`                            | Attach to the most recently used session                                                          |
-| `tmux a -t <name>`                  | Attach to a specific session by name                                                              |
-| `Prefix` + `d`                      | Detach from the current session (Neovim and all processes continue running in the background)     |
-| `Prefix` + `s`                      | Show an interactive session list to switch between sessions (press `x` on a session to delete it) |
-| `Prefix` + `$`                      | Rename the current session                                                                        |
-| `tmux rename-session -t <old> <new>` | Rename a session from the command line                                                           |
-| `tmux kill-session -t <name>`       | Terminate a specific session by name                                                              |
-| `tmux kill-session -a`              | Kill all other sessions (keeping only the current one)                                            |
-| `tmux kill-server`                  | Shut down all sessions and the Tmux server entirely                                               |
+| Terminal Command                     | Function                                                                                          |
+| :----------------------------------- | :------------------------------------------------------------------------------------------------ |
+| `tmux new -s <name>`                 | Create a new named session (e.g., `tmux new -s project-A`)                                        |
+| `tmux ls`                            | List all currently running background sessions                                                    |
+| `tmux a`                             | Attach to the most recently used session                                                          |
+| `tmux a -t <name>`                   | Attach to a specific session by name                                                              |
+| `Prefix` + `d`                       | Detach from the current session (Neovim and all processes continue running in the background)     |
+| `Prefix` + `s`                       | Show an interactive session list to switch between sessions (press `x` on a session to delete it) |
+| `Prefix` + `$`                       | Rename the current session                                                                        |
+| `tmux rename-session -t <old> <new>` | Rename a session from the command line                                                            |
+| `tmux kill-session -t <name>`        | Terminate a specific session by name                                                              |
+| `tmux kill-session -a`               | Kill all other sessions (keeping only the current one)                                            |
+| `tmux kill-server`                   | Shut down all sessions and the Tmux server entirely                                               |
 
 ---
 
