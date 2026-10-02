@@ -149,6 +149,29 @@ function compress-video-no-audio() {
     ffmpeg -nostdin -vaapi_device /dev/dri/renderD128 -i "$input" -vf 'format=nv12,hwupload' -c:v hevc_vaapi -rc_mode CQP -qp 28 -an "$output"
 }
 
+# SYNOPSIS: Tra cuu nhanh cheatsheet qua fzf (Phim tat: Ctrl + Y)
+function cheatsheet-finder() {
+    local cheats_dir="$HOME/.config/cheatsheets"
+    local selected=$(find "$cheats_dir" -type f -name "*.md" -printf "%f\n" | \
+        fzf --prompt="Cheatsheet > " \
+            --height=80% \
+            --layout=reverse \
+            --border=rounded \
+            --preview="cat $cheats_dir/{}" \
+            --preview-window=right:65%:wrap)
+
+    if [[ -n "$selected" ]]; then
+        zle -I 2>/dev/null || true
+        nvim -R "$cheats_dir/$selected"
+    fi
+    zle reset-prompt 2>/dev/null || true
+}
+zle -N cheatsheet-finder 2>/dev/null || true
+bindkey '^Y' cheatsheet-finder
+bindkey -M emacs '^Y' cheatsheet-finder 2>/dev/null || true
+bindkey -M viins '^Y' cheatsheet-finder 2>/dev/null || true
+bindkey -M vicmd '^Y' cheatsheet-finder 2>/dev/null || true
+
 source $ZSH/oh-my-zsh.sh
 
 # Alias
