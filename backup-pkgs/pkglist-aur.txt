@@ -13,4 +13,5 @@ sddm-theme-corners-git
 tela-circle-icon-theme-black-git
 ttf-ms-fonts
 visual-studio-code-bin
+witr-bin
 yay

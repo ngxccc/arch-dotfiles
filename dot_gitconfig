@@ -4,7 +4,7 @@
 	signingkey = /home/ngxc/.ssh/ngxc.pub
 [alias]
 	st = status
-	co = checkout
+	sw = switch
 	br = branch
 	up = rebase
 	ci = commit
@@ -28,12 +28,9 @@
   excludesfile = /home/ngxc/.gitignore_global
 	autocrlf = false
 	eol = lf
-	editor = nvim
-	pager = cat
+  editor = nvim
 [fetch]
 	prune = true
-[pager]
-	diff = false
 [difftool]
 	prompt = false
 [push]
@@ -41,4 +38,4 @@
 [status]
 	showUntrackedFiles = all
 [merge]
-	conflictstyle = diff3
+  conflictstyle = zdiff3

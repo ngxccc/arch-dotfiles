@@ -8,6 +8,7 @@ aspnet-targeting-pack
 awww
 base
 base-devel
+bat
 biome
 bluetui
 bluez
@@ -25,8 +26,10 @@ cups-pk-helper
 docker
 docker-compose
 dotnet-sdk
+duf
 efibootmgr
 evtest
+eza
 fastfetch
 fcitx5
 fcitx5-configtool
@@ -51,6 +54,7 @@ jq
 keychain
 kitty
 kondo
+less
 libpulse
 libva-utils
 linux

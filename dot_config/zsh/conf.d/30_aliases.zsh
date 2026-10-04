@@ -5,6 +5,11 @@
 alias sudo='sudo '
 alias vim='nvim'
 alias zed='zeditor'
+alias ls="eza --icons=auto"
+alias ll="eza -l --icons=auto --git --header"
+alias la="eza -la --icons=auto --git --header"
+alias lt="eza --tree --level=2 --icons=auto"
+alias cat="bat --paging=never"
 
 # SYNOPSIS: Clean system packages and junk configs (Arch Linux)
 alias sc='sysclean'
