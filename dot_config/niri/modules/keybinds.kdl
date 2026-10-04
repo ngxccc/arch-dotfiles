@@ -3,7 +3,7 @@ binds {
   Mod+E { spawn "thunar"; }
   Mod+Shift+E { spawn "kitty" "-e" "yazi"; }
   Mod+D { spawn "rofi" "-show" "drun"; }
-  Mod+B { spawn "google-chrome-stable"; }
+  Mod+B { spawn "killall" "-SIGUSR1" "waybar"; }
   Mod+W { spawn "/home/ngxc/.config/hypr/scripts/wall-picker.sh"; }
   Mod+P repeat=false { spawn "/home/ngxc/.config/niri/scripts/display-menu.sh"; }
 
@@ -17,7 +17,6 @@ binds {
   Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
   Mod+Tab { toggle-overview; }
 
-  Mod+Shift+B { spawn "killall" "-SIGUSR2" "waybar"; }
   Mod+Shift+Slash { spawn "/home/ngxc/.config/niri/scripts/niri-keys.py"; }
 
   Mod+H { focus-column-left; }

@@ -74,8 +74,8 @@ hl.bind(
 )
 hl.bind(
   mainMod .. " + B",
-  hl.dsp.exec_cmd(apps.browser),
-  { desc = "Open Browser" }
+  hl.dsp.exec_cmd("killall -SIGUSR1 waybar"),
+  { desc = "Toggle Waybar" }
 )
 hl.bind(
   mainMod .. " + W",
@@ -103,11 +103,6 @@ hl.bind(
   mainMod .. " + P",
   hl.dsp.window.pseudo(),
   { desc = "Toggle Pseudo Mode" }
-)
-hl.bind(
-  mainMod .. " + SHIFT + B",
-  hl.dsp.exec_cmd("killall -SIGUSR2 waybar"),
-  { desc = "Toggle Waybar" }
 )
 hl.bind(
   mainMod .. " + SHIFT + SLASH",

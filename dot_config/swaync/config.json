@@ -74,16 +74,16 @@
           "command": "sh -c 'if [ \"$XDG_CURRENT_DESKTOP\" = \"niri\" ]; then niri msg action quit --skip-confirmation; else uwsm stop; fi'"
         },
         {
-          "label": "󰐥",
-          "command": "systemctl poweroff"
-        },
-        {
           "label": "󰜉",
           "command": "systemctl reboot"
         },
         {
+          "label": "󰐥",
+          "command": "systemctl poweroff"
+        },
+        {
           "label": "󰂯",
-          "command": "kitty --title bluetui -e bluetui"
+          "command": "swaync-client -cp; env -u CI -u NO_COLOR COLORTERM=truecolor kitty --title bluetui -e bluetui"
         }
       ]
     },
