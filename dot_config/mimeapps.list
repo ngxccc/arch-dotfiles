@@ -16,6 +16,7 @@ x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/apidog=apidog.desktop
 inode/directory=thunar.desktop
 application/pdf=com.google.Chrome.desktop
+x-scheme-handler/dbx=dbx-handler.desktop
 
 [Added Associations]
 image/png=imv.desktop;

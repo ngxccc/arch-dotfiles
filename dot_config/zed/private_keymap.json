@@ -1,0 +1,134 @@
+// Zed keymap
+// Synced with Neovim configuration (~/.config/nvim)
+[
+  // 1. Insert mode bindings
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "ctrl-c": "vim::NormalBefore",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "ctrl-k": "editor::ShowSignatureHelp",
+    },
+  },
+
+  // 2. Normal mode bindings (Buffer editing, LSP, Windows, Git, Navigation)
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // Line Navigation (H: ^, L: $)
+      "H": "vim::StartOfLine",
+      "L": "vim::EndOfLine",
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+
+      // Quick line deletions & helpers
+      "space d l": ["workspace::SendKeystrokes", "d d"],
+      "space d": ["workspace::SendKeystrokes", "d d"],
+      "space o": ["workspace::SendKeystrokes", "o escape"],
+      "space shift-o": ["workspace::SendKeystrokes", "O escape"],
+      "space a": "editor::SelectAll",
+      "space s h": "editor::Cancel",
+      "space n h": "editor::Cancel",
+
+      // LSP navigation & actions
+      "shift-k": "editor::Hover",
+      "g d": "editor::GoToDefinition",
+      "g t": "editor::GoToTypeDefinition",
+      "g i": "editor::GoToImplementation",
+      "g r": "editor::FindAllReferences",
+      "g l": "editor::ToggleSelectedDiffHunks",
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+      "space r n": "editor::Rename",
+      "space c a": "editor::ToggleCodeActions",
+      "space x x": "diagnostics::Deploy",
+
+      // Path yanking
+      "space y p": "workspace::CopyRelativePath",
+      "space y shift-p": "workspace::CopyPath",
+
+      // File finder & Search
+      "space f f": "file_finder::Toggle",
+      "space f w": "pane::DeploySearch",
+      "space f b": "tab_switcher::Toggle",
+      "space space": "pane::ActivatePreviousItem",
+
+      // Buffers & Window splits
+      "space b d": "pane::CloseActiveItem",
+      "space b o": "pane::CloseOtherItems",
+      "space w v": "pane::SplitRight",
+      "space w s": "pane::SplitDown",
+
+      // Git & File Tree
+      "space e": "workspace::ToggleRightDock",
+      "space shift-e": "pane::RevealInProjectPanel",
+      "space g s": "git_panel::ToggleFocus",
+      "space g d": "editor::ToggleSelectedDiffHunks",
+    },
+  },
+
+  // 3. Visual mode bindings
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      ">": "editor::Indent",
+      "<": "editor::Outdent",
+      "shift-h": "vim::StartOfLine",
+      "shift-l": "vim::EndOfLine",
+      "space p": ["workspace::SendKeystrokes", "\" _ d P"],
+    },
+  },
+
+  // 5. Completion menu navigation (sync từ blink.cmp / telescope)
+  {
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "ctrl-j": "editor::ContextMenuNext",
+      "ctrl-k": "editor::ContextMenuPrevious",
+    },
+  },
+
+  // 6. Unbinds
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-i": null,
+    },
+  },
+
+  // 7. Pane / Window movement
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-q": "pane::CloseActiveItem",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "space e": "workspace::ToggleRightDock",
+    },
+  },
+  // 8. Project Panel Navigation (j/k/h/l, o/enter, a/d/r)
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrevious",
+      "h": "project_panel::CollapseSelectedEntry",
+      "l": "project_panel::ExpandSelectedEntry",
+      "o": "project_panel::Open",
+      "enter": "project_panel::Open",
+      "a": "project_panel::NewFile",
+      "shift-a": "project_panel::NewDirectory",
+      "d": "project_panel::Delete",
+      "r": "project_panel::Rename",
+      "q": "project_panel::ToggleFocus",
+      "escape": "project_panel::ToggleFocus",
+      "space e": "workspace::ToggleRightDock",
+    },
+  },
+]

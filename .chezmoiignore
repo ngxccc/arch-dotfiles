@@ -7,3 +7,14 @@ install.sh
 
 .DS_Store
 Thumbs.db
+
+# Sensitive & ephemeral files (NEVER commit to dotfiles)
+.secrets.env
+.git-credentials
+.zsh_history
+.bash_history
+.zcompdump*
+*.bak*
+*.fd
+*.iso
+*.qcow2

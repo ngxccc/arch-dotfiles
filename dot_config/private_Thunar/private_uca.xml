@@ -6,7 +6,43 @@
 	<submenu></submenu>
 	<unique-id>1778052166281975-1</unique-id>
 	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
-	<description>Example for a custom action</description>
+	<description>Open terminal in current directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>zed</icon>
+	<name>Zed</name>
+	<submenu>Open with</submenu>
+	<unique-id>1778052166281975-2</unique-id>
+	<command>zeditor %f</command>
+	<description>Open folder with Zed</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>code</icon>
+	<name>VS Code</name>
+	<submenu>Open with</submenu>
+	<unique-id>1778052166281975-3</unique-id>
+	<command>code %f</command>
+	<description>Open folder with VS Code</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>text-editor</icon>
+	<name>Vim</name>
+	<submenu>Open with</submenu>
+	<unique-id>1778052166281975-4</unique-id>
+	<command>kitty --directory %f vim .</command>
+	<description>Open folder with Vim in Kitty</description>
 	<range></range>
 	<patterns>*</patterns>
 	<startup-notify/>

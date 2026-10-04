@@ -1,5 +1,4 @@
 batctl-tui
-beekeeper-studio-bin
 bibata-cursor-theme-bin
 brave-bin
 doppler-cli-bin

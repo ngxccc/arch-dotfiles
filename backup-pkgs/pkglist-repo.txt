@@ -25,7 +25,6 @@ cups-pk-helper
 docker
 docker-compose
 dotnet-sdk
-dua-cli
 efibootmgr
 evtest
 fastfetch
@@ -37,6 +36,7 @@ fd
 fnm
 freerdp
 fzf
+gdu
 git
 github-cli
 gnome-keyring

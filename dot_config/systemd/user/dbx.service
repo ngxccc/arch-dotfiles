@@ -1,0 +1,13 @@
+[Unit]
+Description=DBX Web Standalone Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/dbx-web
+EnvironmentFile=%h/.local/share/dbx-web/.env
+ExecStart=%h/.local/share/dbx-web/bin/dbx-web-bin
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

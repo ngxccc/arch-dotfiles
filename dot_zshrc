@@ -1,204 +1,22 @@
-export ZSH="$HOME/.oh-my-zsh"
-export PATH="/home/ngxc/.local/share/nvim/mason/bin:/home/ngxc/.bun/bin:$PATH"
-export PATH="/home/ngxc/.local/bin:$PATH"
-export EDITOR="nvim"
+# ==============================================================================
+# ~/.zshrc - Entrypoint Loader
+# ==============================================================================
 
-# ZSH_THEME="robbyrussell"
-ZSH_THEME=""
-
-plugins=(
-  git
-  web-search
-  colored-man-pages
-  command-not-found
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/porsche.omp.json)"
-eval "$(keychain --eval --quiet --noask ngxc)"
-eval "$(fnm env --use-on-cd --shell zsh)"
-eval "$(zoxide init zsh)"
-
-# SYNOPSIS: Vào yazi
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
-
-# SYNOPSIS: Xoá các file, dir không tồn tại trong chezmoi
-function cz-purge() {
-    echo "[!] Đang quét toàn bộ hệ sinh thái (Files & Dirs)..."
-
-    chezmoi managed --include=files,dirs | tac | while IFS= read -r f; do
-        local target_path="$HOME/$f"
-
-        # Nếu node không tồn tại vật lý (-e) và không phải broken symlink (-L)
-        if [ ! -e "$target_path" ] && [ ! -L "$target_path" ]; then
-            
-           echo "[D] Tiễn vong target: $target_path"            
-            # Thực hiện lệnh forget
-            chezmoi forget "$target_path"
-        fi
-    done
-
-    echo "[v] Hệ thống đã sạch bóng quân thù!"
-}
-
-# SYNOPSIS: Export các pkg hệ thống
-function backup_pkgs() {
-  local backup_dir="$HOME/backup-pkgs"
-  mkdir -p "$backup_dir"
-  pacman -Qqen > "$backup_dir/pkglist-repo.txt"
-  pacman -Qqem > "$backup_dir/pkglist-aur.txt"
-  print -P "%F{green}✔ Packages successfully dumped to %f%B$backup_dir%b"
-}
-
-# SYNOPSIS: Tự động quét, đồng bộ và đẩy Dotfiles lên GitHub qua động cơ Chezmoi.
-function dot-sync() {
-  backup_pkgs
-
-  echo -e "\e[36m🚀 Đang kích hoạt Radar Chezmoi quét lõi hệ thống...\e[0m"
-
-  echo -e "\e[33m🔄 Đang đối chiếu Target State và Source State...\e[0m"
-  chezmoi re-add
-
-  local git_status=$(chezmoi git -- status --porcelain)
-
-  if [[ -z "$git_status" ]]; then
-      echo -e "\e[90m⚡ Config đang nguyên vẹn, hệ thống tĩnh lặng!\e[0m"
-  else
-      echo -e "\e[33m📦 Phát hiện biến động config trong hầm chứa! Đang đóng gói...\e[0m"
-      chezmoi git -- add .
-      
-      local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-      chezmoi git -- commit -m "chore: auto-sync dotfiles at $timestamp" >/dev/null 2>&1
-      
-      echo -e "\e[36m🚀 Đang phóng tên lửa lên GitHub...\e[0m"
-      chezmoi git -- push
-      
-      echo -e "\e[32m✅ Sync Chezmoi thành công rực rỡ! Code đã được backup an toàn.\e[0m"
-  fi
-}
-
-# SYNOPSIS: Menu tổng hợp các bí thuật (Auto Generate Doc)
-function dot-help() {
-    clear
-    echo -e "\e[36m🚀 BẢNG PHONG THẦN - AUTO DOTFILES COMMANDS 🚀\e[0m\n"
-
-    # PERF: Sử dụng AWK để xây dựng Lexical Parser, tốc độ quét 10.000 dòng/giây
-    # Lưu ý: Thay ~/.zshrc bằng đường dẫn thư mục chứa script nếu chia nhỏ file. 
-    # Ví dụ: awk '...' ~/.config/zsh/scripts/*.zsh
-    awk '
-        # 1. Bắt tín hiệu Metadata
-        /^# SYNOPSIS:/ {
-            desc = substr($0, 13)
-            sub(/^[ \t]+/, "", desc)
-            next
-        }
-        
-        # 2. Bắt tín hiệu khởi tạo Hàm hoặc Alias
-        /^(function [a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+\(\)|alias [a-zA-Z0-9_-]+=)/ {
-            if (desc != "") {
-                if ($1 == "alias") {
-                    cmd_name = $2
-                    split(cmd_name, parts, "=")
-                    cmd_name = parts[1]
-                } else if ($1 == "function") {
-                    cmd_name = $2
-                } else {
-                    cmd_name = $1
-                }
-                sub(/\(\)/, "", cmd_name)
-                
-                # Render UI
-                printf "\033[32m%-25s\033[0m %s\n", cmd_name, desc
-                desc = ""
-            }
-        }
-        
-        # 3. Reset state
-        /^[^# \t]/ { desc = "" }
-    ' ~/.zshrc
-}
-
-# Video Compression (GPU AMD VA-API + H.265 / HEVC)
-# SYNOPSIS: Compress screen recording video using AMD GPU VA-API (H.265 / HEVC) with audio
-function compress-video() {
-    if [ -z "$1" ]; then
-        echo "Usage: compress-video <input_file.mp4> [output_file.mp4]"
-        return 1
-    fi
-    local input="$1"
-    local output="${2:-compressed_${input}}"
-    ffmpeg -nostdin -vaapi_device /dev/dri/renderD128 -i "$input" -vf 'format=nv12,hwupload' -c:v hevc_vaapi -rc_mode CQP -qp 28 -c:a aac -b:a 128k "$output"
-}
-
-# SYNOPSIS: Compress screen recording video using AMD GPU VA-API (H.265 / HEVC) without audio
-function compress-video-no-audio() {
-    if [ -z "$1" ]; then
-        echo "Usage: compress-video-no-audio <input_file.mp4> [output_file.mp4]"
-        return 1
-    fi
-    local input="$1"
-    local output="${2:-compressed_no_audio_${input}}"
-    ffmpeg -nostdin -vaapi_device /dev/dri/renderD128 -i "$input" -vf 'format=nv12,hwupload' -c:v hevc_vaapi -rc_mode CQP -qp 28 -an "$output"
-}
-
-# SYNOPSIS: Tra cuu nhanh cheatsheet qua fzf (Phim tat: Ctrl + Y)
-function cheatsheet-finder() {
-    local cheats_dir="$HOME/.config/cheatsheets"
-    local selected=$(find "$cheats_dir" -type f -name "*.md" -printf "%f\n" | \
-        fzf --prompt="Cheatsheet > " \
-            --height=80% \
-            --layout=reverse \
-            --border=rounded \
-            --preview="cat $cheats_dir/{}" \
-            --preview-window=right:65%:wrap)
-
-    if [[ -n "$selected" ]]; then
-        zle -I 2>/dev/null || true
-        nvim -R "$cheats_dir/$selected"
-    fi
-    zle reset-prompt 2>/dev/null || true
-}
-zle -N cheatsheet-finder 2>/dev/null || true
-bindkey '^Y' cheatsheet-finder
-bindkey -M emacs '^Y' cheatsheet-finder 2>/dev/null || true
-bindkey -M viins '^Y' cheatsheet-finder 2>/dev/null || true
-bindkey -M vicmd '^Y' cheatsheet-finder 2>/dev/null || true
-
-source $ZSH/oh-my-zsh.sh
-
-# Alias
-# SYNOPSIS: Xem menu hướng dẫn (Bảng Phong Thần)
-alias dh='dot-help'
-# SYNOPSIS: Đồng bộ hóa cấu hình (Chezmoi sync/backup)
-alias ds='dot-sync'
-# SYNOPSIS: Sao lưu danh sách các gói cài đặt hệ thống
-alias bpkg='backup_pkgs'
-alias sudo='sudo '
-alias vim='nvim'
-alias v='nvim'
-alias vi='nvim'
-alias zed='zeditor'
-# SYNOPSIS: Khởi động dịch vụ Docker
-alias d-up="sudo systemctl start docker.service && echo \"Docker is ON\""
-# SYNOPSIS: Tắt dịch vụ Docker
-alias d-down="sudo systemctl stop docker.service && echo \"Docker is OFF\""
-alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user mask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
-alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
-# SYNOPSIS: Dọn dẹp hệ thống & cấu hình rác (Arch Linux)
-alias sc='sysclean'
-# Screen Recording (wf-recorder + AMD VA-API 60fps + Audio)
-alias rec-screen='wf-recorder -a -r 60 -c h264_vaapi -d /dev/dri/renderD128 -f ~/videos/screen_$(date +%Y%m%d_%H%M%S).mp4'
-alias rec-screen-sys='wf-recorder --audio=alsa_output.pci-0000_33_00.6.HiFi__Headphones__sink.monitor -r 60 -c h264_vaapi -d /dev/dri/renderD128 -f ~/videos/screen_sys_$(date +%Y%m%d_%H%M%S).mp4'
-
+# 1. Load environment secrets first if available (API keys, Tokens)
 if [ -f "$HOME/.secrets.env" ]; then
-    source "$HOME/.secrets.env"
+  # Automatically export all variables defined in secrets.env
+  set -a
+  source "$HOME/.secrets.env"
+  set +a
 fi
 
+# 2. Sequentially load modular configs from ~/.config/zsh/conf.d/*.zsh
+ZSH_CONF_DIR="$HOME/.config/zsh/conf.d"
+
+if [ -d "$ZSH_CONF_DIR" ]; then
+  for conf in "$ZSH_CONF_DIR"/*.zsh; do
+    [ -r "$conf" ] && source "$conf"
+  done
+  unset conf
+fi
+unset ZSH_CONF_DIR

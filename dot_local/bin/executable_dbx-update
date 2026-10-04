@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Script: dbx-update
+# Description: Automatically fetches and updates DBX Web Standalone to the latest
+#              GitHub release while preserving user data and .env configs.
+# ==============================================================================
+
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/share/dbx-web"
+DATA_DIR="$INSTALL_DIR/data"
+ENV_FILE="$INSTALL_DIR/.env"
+TMP_DIR="$(mktemp -d -t "dbx-update-XXXXXX")"
+
+cleanup() {
+  rm -rf "$TMP_DIR"
+}
+trap cleanup EXIT
+
+echo -e "\e[36m🔍 Checking for latest DBX release from GitHub...\e[0m"
+
+RELEASE_DATA="$(curl -sL https://api.github.com/repos/t8y2/dbx/releases/latest)"
+TAG_NAME="$(echo "$RELEASE_DATA" | grep -o '"tag_name": *"[^"]*"' | head -n 1 | cut -d'"' -f4)"
+DOWNLOAD_URL="$(echo "$RELEASE_DATA" | grep '"browser_download_url":' | grep 'browser-static\.tar\.gz' | head -n 1 | cut -d'"' -f4)"
+
+if [ -z "$TAG_NAME" ] || [ -z "$DOWNLOAD_URL" ]; then
+  echo -e "\e[31m❌ Failed to parse latest release asset from GitHub API.\e[0m"
+  exit 1
+fi
+
+echo -e "\e[32m✔ Target version: $TAG_NAME\e[0m"
+echo -e "\e[36m⬇ Downloading package: $(basename "$DOWNLOAD_URL")...\e[0m"
+
+curl -L --progress-bar "$DOWNLOAD_URL" -o "$TMP_DIR/dbx-update.tar.gz"
+
+echo -e "\e[33m⏸ Checking active DBX service status...\e[0m"
+WAS_ACTIVE=0
+if systemctl --user is-active --quiet dbx.service 2>/dev/null; then
+  WAS_ACTIVE=1
+  echo -e "\e[33m⏹ Stopping dbx.service for update...\e[0m"
+  systemctl --user stop dbx.service
+fi
+
+echo -e "\e[36m📦 Extracting into $INSTALL_DIR...\e[0m"
+mkdir -p "$INSTALL_DIR"
+
+# Extract archive without overwriting user data directory
+tar -xzf "$TMP_DIR/dbx-update.tar.gz" -C "$TMP_DIR"
+EXTRACTED_ROOT="$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+
+# Update binaries and scripts
+cp -rf "$EXTRACTED_ROOT/bin" "$INSTALL_DIR/"
+cp -f "$EXTRACTED_ROOT/dbx" "$INSTALL_DIR/"
+cp -f "$EXTRACTED_ROOT/README.txt" "$INSTALL_DIR/"
+chmod +x "$INSTALL_DIR/dbx" "$INSTALL_DIR/bin/dbx-web-bin"
+
+# Ensure data directory and symlink exist
+mkdir -p "$DATA_DIR"
+ln -sf "$INSTALL_DIR/dbx" "$HOME/.local/bin/dbx"
+
+# Restore service if it was previously active
+if [ "$WAS_ACTIVE" -eq 1 ]; then
+  echo -e "\e[32m▶ Restarting dbx.service...\e[0m"
+  systemctl --user start dbx.service
+fi
+
+echo -e "\e[32m🎉 DBX updated successfully to version $TAG_NAME!\e[0m"
+echo -e "\e[90m📁 Data directory preserved at: $DATA_DIR\e[0m"
