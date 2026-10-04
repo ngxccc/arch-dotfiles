@@ -50,7 +50,36 @@ fi
 
 chezmoi init --apply https://github.com/ngxccc/arch-dotfiles.git
 
-# 5. Core Services
+
+# 5. DBX Web Standalone Setup
+echo "Installing DBX Web Standalone..."
+if [ -x "$HOME/.local/bin/dbx-update" ]; then
+  "$HOME/.local/bin/dbx-update"
+else
+  DBX_DIR="$HOME/.local/share/dbx-web"
+  mkdir -p "$DBX_DIR" "$DBX_DIR/data" "$HOME/.local/bin"
+  curl -sL https://api.github.com/repos/t8y2/dbx/releases/latest \
+    | grep '"browser_download_url":' \
+    | grep 'browser-static\.tar\.gz' \
+    | head -n 1 \
+    | cut -d'"' -f4 \
+    | xargs curl -L \
+    | tar -xz -C "$DBX_DIR" --strip-components=1
+  chmod +x "$DBX_DIR/dbx" "$DBX_DIR/bin/dbx-web-bin"
+  ln -sf "$DBX_DIR/dbx" "$HOME/.local/bin/dbx"
+fi
+
+if [ ! -f "$HOME/.local/share/dbx-web/.env" ]; then
+  cat << 'EOF' > "$HOME/.local/share/dbx-web/.env"
+DBX_PORT=4224
+DBX_DATA_DIR=$HOME/.local/share/dbx-web/data
+DBX_DISABLE_PASSWORD=1
+EOF
+fi
+
+# Reload systemd user daemon for dbx.service
+systemctl --user daemon-reload || true
+# 6. Core Services
 echo "Enabling core services..."
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now libvirtd.socket
