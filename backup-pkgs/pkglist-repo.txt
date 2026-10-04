@@ -99,6 +99,7 @@ sof-firmware
 sudo
 swaylock
 swaync
+tealdeer
 texlive-basic
 texlive-binextra
 texlive-fontsrecommended
