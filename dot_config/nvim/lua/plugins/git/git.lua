@@ -9,9 +9,35 @@ return {
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFileHistory" },
-    opts = {
-      enhanced_diff_hl = true,
-    },
+    opts = function()
+      local actions = require("diffview.actions")
+      return {
+        enhanced_diff_hl = true,
+        view = {
+          default = {
+            layout = "diff2_horizontal",
+          },
+        },
+        keymaps = {
+          view = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+          },
+          file_panel = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+          },
+          file_history_panel = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+          },
+        },
+        hooks = {
+          diff_buf_read = function(bufnr)
+            for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+              vim.lsp.buf_detach_client(bufnr, client.id)
+            end
+          end,
+        },
+      }
+    end,
   },
 
   -- 3. Neogit: Native Source Control Panel interface and Git Graph

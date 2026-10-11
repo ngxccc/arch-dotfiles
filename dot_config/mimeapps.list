@@ -35,3 +35,4 @@ text/markdown=dev.zed.Zed.desktop;
 image/jpeg=imv.desktop;
 image/webp=imv.desktop;
 application/pdf=google-chrome.desktop;com.google.Chrome.desktop;
+text/x-tex=dev.zed.Zed.desktop;

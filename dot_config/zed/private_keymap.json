@@ -5,14 +5,14 @@
   {
     "context": "Editor && vim_mode == insert",
     "bindings": {
-      "ctrl-c": "vim::NormalBefore",
-    },
+      "ctrl-c": "vim::NormalBefore"
+    }
   },
   {
     "context": "Editor && vim_mode == insert && !menu",
     "bindings": {
-      "ctrl-k": "editor::ShowSignatureHelp",
-    },
+      "ctrl-k": "editor::ShowSignatureHelp"
+    }
   },
 
   // 2. Normal mode bindings (Buffer editing, LSP, Windows, Git, Navigation)
@@ -22,8 +22,10 @@
       // Line Navigation (H: ^, L: $)
       "H": "vim::StartOfLine",
       "L": "vim::EndOfLine",
-      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
-      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+      "ctrl-shift-d": "vim::ScrollDown",
+      "ctrl-shift-u": "vim::ScrollUp",
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-shift-d z z"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-shift-u z z"],
 
       // Quick line deletions & helpers
       "space d l": ["workspace::SendKeystrokes", "d d"],
@@ -67,8 +69,8 @@
       "space e": "workspace::ToggleRightDock",
       "space shift-e": "pane::RevealInProjectPanel",
       "space g s": "git_panel::ToggleFocus",
-      "space g d": "editor::ToggleSelectedDiffHunks",
-    },
+      "space g d": "editor::ToggleSelectedDiffHunks"
+    }
   },
 
   // 3. Visual mode bindings
@@ -79,28 +81,28 @@
       "<": "editor::Outdent",
       "shift-h": "vim::StartOfLine",
       "shift-l": "vim::EndOfLine",
-      "space p": ["workspace::SendKeystrokes", "\" _ d P"],
-    },
+      "space p": ["workspace::SendKeystrokes", "\" _ d P"]
+    }
   },
 
-  // 5. Completion menu navigation (sync từ blink.cmp / telescope)
+  // 4. Completion menu navigation
   {
     "context": "Editor && showing_completions",
     "bindings": {
       "ctrl-j": "editor::ContextMenuNext",
-      "ctrl-k": "editor::ContextMenuPrevious",
-    },
+      "ctrl-k": "editor::ContextMenuPrevious"
+    }
   },
 
-  // 6. Unbinds
+  // 5. Unbinds
   {
     "context": "Editor",
     "bindings": {
-      "ctrl-i": null,
-    },
+      "ctrl-i": null
+    }
   },
 
-  // 7. Pane / Window movement
+  // 6. Pane / Window movement
   {
     "context": "Pane",
     "bindings": {
@@ -108,11 +110,11 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-j": "workspace::ActivatePaneDown",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "space e": "workspace::ToggleRightDock",
-    },
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
   },
-  // 8. Project Panel Navigation (j/k/h/l, o/enter, a/d/r)
+
+  // 7. Project Panel Navigation (j/k/h/l, o/enter, a/d/r)
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
@@ -128,7 +130,7 @@
       "r": "project_panel::Rename",
       "q": "project_panel::ToggleFocus",
       "escape": "project_panel::ToggleFocus",
-      "space e": "workspace::ToggleRightDock",
-    },
-  },
+      "space e": "workspace::ToggleRightDock"
+    }
+  }
 ]

@@ -277,7 +277,7 @@ return {
           format = false,
         },
       },
-      oxlint = {
+      oxlint = vim.fn.executable("oxlint") == 1 and {
         root_markers = {
           ".oxlintrc.json",
           ".oxlintrc.jsonc",
@@ -288,7 +288,7 @@ return {
         settings = {
           run = "onSave", -- Check lint theo thời gian thực khi gõ
         },
-      },
+      } or nil,
       omnisharp = {
         settings = {
           FormattingOptions = {
@@ -457,6 +457,15 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
+        local bufname = vim.api.nvim_buf_get_name(ev.buf)
+        if bufname:match("^diffview://") or vim.bo[ev.buf].buftype ~= "" then
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client then
+            vim.lsp.buf_detach_client(ev.buf, ev.data.client_id)
+          end
+          return
+        end
+
         -- Remove Neovim 0.10 default gr... mappings to eliminate 300ms delay on `gr`
         pcall(vim.keymap.del, "n", "gra", { buffer = ev.buf })
         pcall(vim.keymap.del, "n", "gri", { buffer = ev.buf })

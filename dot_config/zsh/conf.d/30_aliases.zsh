@@ -18,7 +18,7 @@ alias sc='sysclean'
 alias d-up="sudo systemctl start docker.service && echo \"Docker is ON\""
 
 # SYNOPSIS: Stop Docker daemon
-alias d-down="sudo systemctl stop docker.service && echo \"Docker is OFF\""
+alias d-down="sudo systemctl stop docker.socket docker.service && echo \"Docker is OFF\""
 
 # SYNOPSIS: Start DBX Web server
 alias dbx-on="systemctl --user start dbx.service && echo 'DBX Web started: http://127.0.0.1:4224'"

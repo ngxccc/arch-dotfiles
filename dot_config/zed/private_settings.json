@@ -91,8 +91,8 @@
   "ensure_final_newline_on_save": true,
   "colorize_brackets": true,
   "linked_edits": true,
-  "preferred_line_length": 80,
-  "wrap_guides": [80],
+  // "preferred_line_length": 80,
+  // "wrap_guides": [80],
   "soft_wrap": "editor_width",
   "remove_trailing_whitespace_on_save": true,
   "mouse_wheel_zoom": true,
@@ -226,6 +226,16 @@
     "codebase-memory-mcp": {
       "command": "/home/ngxc/.local/bin/codebase-memory-mcp",
       "args": [""],
+    },
+  },
+  "lsp": {
+    "markdownlint": {
+      "initialization_options": {
+        "config": {
+          "MD013": false,
+          "MD024": false,
+        },
+      },
     },
   },
 }
