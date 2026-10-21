@@ -40,3 +40,12 @@ end, { desc = "Session Restore" })
 
 -- 🌳 UNDOTREE
 vim.keymap.set("n", "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", { desc = "Toggle UndoTree" })
+
+-- 📄 WORD WRAP TOGGLE (<leader>c group)
+vim.keymap.set("n", "<leader>cw", function()
+  vim.wo.wrap = not vim.wo.wrap
+  vim.wo.linebreak = vim.wo.wrap
+  vim.wo.breakindent = vim.wo.wrap
+  local status = vim.wo.wrap and "ON" or "OFF"
+  vim.notify("Word Wrap: " .. status, vim.log.levels.INFO)
+end, { desc = "Toggle Word Wrap" })

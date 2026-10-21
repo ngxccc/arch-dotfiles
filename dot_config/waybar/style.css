@@ -67,6 +67,7 @@ window#waybar.hidden {
 #battery,
 #network,
 #pulseaudio,
+#backlight,
 #custom-orbit,
 #custom-notification {
   padding: 0 10px;

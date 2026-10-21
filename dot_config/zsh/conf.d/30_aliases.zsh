@@ -29,11 +29,9 @@ alias dbx-off="systemctl --user stop dbx.service && echo 'DBX Web stopped (RAM f
 # SYNOPSIS: Update DBX Web to latest GitHub release
 alias dbx-up="dbx-update"
 
-# SYNOPSIS: Fix hanging XDG Desktop Portal by masking
-alias portal-nuke="systemctl --user stop xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user mask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
-
-# SYNOPSIS: Restore and restart XDG Desktop Portal
-alias portal-revive="systemctl --user unmask xdg-desktop-portal xdg-desktop-portal-gnome xdg-desktop-portal-gtk && systemctl --user start xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-gnome"
+# SYNOPSIS: Keep niri-screenshare OFF by default (0MB RAM), only ON when requested
+alias cast-on="systemctl --user unmask niri-screenshare && systemctl --user start niri-screenshare && echo 'Screen sharing ON'"
+alias cast-off="systemctl --user stop niri-screenshare && systemctl --user mask niri-screenshare && echo 'Screen sharing OFF (Masked - 0MB RAM)'"
 
 # Screen Recording (wf-recorder + AMD VA-API 60fps + Audio)
 # SYNOPSIS: Record screen with microphone audio

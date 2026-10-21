@@ -6,6 +6,7 @@ fcitx5-lotus-bin
 google-chrome
 graphite-gtk-theme
 k6-bin
+niri-screenshare
 oh-my-posh
 onlyoffice-bin
 postman-bin

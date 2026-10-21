@@ -6,11 +6,32 @@
   "modules-left": ["clock"],
   "modules-center": ["niri/workspaces"],
   "modules-right": [
-    "pulseaudio",
-    "network",
-    "battery",
-    "custom/notification"
+    "group/quicksettings"
   ],
+
+  "group/quicksettings": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "drawer-child",
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "battery",
+      "pulseaudio",
+      "backlight",
+      "network"
+    ]
+  },
+
+  "backlight": {
+    "device": "amdgpu_bl1",
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-",
+    "tooltip": false
+  },
 
   "custom/apps": {
     "format": "ngxc",
@@ -94,7 +115,8 @@
   "custom/notification": {
     "tooltip": false,
     "format": "",
-    "on-click": "swaync-client -t -sw",
+    "on-click": "makoctl dismiss -a",
+    "on-click-right": "makoctl restore",
   },
 
   "mpris": {

@@ -1,0 +1,54 @@
+# ==============================================================================
+# Mako Configuration (Monochrome Porsche / Minimalist Aesthetic)
+# ==============================================================================
+
+# Font & Text
+font=JetBrainsMono Nerd Font 10
+text-color=#f5f5f5
+
+# Geometry & Position
+layer=overlay
+anchor=top-right
+width=360
+height=120
+margin=12
+padding=10,14
+border-size=2
+border-radius=0
+
+# Colors (Matching Monochrome Theme)
+background-color=#1a1a1ae6
+border-color=#333333ff
+
+# Behavior
+default-timeout=4000
+ignore-timeout=0
+max-visible=5
+sort=-time
+
+# Actions
+on-button-left=dismiss
+on-button-middle=none
+on-button-right=dismiss-all
+on-touch=dismiss
+
+# Grouping
+group-by=summary
+
+# Urgency Criteria
+[urgency=low]
+background-color=#1a1a1ae6
+border-color=#333333ff
+default-timeout=2500
+
+[urgency=normal]
+background-color=#1a1a1ae6
+border-color=#333333ff
+default-timeout=4000
+
+[urgency=critical]
+background-color=#1a1a1ae6
+border-color=#e02424ff
+border-size=2
+text-color=#ffffff
+default-timeout=0

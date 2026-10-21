@@ -89,6 +89,9 @@ sudo systemctl enable --now "fcitx5-lotus-server@$(whoami).service"
 sudo systemctl disable --now cups.service
 sudo systemctl enable --now cups.socket
 
+# 7. Optimization: Mask unwanted background indexing services
+systemctl --user mask localsearch-3.service localsearch-control-3.service localsearch-writeback-3.service 2>/dev/null || true
+
 sudo systemctl disable docker.service docker.socket
 sudo systemctl stop docker.service docker.socket
 sudo usermod -aG docker $USER

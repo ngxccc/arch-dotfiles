@@ -1,0 +1,13 @@
+[mgr]
+prepend_keymap = [
+    # Shift+o: Open current directory in Thunar
+    { on = "O", run = 'shell --orphan -- thunar .', desc = "Open current directory in Thunar" },
+
+    # g T: Open hovered folder/file in Thunar
+    { on = [ "g", "T" ], run = 'shell --orphan -- thunar "%h"', desc = "Open hovered item in Thunar" },
+
+    # Bookmarks
+    { on = [ "g", "w" ], run = "cd ~/workspace", desc = "Go to Workspace" },
+    { on = [ "g", "s" ], run = "cd ~/storage",   desc = "Go to Storage" },
+    { on = [ "g", "d" ], run = "cd ~/Downloads", desc = "Go to Downloads" },
+]

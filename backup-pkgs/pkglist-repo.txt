@@ -36,10 +36,12 @@ fcitx5-configtool
 fcitx5-gtk
 fcitx5-qt
 fd
+file-roller
 fnm
 freerdp
 fzf
 gdu
+gimp
 git
 github-cli
 gnome-keyring
@@ -60,6 +62,7 @@ libva-utils
 linux
 linux-firmware
 luacheck
+mako
 mpv
 nano
 neovim
@@ -78,7 +81,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 playerctl
-polkit-kde-agent
+polkit-gnome
 power-profiles-daemon
 pulsemixer
 qemu-desktop
@@ -98,7 +101,6 @@ smartmontools
 sof-firmware
 sudo
 swaylock
-swaync
 tealdeer
 texlive-basic
 texlive-binextra

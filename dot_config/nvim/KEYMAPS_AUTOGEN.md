@@ -1,6 +1,6 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-10-04 13:39:29
+Generated on: 2026-10-12 21:47:13
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
@@ -41,6 +41,7 @@ Generated on: 2026-10-04 13:39:29
 | **`<leader>cl`** | Normal | LSP Definitions / references / ... (Trouble) |
 | **`<leader>cr`** | Normal | Config Reload Current File |
 | **`<leader>cs`** | Normal | Symbols (Trouble) |
+| **`<leader>cw`** | Normal | Toggle Word Wrap |
 | **`<leader>cx`** | Normal | Code Make Executable (+x) |
 | **`<leader>dB`** | Normal | Debug: Set Conditional Breakpoint |
 | **`<leader>dO`** | Normal | Debug: Step Out (Shift+F11) |

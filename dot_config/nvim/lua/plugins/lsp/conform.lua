@@ -8,16 +8,16 @@ return {
       python = { "ruff_format" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      javascript = { "biome", "prettier", stop_after_first = true },
-      typescript = { "biome", "prettier", stop_after_first = true },
-      javascriptreact = { "biome", "prettier", stop_after_first = true },
-      typescriptreact = { "biome", "prettier", stop_after_first = true },
+      javascript = { "oxfmt", "biome", "prettier", stop_after_first = true },
+      typescript = { "oxfmt", "biome", "prettier", stop_after_first = true },
+      javascriptreact = { "oxfmt", "biome", "prettier", stop_after_first = true },
+      typescriptreact = { "oxfmt", "biome", "prettier", stop_after_first = true },
       css = { "prettier" },
       html = { "prettier" },
       blade = { "blade-formatter" },
       php = { "pint", "php_cs_fixer", stop_after_first = true },
-      json = { "biome", "prettier", stop_after_first = true },
-      jsonc = { "biome", "prettier", stop_after_first = true },
+      json = { "oxfmt", "biome", "prettier", stop_after_first = true },
+      jsonc = { "oxfmt", "biome", "prettier", stop_after_first = true },
       markdown = { "markdownlint", "prettier" },
       cs = { "csharpier" },
       razor = { "prettier" },
@@ -32,6 +32,14 @@ return {
         lsp_fallback = true,
       },
       formatters = {
+        oxfmt = {
+          condition = function(self, ctx)
+            if not ctx.filename or ctx.filename == "" then
+              return false
+            end
+            return #vim.fs.find({ ".oxfmtrc.json", ".oxfmtrc" }, { path = ctx.dirname, upward = true }) > 0
+          end,
+        },
         biome = {
           condition = function(self, ctx)
             if not ctx.filename or ctx.filename == "" then
@@ -65,11 +73,12 @@ return {
               return true
             end
 
-            -- Check if biome config exists
+            -- Check if oxfmt or biome config exists
+            local has_oxfmt = #vim.fs.find({ ".oxfmtrc.json", ".oxfmtrc" }, { path = ctx.dirname, upward = true }) > 0
             local has_biome = #vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.dirname, upward = true }) > 0
 
-            -- If no biome config exists, prettier acts as fallback
-            return not has_biome
+            -- If neither oxfmt nor biome config exists, prettier acts as fallback
+            return not (has_oxfmt or has_biome)
           end,
           options = {
             ft_parsers = {

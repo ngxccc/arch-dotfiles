@@ -19,10 +19,23 @@ trap cleanup EXIT
 
 echo -e "\e[36m🔍 Checking for latest DBX release from GitHub...\e[0m"
 
+ARCH="$(uname -m)"
+case "$ARCH" in
+  x86_64|amd64)
+    ARCH_PATTERN="(x64|x86_64)-browser-static\.tar\.gz"
+    ;;
+  aarch64|arm64)
+    ARCH_PATTERN="(arm64|aarch64)-browser-static\.tar\.gz"
+    ;;
+  *)
+    echo -e "\e[31m❌ Unsupported architecture: $ARCH\e[0m"
+    exit 1
+    ;;
+esac
+
 RELEASE_DATA="$(curl -sL https://api.github.com/repos/t8y2/dbx/releases/latest)"
 TAG_NAME="$(echo "$RELEASE_DATA" | grep -o '"tag_name": *"[^"]*"' | head -n 1 | cut -d'"' -f4)"
-DOWNLOAD_URL="$(echo "$RELEASE_DATA" | grep '"browser_download_url":' | grep 'browser-static\.tar\.gz' | head -n 1 | cut -d'"' -f4)"
-
+DOWNLOAD_URL="$(echo "$RELEASE_DATA" | grep '"browser_download_url":' | grep -E "$ARCH_PATTERN\"" | head -n 1 | cut -d'"' -f4)"
 if [ -z "$TAG_NAME" ] || [ -z "$DOWNLOAD_URL" ]; then
   echo -e "\e[31m❌ Failed to parse latest release asset from GitHub API.\e[0m"
   exit 1
@@ -58,6 +71,8 @@ chmod +x "$INSTALL_DIR/dbx" "$INSTALL_DIR/bin/dbx-web-bin"
 mkdir -p "$DATA_DIR"
 ln -sf "$INSTALL_DIR/dbx" "$HOME/.local/bin/dbx"
 
+# Clear any failure state from prior broken runs
+systemctl --user reset-failed dbx.service 2>/dev/null || true
 # Restore service if it was previously active
 if [ "$WAS_ACTIVE" -eq 1 ]; then
   echo -e "\e[32m▶ Restarting dbx.service...\e[0m"
