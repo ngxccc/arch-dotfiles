@@ -1,10 +1,11 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-10-12 21:47:13
+Generated on: 2026-11-20 07:16:11
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
 | **`-`** | Normal | Open Parent Directory (Oil) |
+| **`<C-C>`** | Insert | Escape insert mode properly |
 | **`<C-D>`** | Normal | Scroll half page down (centered) |
 | **`<C-Down>`** | Normal | Decrease Window Height |
 | **`<C-E>`** | Normal | Harpoon: Quick Menu |
@@ -12,6 +13,7 @@ Generated on: 2026-10-12 21:47:13
 | **`<C-N>`** | Normal | Harpoon: Next File |
 | **`<C-P>`** | Normal | Harpoon: Previous File |
 | **`<C-Right>`** | Normal | Increase Window Width |
+| **`<C-S>`** | Insert | vim.lsp.buf.signature_help() |
 | **`<C-T>`** | Normal | Toggle terminal |
 | **`<C-U>`** | Normal | Scroll half page up (centered) |
 | **`<C-Up>`** | Normal | Increase Window Height |
@@ -21,24 +23,32 @@ Generated on: 2026-10-12 21:47:13
 | **`<F11>`** | Normal | Debug: Step Into |
 | **`<F12>`** | Normal | Debug: Step Out |
 | **`<F5>`** | Normal | Debug: Continue |
+| **`<S-Tab>`** | Insert | vim.snippet.jump if active, otherwise <S-Tab> |
+| **`<Tab>`** | Insert | vim.snippet.jump if active, otherwise <Tab> |
 | **`<Tab>`** | Normal | Cycle through windows |
 | **`<leader>1`** | Normal | Harpoon: File 1 |
 | **`<leader>2`** | Normal | Harpoon: File 2 |
 | **`<leader>3`** | Normal | Harpoon: File 3 |
 | **`<leader>4`** | Normal | Harpoon: File 4 |
 | **`<leader><leader>`** | Normal | Toggle Previous Active Buffer (Alternate) |
-| **`<leader>D`** | Normal | Delete to blackhole register |
-| **`<leader>D`** | Visual | Delete to blackhole register |
+| **`<leader>D`** | Normal | Delete current line to blackhole register |
+| **`<leader>D`** | Visual | Delete selection to blackhole register |
 | **`<leader>E`** | Normal | File Explorer Fullscreen (Oil) |
 | **`<leader>Sr`** | Normal | Session Restore |
 | **`<leader>Ss`** | Normal | Session Save |
 | **`<leader>ba`** | Normal | Buffer Delete All |
-| **`<leader>bb`** | Normal | Buffer List (Telescope) |
 | **`<leader>bd`** | Normal | Buffer Delete Current |
 | **`<leader>bi`** | Normal | Buffer / File Info Popup |
 | **`<leader>bo`** | Normal | Buffer Delete Others |
+| **`<leader>cL`** | Normal | LSP Run CodeLens |
 | **`<leader>cR`** | Normal | Config Reload All (init.lua) |
+| **`<leader>cW`** | Normal | Toggle Whitespace Dots |
+| **`<leader>ca`** | Normal | LSP Code Action |
+| **`<leader>ca`** | Visual | LSP Code Action |
+| **`<leader>ci`** | Normal | LSP Incoming Calls |
 | **`<leader>cl`** | Normal | LSP Definitions / references / ... (Trouble) |
+| **`<leader>cm`** | Normal | Mason: Package Manager |
+| **`<leader>co`** | Normal | LSP Outgoing Calls |
 | **`<leader>cr`** | Normal | Config Reload Current File |
 | **`<leader>cs`** | Normal | Symbols (Trouble) |
 | **`<leader>cw`** | Normal | Toggle Word Wrap |
@@ -50,7 +60,6 @@ Generated on: 2026-10-12 21:47:13
 | **`<leader>de`** | Normal | Debug: Evaluate Expression |
 | **`<leader>de`** | Visual | Debug: Evaluate Expression |
 | **`<leader>di`** | Normal | Debug: Step Into (F11) |
-| **`<leader>dl`** | Normal | Delete current line |
 | **`<leader>do`** | Normal | Debug: Step Over (F10) |
 | **`<leader>dr`** | Normal | Debug: Open REPL |
 | **`<leader>dt`** | Normal | Debug: Terminate / Stop |
@@ -70,17 +79,22 @@ Generated on: 2026-10-12 21:47:13
 | **`<leader>fs`** | Normal | Find word under cursor |
 | **`<leader>ft`** | Normal | Find TODOs in Workspace |
 | **`<leader>fw`** | Normal | Find Word in Workspace (Live Grep) |
+| **`<leader>gB`** | Normal | Git Blame Line (Full) |
 | **`<leader>gD`** | Normal | Git Diffview Close |
+| **`<leader>gR`** | Normal | Git Reset Current Buffer |
 | **`<leader>ga`** | Normal | Git Add (Stage) Current File |
 | **`<leader>gb`** | Normal | Git Branches Popup |
 | **`<leader>gd`** | Normal | Git Diffview Open |
+| **`<leader>gf`** | Normal | Git Diff Current File (Split) |
 | **`<leader>gg`** | Normal | Open Neogit Panel |
+| **`<leader>gh`** | Normal | Git Stage / Unstage Hunk |
+| **`<leader>gh`** | Visual | Git Stage / Unstage Selected Hunk |
+| **`<leader>gi`** | Normal | Git Preview Hunk (Inline) |
 | **`<leader>gl`** | Normal | Git Commit Log Popup |
+| **`<leader>gp`** | Normal | Git Preview Hunk (Float) |
+| **`<leader>gr`** | Normal | Git Reset Hunk |
+| **`<leader>gr`** | Visual | Git Reset Selected Hunk |
 | **`<leader>gs`** | Normal | Git Status (Changed Files Popup) |
-| **`<leader>h1`** | Normal | Harpoon: File 1 |
-| **`<leader>h2`** | Normal | Harpoon: File 2 |
-| **`<leader>h3`** | Normal | Harpoon: File 3 |
-| **`<leader>h4`** | Normal | Harpoon: File 4 |
 | **`<leader>ha`** | Normal | Harpoon: Add File |
 | **`<leader>lc`** | Normal | Location List Close |
 | **`<leader>li`** | Normal | LSP Info Healthcheck |
@@ -88,6 +102,7 @@ Generated on: 2026-10-12 21:47:13
 | **`<leader>lo`** | Normal | Location List Open |
 | **`<leader>lp`** | Normal | Location List Prev item |
 | **`<leader>lr`** | Normal | LSP & TS Diagnostics Restart |
+| **`<leader>lt`** | Normal | LSP Type Definition |
 | **`<leader>mS`** | Normal | Stop Markdown Preview Server |
 | **`<leader>mp`** | Normal | Toggle Markdown Preview (Browser) |
 | **`<leader>p`** | Visual | Paste without overwriting register |
@@ -95,6 +110,9 @@ Generated on: 2026-10-12 21:47:13
 | **`<leader>qn`** | Normal | Quickfix Next item |
 | **`<leader>qo`** | Normal | Quickfix Open |
 | **`<leader>qp`** | Normal | Quickfix Prev item |
+| **`<leader>rn`** | Normal | LSP Rename Symbol |
+| **`<leader>sA`** | Normal | AST Structural Search (ast-grep) |
+| **`<leader>sA`** | Visual | AST Structural Search (ast-grep) |
 | **`<leader>sb`** | Normal | Search & Replace word in buffer |
 | **`<leader>sh`** | Normal | Search Highlight Clear |
 | **`<leader>sr`** | Normal | Search and Replace (GrugFar) |
@@ -125,6 +143,7 @@ Generated on: 2026-10-12 21:47:13
 | **`H`** | Normal | Move to start of line |
 | **`H`** | Visual | Move to start of line |
 | **`J`** | Normal | Join lines and keep cursor position |
+| **`K`** | Normal | LSP Hover Info |
 | **`L`** | Normal | Move to end of line |
 | **`L`** | Visual | Move to end of line |
 | **`Q`** | Normal | Disable macro replay / Ex mode |
@@ -141,6 +160,7 @@ Generated on: 2026-10-12 21:47:13
 | **`[f`** | Normal | Previous Function Start |
 | **`[f`** | Operator | Previous Function Start |
 | **`[f`** | Visual | Previous Function Start |
+| **`[h`** | Normal | Previous Git Hunk |
 | **`[n`** | Visual | Select previous node |
 | **`[t`** | Normal | Previous Tab |
 | **`]<leader>`** | Normal | Add empty line below cursor |
@@ -156,6 +176,7 @@ Generated on: 2026-10-12 21:47:13
 | **`]f`** | Normal | Next Function Start |
 | **`]f`** | Operator | Next Function Start |
 | **`]f`** | Visual | Next Function Start |
+| **`]h`** | Normal | Next Git Hunk |
 | **`]n`** | Visual | Select next node |
 | **`]t`** | Normal | Next Tab |
 | **`ac`** | Operator | Select outer class |
@@ -169,7 +190,10 @@ Generated on: 2026-10-12 21:47:13
 | **`gc`** | Operator | Comment textobject |
 | **`gc`** | Visual | Toggle comment |
 | **`gcc`** | Normal | Toggle comment line |
+| **`gd`** | Normal | LSP Definition |
+| **`gi`** | Normal | LSP Implementation |
 | **`gl`** | Normal | Show Line Diagnostics |
+| **`gr`** | Normal | LSP References |
 | **`gra`** | Normal | LSP Code Action |
 | **`gra`** | Visual | LSP Code Action |
 | **`gri`** | Normal | LSP Go to Implementation |
@@ -183,6 +207,8 @@ Generated on: 2026-10-12 21:47:13
 | **`ic`** | Visual | Select inner class |
 | **`if`** | Operator | Select inner function |
 | **`if`** | Visual | Select inner function |
+| **`ih`** | Operator | Select Git Hunk |
+| **`ih`** | Visual | Select Git Hunk |
 | **`in`** | Operator | Select child (inner) node |
 | **`in`** | Visual | Select child (inner) node |
 | **`q`** | Normal | Disable macro recording |
@@ -190,3 +216,5 @@ Generated on: 2026-10-12 21:47:13
 | **`zR`** | Normal | Open All Folds (UFO) |
 | **`zm`** | Normal | Close Folds With (UFO) |
 | **`zr`** | Normal | Open Folds Except Kinds (UFO) |
+
+> Blink.cmp insert-mode keys (`<Tab>`, `<S-Tab>`, `<C-j>`, `<C-k>`, `<C-Space>`, `<C-e>`, `<CR>`, `<C-f>`, `<C-b>`, `<C-x>`) are internal to blink.cmp and do not appear in `nvim_get_keymap()`.

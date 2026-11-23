@@ -47,7 +47,11 @@ return {
     end
 
     require("ufo").setup({
-      provider_selector = function()
+      provider_selector = function(bufnr)
+        -- Big files: disable folding (avoids Treesitter/indent provider cost)
+        if _G.is_big_file(bufnr) then
+          return nil
+        end
         -- Prefer Treesitter (fast and accurate), with automatic fallback to Indent
         return { "treesitter", "indent" }
       end,

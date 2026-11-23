@@ -31,6 +31,12 @@ window-rule {
 }
 
 window-rule {
+    match app-id="alolite"
+    open-floating false
+    default-column-width { fixed 1020; }
+}
+
+window-rule {
     match app-id="kitty" title=r#"(?i)nvim"#
     opacity 1.0
 }

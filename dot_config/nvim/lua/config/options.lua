@@ -15,6 +15,15 @@ set.softtabstop = 2
 set.autoindent = true
 set.expandtab = true
 
+-- whitespace visibility (dots for spaces, arrows for tabs)
+set.list = true
+set.listchars = {
+  tab = "▸ ",
+  space = "·",
+  trail = "•",
+  nbsp = "␣",
+}
+
 -- search settings
 set.ignorecase = true
 set.smartcase = true
@@ -52,7 +61,8 @@ end
 
 -- Clipboard setup based on current environment (using system tools rather than OSC 52 to avoid prompts)
 local function configure_clipboard()
-  local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 and vim.fn.executable("wl-paste") == 1
+  local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 and
+  vim.fn.executable("wl-paste") == 1
   local has_x11 = vim.env.DISPLAY ~= nil and (vim.fn.executable("xclip") == 1 or vim.fn.executable("xsel") == 1)
 
   if has_wayland then
@@ -110,16 +120,22 @@ vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
   end,
 })
 
--- Ensure any yank in normal/visual mode (including terminal buffers) syncs to system clipboard
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = vim.api.nvim_create_augroup("UserClipboardSync", { clear = true }),
-  desc = "Sync yanked content to system clipboard",
-  callback = function()
-    if vim.v.event.operator == "y" then
-      pcall(vim.fn.setreg, "+", vim.fn.getreg('"'))
+-- Big-file helper shared by treesitter / ufo / autopairs / conform / nvim-lint / LSP.
+-- AGENTS invariant: > 500 KB or > 5000 lines is considered a "big file".
+function _G.is_big_file(bufnr)
+  bufnr = (bufnr == nil or bufnr == 0) and vim.api.nvim_get_current_buf() or bufnr
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return false
+  end
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  if name ~= "" then
+    local ok, stats = pcall(vim.uv.fs_stat, name)
+    if ok and stats and stats.size > 500 * 1024 then
+      return true
     end
-  end,
-})
+  end
+  return vim.api.nvim_buf_line_count(bufnr) > 5000
+end
 
 -- backspace
 set.backspace = "indent,eol,start"
@@ -148,8 +164,9 @@ set.incsearch = true
 set.updatetime = 250
 -- Add Mason's installation directory to Neovim's PATH so other plugins (like nvim-lint) can find the tools
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+local path_sep = package.config:sub(1, 1) == "\\" and ";" or ":"
 if not vim.env.PATH:find(mason_bin, 1, true) then
-  vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+  vim.env.PATH = mason_bin .. path_sep .. vim.env.PATH
 end
 
 -- Clean window title formatting
@@ -166,6 +183,7 @@ function _G.get_clean_title()
   local mod = vim.bo.modified and " [+]" or ""
   return file .. mod .. " - Neovim"
 end
+
 set.title = true
 set.titlestring = "%{v:lua.get_clean_title()}"
 
@@ -220,6 +238,7 @@ function _G.get_tabline()
   s = s .. "%#TabLineFill#%T"
   return s
 end
+
 set.tabline = "%!v:lua.get_tabline()"
 
 -- Hide command-line area at the bottom when not in use
@@ -229,13 +248,6 @@ set.wrap = false
 set.linebreak = false
 set.breakindent = false
 
--- Filetype mapping for ASP.NET / Blazor Razor files
-vim.filetype.add({
-  extension = {
-    cshtml = "razor",
-    razor = "razor",
-  },
-})
 
 -- Disable verbose LSP file logging to improve performance and clear checkhealth warning
 vim.lsp.log.set_level("OFF")

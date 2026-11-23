@@ -21,7 +21,7 @@ return {
   -- 2. MeanderingProgrammer/render-markdown.nvim: Render Markdown visually directly inside Neovim
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- Requires Treesitter for rendering
+    dependencies = { "nvim-treesitter/nvim-treesitter" }, -- Requires Treesitter for rendering
     ft = { "markdown" },
     opts = {
       anti_conceal = {

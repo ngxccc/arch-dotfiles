@@ -19,18 +19,18 @@ return {
       end,
       desc = "Debug: Set Conditional Breakpoint",
     },
-    { "<leader>dc", function() require("dap").continue() end, desc = "Debug: Start / Continue (F5)" },
-    { "<leader>do", function() require("dap").step_over() end, desc = "Debug: Step Over (F10)" },
-    { "<leader>di", function() require("dap").step_into() end, desc = "Debug: Step Into (F11)" },
-    { "<leader>dO", function() require("dap").step_out() end, desc = "Debug: Step Out (Shift+F11)" },
-    { "<leader>dt", function() require("dap").terminate() end, desc = "Debug: Terminate / Stop" },
-    { "<leader>du", function() require("dapui").toggle() end, desc = "Debug: Toggle DAP UI" },
-    { "<leader>dr", function() require("dap").repl.open() end, desc = "Debug: Open REPL" },
-    { "<leader>de", function() require("dapui").eval() end, mode = { "n", "v" }, desc = "Debug: Evaluate Expression" },
-    { "<F5>", function() require("dap").continue() end, desc = "Debug: Continue" },
-    { "<F10>", function() require("dap").step_over() end, desc = "Debug: Step Over" },
-    { "<F11>", function() require("dap").step_into() end, desc = "Debug: Step Into" },
-    { "<F12>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
+    { "<leader>dc", function() require("dap").continue() end,          desc = "Debug: Start / Continue (F5)" },
+    { "<leader>do", function() require("dap").step_over() end,         desc = "Debug: Step Over (F10)" },
+    { "<leader>di", function() require("dap").step_into() end,         desc = "Debug: Step Into (F11)" },
+    { "<leader>dO", function() require("dap").step_out() end,          desc = "Debug: Step Out (Shift+F11)" },
+    { "<leader>dt", function() require("dap").terminate() end,         desc = "Debug: Terminate / Stop" },
+    { "<leader>du", function() require("dapui").toggle() end,          desc = "Debug: Toggle DAP UI" },
+    { "<leader>dr", function() require("dap").repl.open() end,         desc = "Debug: Open REPL" },
+    { "<leader>de", function() require("dapui").eval() end,            mode = { "n", "v" },                  desc = "Debug: Evaluate Expression" },
+    { "<F5>",       function() require("dap").continue() end,          desc = "Debug: Continue" },
+    { "<F10>",      function() require("dap").step_over() end,         desc = "Debug: Step Over" },
+    { "<F11>",      function() require("dap").step_into() end,         desc = "Debug: Step Into" },
+    { "<F12>",      function() require("dap").step_out() end,          desc = "Debug: Step Out" },
   },
   config = function()
     local dap = require("dap")
@@ -46,17 +46,17 @@ return {
       layouts = {
         {
           elements = {
-            { id = "scopes", size = 0.4 },
+            { id = "scopes",      size = 0.4 },
             { id = "breakpoints", size = 0.2 },
-            { id = "stacks", size = 0.2 },
-            { id = "watches", size = 0.2 },
+            { id = "stacks",      size = 0.2 },
+            { id = "watches",     size = 0.2 },
           },
           size = 40,
           position = "left",
         },
         {
           elements = {
-            { id = "repl", size = 0.6 },
+            { id = "repl",    size = 0.6 },
             { id = "console", size = 0.4 },
           },
           size = 12,
@@ -80,6 +80,7 @@ return {
     require("mason-nvim-dap").setup({
       ensure_installed = {
         "delve",
+        "codelldb",
       },
       automatic_installation = true,
       handlers = {},

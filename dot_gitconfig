@@ -40,3 +40,9 @@
 	showUntrackedFiles = all
 [merge]
   conflictstyle = zdiff3
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

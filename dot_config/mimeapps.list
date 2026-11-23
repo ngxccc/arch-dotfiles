@@ -16,6 +16,7 @@ x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/apidog=apidog.desktop
 inode/directory=thunar.desktop
 application/pdf=com.google.Chrome.desktop
+application/x-trash=nvim.desktop
 
 [Added Associations]
 image/png=imv.desktop;
@@ -37,3 +38,7 @@ image/webp=imv.desktop;
 application/pdf=google-chrome.desktop;com.google.Chrome.desktop;
 text/x-tex=dev.zed.Zed.desktop;
 text/vnd.trolltech.linguist=dev.zed.Zed.desktop;
+application/x-trash=vim.desktop;nvim.desktop;
+text/x-shellscript=dev.zed.Zed.desktop;
+
+[Removed Associations]

@@ -1,0 +1,445 @@
+#!/usr/bin/env python3
+"""
+agy-profile: Antigravity Multi-Account Profile Manager
+Snapshot, switch, and manage multiple Google accounts for Antigravity CLI.
+"""
+import sys
+import os
+import json
+import subprocess
+import argparse
+from datetime import datetime
+from pathlib import Path
+
+# ANSI Colors & Styles
+R = "\033[0m"
+B = "\033[1m"
+D = "\033[2m"
+FG_GRAY = "\033[90m"
+FG_GREEN = "\033[92m"
+FG_YELLOW = "\033[93m"
+FG_CYAN = "\033[96m"
+FG_RED = "\033[91m"
+FG_WHITE = "\033[97m"
+
+PROFILES_DIR = Path.home() / ".gemini" / "antigravity-cli" / "profiles"
+
+
+def ensure_profiles_dir():
+    PROFILES_DIR.mkdir(parents=True, exist_ok=True)
+    os.chmod(PROFILES_DIR, 0o700)
+
+
+def get_current_keyring_token() -> tuple[dict | None, str | None]:
+    """Retrieve active token JSON and parsed dict from Keyring.
+    zalando/go-keyring (used by agy) hardcodes reading from the 'login' collection.
+    We check the 'login' collection first via DBus, then fall back to secret-tool lookup.
+    """
+    try:
+        import dbus
+        bus = dbus.SessionBus()
+        ss = bus.get_object("org.freedesktop.secrets", "/org/freedesktop/secrets")
+        session_path = ss.OpenSession("plain", dbus.String("", variant_level=1), dbus_interface="org.freedesktop.Secret.Service")[1]
+        for col_path in ["/org/freedesktop/secrets/collection/login", "/org/freedesktop/secrets/aliases/default"]:
+            try:
+                col = bus.get_object("org.freedesktop.secrets", col_path)
+                items = col.SearchItems({"service": "gemini", "username": "antigravity"}, dbus_interface="org.freedesktop.Secret.Collection")
+                if items:
+                    it = bus.get_object("org.freedesktop.secrets", items[0])
+                    sec = it.GetSecret(session_path, dbus_interface="org.freedesktop.Secret.Item")
+                    raw = bytes(sec[2]).decode("utf-8")
+                    return json.loads(raw), raw
+            except Exception:
+                continue
+    except Exception:
+        pass
+
+    res = subprocess.run(
+        ["secret-tool", "lookup", "service", "gemini", "username", "antigravity"],
+        capture_output=True,
+        text=True,
+    )
+    if res.returncode == 0 and res.stdout.strip():
+        try:
+            return json.loads(res.stdout.strip()), res.stdout.strip()
+        except Exception:
+            return None, res.stdout.strip()
+    return None, None
+
+
+def set_keyring_token(raw_json: str) -> bool:
+    """Store raw token JSON into Keyring.
+    CRITICAL: agy uses zalando/go-keyring which searches ONLY in /org/freedesktop/secrets/collection/login.
+    secret-tool store without --collection stores to 'default' collection.
+    Therefore, we MUST store to both the 'login' collection AND the default collection.
+    """
+    success = False
+    # 1. Store into 'login' collection (where agy / zalando/go-keyring actually reads)
+    res_login = subprocess.run(
+        [
+            "secret-tool", "store",
+            "--collection=/org/freedesktop/secrets/collection/login",
+            "--label=gemini",
+            "service", "gemini",
+            "username", "antigravity",
+        ],
+        input=raw_json,
+        text=True,
+        capture_output=True,
+    )
+    if res_login.returncode == 0:
+        success = True
+
+    # 2. Also store into default collection for compatibility with other tools
+    res_default = subprocess.run(
+        [
+            "secret-tool", "store",
+            "--label=gemini",
+            "service", "gemini",
+            "username", "antigravity",
+        ],
+        input=raw_json,
+        text=True,
+        capture_output=True,
+    )
+    if res_default.returncode == 0:
+        success = True
+
+    return success
+
+
+def clear_keyring_token() -> bool:
+    """Clear active token from Keyring (both login and default collections)."""
+    try:
+        import dbus
+        bus = dbus.SessionBus()
+        for col_path in ["/org/freedesktop/secrets/collection/login", "/org/freedesktop/secrets/aliases/default"]:
+            try:
+                col = bus.get_object("org.freedesktop.secrets", col_path)
+                items = col.SearchItems({"service": "gemini", "username": "antigravity"}, dbus_interface="org.freedesktop.Secret.Collection")
+                for item_path in items:
+                    it = bus.get_object("org.freedesktop.secrets", item_path)
+                    it.Delete(dbus_interface="org.freedesktop.Secret.Item")
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    res = subprocess.run(
+        ["secret-tool", "clear", "service", "gemini", "username", "antigravity"],
+        capture_output=True,
+    )
+    return res.returncode == 0
+
+
+def get_profiles() -> list[dict]:
+    """List all saved profile metadata."""
+    ensure_profiles_dir()
+    profiles = []
+    for p in sorted(PROFILES_DIR.glob("*.json")):
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            mtime = datetime.fromtimestamp(p.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
+            profiles.append({
+                "name": p.stem,
+                "path": p,
+                "email": data.get("id_token_email", "unknown"),
+                "auth_method": data.get("auth_method", "consumer"),
+                "refresh_token": data.get("token", {}).get("refresh_token", ""),
+                "mtime": mtime,
+            })
+        except Exception:
+            pass
+    return profiles
+
+
+def find_matching_profile_name(current_token: dict | None) -> str | None:
+    if not current_token:
+        return None
+    curr_refresh = current_token.get("token", {}).get("refresh_token", "")
+    curr_email = current_token.get("id_token_email", "")
+
+    for p in get_profiles():
+        if curr_refresh and p["refresh_token"] == curr_refresh:
+            return p["name"]
+        if curr_email and p["email"] == curr_email:
+            return p["name"]
+    return None
+
+
+def cmd_current(args):
+    """Show currently active profile and email in Keyring."""
+    curr_data, _ = get_current_keyring_token()
+    if not curr_data:
+        print(f"{FG_YELLOW}No active token found in Keyring.{R}")
+        print(f"Run {FG_CYAN}agy{R} to log in, then {FG_CYAN}agy-profile save <name>{R}.")
+        return
+
+    email = curr_data.get("id_token_email", "unknown")
+    matched_name = find_matching_profile_name(curr_data)
+    name_str = f" ({FG_GREEN}{matched_name}{R})" if matched_name else f" ({FG_YELLOW}unsaved{R})"
+    expiry = curr_data.get("token", {}).get("expiry", "unknown")
+
+    print(f"{B}Active Account:{R} {FG_CYAN}{email}{R}{name_str}")
+    print(f"{FG_GRAY}Token Expiry:   {expiry}{R}")
+
+
+def cmd_list(args):
+    """List all stored profiles."""
+    profiles = get_profiles()
+    curr_data, _ = get_current_keyring_token()
+    active_name = find_matching_profile_name(curr_data)
+
+    if not profiles:
+        print(f"{FG_YELLOW}No profiles saved yet in {PROFILES_DIR}{R}")
+        if curr_data:
+            email = curr_data.get("id_token_email", "unknown")
+            print(f"Active account in Keyring is {FG_CYAN}{email}{R}.")
+            print(f"Run {FG_GREEN}agy-profile save <name>{R} to save it as your first profile.")
+        return
+
+    print(f"{B}{'ACTIVE':<8} {'PROFILE':<18} {'EMAIL':<30} {'LAST UPDATED'}{R}")
+    print(f"{FG_GRAY}{'─' * 70}{R}")
+
+    for p in profiles:
+        is_active = (p["name"] == active_name)
+        active_mark = f"{FG_GREEN}  *   {R}" if is_active else "      "
+        name_style = f"{FG_GREEN}{B}{p['name']:<18}{R}" if is_active else f"{FG_WHITE}{p['name']:<18}{R}"
+        print(f"{active_mark} {name_style} {p['email']:<30} {FG_GRAY}{p['mtime']}{R}")
+
+
+def cmd_save(args):
+    """Save current Keyring token as a profile."""
+    curr_data, raw = get_current_keyring_token()
+    if not curr_data or not raw:
+        print(f"{FG_RED}Error: No active token found in Keyring to save.{R}")
+        print(f"Run {FG_CYAN}agy{R} first to log in.")
+        sys.exit(1)
+
+    name = args.name.strip()
+    if not name:
+        print(f"{FG_RED}Error: Profile name cannot be empty.{R}")
+        sys.exit(1)
+
+    ensure_profiles_dir()
+    target_path = PROFILES_DIR / f"{name}.json"
+
+    with open(target_path, "w", encoding="utf-8") as f:
+        json.dump(curr_data, f, indent=2)
+    os.chmod(target_path, 0o600)
+
+    email = curr_data.get("id_token_email", "unknown")
+    print(f"{FG_GREEN}✓ Saved current account ({email}) as profile '{name}'.{R}")
+    print(f"{FG_GRAY}Path: {target_path}{R}")
+
+
+def cmd_switch(args):
+    """Switch active profile in Keyring."""
+    profiles = get_profiles()
+    if not profiles:
+        print(f"{FG_RED}Error: No profiles found in {PROFILES_DIR}.{R}")
+        sys.exit(1)
+
+    target_name = args.name
+
+    # If no name supplied, invoke fzf
+    if not target_name:
+        curr_data, _ = get_current_keyring_token()
+        active_name = find_matching_profile_name(curr_data)
+
+        fzf_lines = []
+        for p in profiles:
+            prefix = "* " if p["name"] == active_name else "  "
+            fzf_lines.append(f"{prefix}{p['name']:<16} {p['email']}")
+
+        try:
+            fzf_proc = subprocess.run(
+                ["fzf", "--ansi", "--header=Select AGY Profile to Activate", "--prompt=Profile > "],
+                input="\n".join(fzf_lines),
+                text=True,
+                capture_output=True,
+            )
+            selected = fzf_proc.stdout.strip()
+            if not selected:
+                print("Switch cancelled.")
+                return
+            target_name = selected[2:].split()[0]
+        except FileNotFoundError:
+            print(f"{FG_YELLOW}fzf not found. Please provide a profile name: agy-profile switch <name>{R}")
+            cmd_list(args)
+            return
+
+    target_path = PROFILES_DIR / f"{target_name}.json"
+    if not target_path.exists():
+        print(f"{FG_RED}Error: Profile '{target_name}' not found.{R}")
+        print("Available profiles:")
+        cmd_list(args)
+        sys.exit(1)
+
+    with open(target_path, "r", encoding="utf-8") as f:
+        raw_json = f.read()
+        data = json.loads(raw_json)
+
+    if set_keyring_token(raw_json):
+        email = data.get("id_token_email", "unknown")
+        print(f"{FG_GREEN}✓ Switched active profile to '{target_name}' ({email}).{R}")
+        print(f"{FG_GRAY}Note: Start a new terminal or new session of 'agy' to use this account.{R}")
+    else:
+        print(f"{FG_RED}Error: Failed to update Keyring.{R}")
+        sys.exit(1)
+
+
+def cmd_add(args):
+    """Log in to a new account and save as profile."""
+    name = args.name.strip()
+    if not name:
+        print(f"{FG_RED}Error: Profile name required.{R}")
+        sys.exit(1)
+
+    target_path = PROFILES_DIR / f"{name}.json"
+    if target_path.exists() and not args.force:
+        print(f"{FG_YELLOW}Profile '{name}' already exists. Use --force to overwrite.{R}")
+        sys.exit(1)
+
+    # 1. Backup current active account if not already saved
+    curr_data, raw = get_current_keyring_token()
+    if curr_data and raw:
+        matched = find_matching_profile_name(curr_data)
+        if not matched:
+            auto_name = curr_data.get("id_token_email", "current").split("@")[0]
+            auto_path = PROFILES_DIR / f"{auto_name}.json"
+            print(f"{FG_GRAY}Backing up current unsaved account to profile '{auto_name}'...{R}")
+            with open(auto_path, "w", encoding="utf-8") as f:
+                json.dump(curr_data, f, indent=2)
+            os.chmod(auto_path, 0o600)
+
+    # 2. Clear Keyring to trigger OAuth login
+    print(f"{FG_CYAN}Clearing active credentials to trigger new OAuth login...{R}")
+    clear_keyring_token()
+
+    # 3. Prompt user to launch agy
+    print(f"\n{B}Step 1:{R} Launch {FG_CYAN}agy{R} in your terminal to complete Google sign-in via browser.")
+    print(f"{B}Step 2:{R} Once signed in, run: {FG_GREEN}agy-profile save {name}{R}\n")
+
+
+def cmd_delete(args):
+    """Delete a profile."""
+    profiles = get_profiles()
+    if not profiles:
+        print(f"{FG_YELLOW}No profiles available to delete.{R}")
+        return
+
+    name = args.name
+    if not name:
+        curr_data, _ = get_current_keyring_token()
+        active_name = find_matching_profile_name(curr_data)
+
+        fzf_lines = []
+        for p in profiles:
+            prefix = "* " if p["name"] == active_name else "  "
+            fzf_lines.append(f"{prefix}{p['name']:<16} {p['email']}")
+
+        try:
+            fzf_proc = subprocess.run(
+                ["fzf", "--ansi", "--header=Select AGY Profile to Delete", "--prompt=Delete Profile > "],
+                input="\n".join(fzf_lines),
+                text=True,
+                capture_output=True,
+            )
+            selected = fzf_proc.stdout.strip()
+            if not selected:
+                print("Deletion cancelled.")
+                return
+            name = selected[2:].split()[0]
+        except FileNotFoundError:
+            print(f"{FG_RED}Error: Profile name required: agy-profile delete <name>{R}")
+            sys.exit(1)
+
+    target_path = PROFILES_DIR / f"{name}.json"
+    if not target_path.exists():
+        print(f"{FG_RED}Error: Profile '{name}' does not exist.{R}")
+        sys.exit(1)
+
+    if not args.force:
+        confirm = input(f"Are you sure you want to delete profile '{name}'? [y/N]: ").strip().lower()
+        if confirm != "y":
+            print("Deletion cancelled.")
+            return
+
+    target_path.unlink()
+    print(f"{FG_GREEN}✓ Deleted profile '{name}'.{R}")
+
+
+def cmd_logout(args):
+    """Log out active account from Keyring."""
+    curr_data, _ = get_current_keyring_token()
+    if not curr_data:
+        print(f"{FG_YELLOW}Keyring is already empty.{R}")
+        return
+    email = curr_data.get("id_token_email", "unknown")
+    if clear_keyring_token():
+        print(f"{FG_GREEN}✓ Cleared active credentials ({email}) from Keyring.{R}")
+    else:
+        print(f"{FG_RED}Failed to clear Keyring credentials.{R}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="agy-profile",
+        description="Antigravity Multi-Account Profile Manager",
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Subcommand to execute")
+
+    # list
+    p_list = subparsers.add_parser("list", aliases=["ls"], help="List all saved profiles")
+    p_list.set_defaults(func=cmd_list)
+
+    # current
+    p_curr = subparsers.add_parser("current", aliases=["whoami", "status"], help="Show active account")
+    p_curr.set_defaults(func=cmd_current)
+
+    # save
+    p_save = subparsers.add_parser("save", help="Save active account from Keyring as profile")
+    p_save.add_argument("name", help="Profile alias (e.g. work, personal, acc2)")
+    p_save.set_defaults(func=cmd_save)
+
+    # switch
+    p_switch = subparsers.add_parser("switch", aliases=["use"], help="Switch active profile (with fzf menu if no name provided)")
+    p_switch.add_argument("name", nargs="?", default=None, help="Profile alias to activate")
+    p_switch.set_defaults(func=cmd_switch)
+
+    # add / login
+    p_add = subparsers.add_parser("add", aliases=["login"], help="Prepare login for a new account")
+    p_add.add_argument("name", help="Profile alias for the new account")
+    p_add.add_argument("-f", "--force", action="store_true", help="Overwrite existing profile")
+    p_add.set_defaults(func=cmd_add)
+
+    # delete
+    p_del = subparsers.add_parser("delete", aliases=["rm"], help="Delete a saved profile (with fzf menu if no name provided)")
+    p_del.add_argument("name", nargs="?", default=None, help="Profile alias to delete")
+    p_del.add_argument("-f", "--force", action="store_true", help="Delete without prompt")
+    p_del.set_defaults(func=cmd_delete)
+
+    # logout
+    p_logout = subparsers.add_parser("logout", help="Clear active account credentials from Keyring")
+    p_logout.set_defaults(func=cmd_logout)
+
+    args = parser.parse_args()
+    if not args.command:
+        # Default action: if interactive, run switch (fzf), otherwise list
+        if sys.stdin.isatty():
+            cmd_switch(args)
+        else:
+            cmd_list(args)
+        return
+
+    args.func(args)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nInterrupted.")
+        sys.exit(130)

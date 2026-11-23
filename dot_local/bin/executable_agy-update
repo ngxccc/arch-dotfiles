@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MANIFEST_URL="https://antigravity-cli-auto-updater-974169037036.us-central1.run.app/manifests/linux_amd64.json"
+INSTALL_BIN="$HOME/.local/bin/agy"
+
+echo "🔍 Đang kiểm tra bản cập nhật Antigravity CLI từ Google..."
+MANIFEST=$(curl -sSfL "$MANIFEST_URL")
+REMOTE_VERSION=$(jq -r '.version' <<< "$MANIFEST")
+TAR_URL=$(jq -r '.url' <<< "$MANIFEST")
+EXPECTED_SHA512=$(jq -r '.sha512' <<< "$MANIFEST")
+
+LOCAL_VERSION=$("$INSTALL_BIN" --version 2>/dev/null || echo "none")
+IS_SCRIPT=false
+if file "$INSTALL_BIN" 2>/dev/null | grep -qi "shell script"; then
+  IS_SCRIPT=true
+fi
+
+FORCE=false
+if [[ "${1:-}" == "--force" || "${1:-}" == "-f" ]]; then
+  FORCE=true
+fi
+
+if [[ "$LOCAL_VERSION" == "$REMOTE_VERSION"* && "$IS_SCRIPT" == "false" && "$FORCE" == "false" ]]; then
+  echo "✔ Bạn đang ở phiên bản mới nhất ($REMOTE_VERSION)."
+  exit 0
+fi
+
+if [[ "$IS_SCRIPT" == "true" ]]; then
+  echo "⚡ Phát hiện $INSTALL_BIN là wrapper script. Đang thay thế bằng standalone binary..."
+else
+  echo "🚀 Phát hiện phiên bản mới: $LOCAL_VERSION -> $REMOTE_VERSION"
+fi
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+echo "⬇ Đang tải binary..."
+curl -sSfL "$TAR_URL" -o "$TMP_DIR/cli.tar.gz"
+
+echo "🔒 Đang xác thực SHA-512 checksum..."
+ACTUAL_SHA512=$(sha512sum "$TMP_DIR/cli.tar.gz" | awk '{print $1}')
+if [[ "$ACTUAL_SHA512" != "$EXPECTED_SHA512" ]]; then
+  echo "❌ Checksum không khớp! Hủy bỏ cập nhật để đảm bảo an toàn." >&2
+  exit 1
+fi
+
+echo "📦 Đang giải nén và cài đặt..."
+tar -xzf "$TMP_DIR/cli.tar.gz" -C "$TMP_DIR"
+install -Dm755 "$TMP_DIR/antigravity" "$INSTALL_BIN"
+
+echo "🎉 Cập nhật thành công agy lên phiên bản $REMOTE_VERSION tại $INSTALL_BIN!"

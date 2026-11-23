@@ -21,6 +21,17 @@ vim.api.nvim_create_user_command("ExportKeymaps", function()
     { mode = "n", label = "Normal" },
     { mode = "x", label = "Visual" },
     { mode = "o", label = "Operator" },
+    { mode = "i", label = "Insert" },
+    { mode = "t", label = "Terminal" },
+  }
+
+  local mode_labels = {
+    n = "Normal",
+    x = "Visual",
+    v = "Visual",
+    o = "Operator",
+    i = "Insert",
+    t = "Terminal",
   }
 
   local lines = {
@@ -65,6 +76,26 @@ vim.api.nvim_create_user_command("ExportKeymaps", function()
     end
   end
 
+  -- Buffer-local LSP keymaps are not returned by nvim_get_keymap(), so pull
+  -- them from the same SSOT used by LspAttach.
+  local ok_lsp, lsp_keymaps = pcall(require, "config.lsp_keymaps")
+  if ok_lsp then
+    for _, map in ipairs(lsp_keymaps) do
+      local mode_list = type(map[1]) == "table" and map[1] or { map[1] }
+      for _, m in ipairs(mode_list) do
+        local key_id = m .. ":" .. map[2]
+        if not seen[key_id] then
+          seen[key_id] = true
+          table.insert(sorted_maps, {
+            lhs = map[2],
+            mode = mode_labels[m] or m,
+            desc = map[4],
+          })
+        end
+      end
+    end
+  end
+
   table.sort(sorted_maps, function(a, b)
     if a.lhs == b.lhs then
       return a.mode < b.mode
@@ -75,6 +106,12 @@ vim.api.nvim_create_user_command("ExportKeymaps", function()
   for _, map in ipairs(sorted_maps) do
     table.insert(lines, string.format("| **`%s`** | %s | %s |", map.lhs, map.mode, map.desc))
   end
+
+  table.insert(lines, "")
+  table.insert(
+    lines,
+    "> Blink.cmp insert-mode keys (`<Tab>`, `<S-Tab>`, `<C-j>`, `<C-k>`, `<C-Space>`, `<C-e>`, `<CR>`, `<C-f>`, `<C-b>`, `<C-x>`) are internal to blink.cmp and do not appear in `nvim_get_keymap()`."
+  )
 
   local file_path = vim.fn.stdpath("config") .. "/KEYMAPS_AUTOGEN.md"
   local f = io.open(file_path, "w")

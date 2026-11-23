@@ -20,13 +20,15 @@ return {
         },
         keymaps = {
           view = {
-            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+            { "n", "<leader>e", actions.focus_files, { desc = "Bring focus to the file panel" } },
           },
           file_panel = {
             { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+            { "n", "<cr>", actions.focus_entry, { desc = "Open the diff and focus it" } },
           },
           file_history_panel = {
             { "n", "<leader>e", actions.toggle_files, { desc = "Toggle the file panel" } },
+            { "n", "<cr>", actions.focus_entry, { desc = "Open the diff and focus it" } },
           },
         },
         hooks = {

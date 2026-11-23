@@ -9,6 +9,7 @@ k6-bin
 niri-screenshare
 oh-my-posh
 onlyoffice-bin
+opencode-beta
 postman-bin
 sddm-theme-corners-git
 tela-circle-icon-theme-black-git

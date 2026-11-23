@@ -67,7 +67,6 @@ return {
           "node_modules",
           "%.turbo/",
           "%.next/",
-          "%.dist/",
           "build/",
           "dist/",
           "coverage/",

@@ -30,7 +30,7 @@ require("lazy").setup({
     { import = "plugins.navigation" },
     { import = "plugins.editor" },
   },
-  change_detection = { notify = false },
+  change_detection = { enabled = false },
   performance = {
     cache = {
       enabled = true,

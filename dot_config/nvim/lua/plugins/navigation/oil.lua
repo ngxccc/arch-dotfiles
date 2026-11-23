@@ -3,15 +3,14 @@ return {
     "stevearc/oil.nvim",
     lazy = false,
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
       "echasnovski/mini.icons",
       "refractalize/oil-git-status.nvim",
     },
     cmd = { "Oil" },
     keys = {
-      { "-", "<cmd>Oil<cr>", desc = "Open Parent Directory (Oil)" },
+      { "-",         "<cmd>Oil<cr>",         desc = "Open Parent Directory (Oil)" },
       { "<leader>e", "<cmd>Oil --float<cr>", desc = "File Explorer Float (Oil)" },
-      { "<leader>E", "<cmd>Oil<cr>", desc = "File Explorer Fullscreen (Oil)" },
+      { "<leader>E", "<cmd>Oil<cr>",         desc = "File Explorer Fullscreen (Oil)" },
     },
     opts = function()
       local detail = false
@@ -58,9 +57,9 @@ return {
           autosave_changes = true,
         },
         git = {
-          add = function(path) return true end,
-          mv = function(src_path, dest_path) return true end,
-          rm = function(path) return true end,
+          add = function(_) return true end,
+          mv = function(_, _) return true end,
+          rm = function(_) return true end,
         },
         win_options = {
           signcolumn = "auto:2",
@@ -101,6 +100,14 @@ return {
           ["<C-h>"] = { "actions.select", opts = { horizontal = true }, desc = "Open in horizontal split" },
           ["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open in new tab" },
           ["<C-p>"] = "actions.preview",
+          ["<C-f>"] = {
+            desc = "Phóng to toàn màn hình",
+            callback = function()
+              local dir = require("oil").get_current_dir()
+              require("oil").close()
+              require("oil").open(dir)
+            end,
+          },
           ["q"] = "actions.close",
           ["<Esc>"] = "actions.close",
           ["<C-c>"] = "actions.close",
@@ -130,6 +137,7 @@ return {
               end
             end,
           },
+          ["y."] = { "actions.yank_entry", mode = "n", desc = "Yank entry path (current register)" },
           ["yp"] = {
             desc = "Copy relative path to clipboard",
             callback = function()

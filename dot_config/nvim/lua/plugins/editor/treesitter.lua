@@ -1,19 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPost", "BufNewFile" },
+  cmd = { "TSInstallDefaults", "TSUpdate" },
   build = ":TSUpdate",
-  keys = {
-    { "]f", desc = "Next Function Start" },
-    { "[f", desc = "Previous Function Start" },
-    { "]F", desc = "Next Function End" },
-    { "[F", desc = "Previous Function End" },
-    { "]c", desc = "Next Class Start" },
-    { "[c", desc = "Previous Class Start" },
-    { "af", mode = { "x", "o" }, desc = "Select outer function" },
-    { "if", mode = { "x", "o" }, desc = "Select inner function" },
-    { "ac", mode = { "x", "o" }, desc = "Select outer class" },
-    { "ic", mode = { "x", "o" }, desc = "Select inner class" },
-  },
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "windwp/nvim-ts-autotag",
@@ -30,9 +19,10 @@ return {
       require("nvim-treesitter").install({
         "json", "python", "javascript", "typescript", "tsx", "yaml",
         "html", "css", "markdown", "markdown_inline", "bash", "lua",
-        "vim", "vimdoc", "c", "dockerfile", "gitignore", "php",
-        "sql", "graphql", "blade", "c_sharp", "xml", "razor",
+        "vim", "vimdoc", "c", "dockerfile", "gitignore",
+        "sql", "graphql", "xml",
         "go", "gomod", "gowork", "gotmpl",
+        "rust", "ron", "toml",
       })
     end, { desc = "Install all default Treesitter parsers" })
 
@@ -41,20 +31,16 @@ return {
       pattern = {
         "json", "python", "javascript", "javascriptreact", "typescript",
         "typescriptreact", "yaml", "html", "css", "markdown", "bash",
-        "sh", "lua", "vim", "php", "sql", "graphql", "c", "dockerfile",
-        "gitignore", "blade", "go", "gomod", "gowork", "gotmpl",
+        "sh", "lua", "vim", "sql", "graphql", "c", "dockerfile",
+        "gitignore", "go", "gomod", "gowork", "gotmpl",
+        "rust", "ron", "toml",
       },
       callback = function(args)
         local bufnr = args.buf
-        -- Big file safeguard: disable treesitter for files > 500KB or > 5000 lines
-        local name = vim.api.nvim_buf_get_name(bufnr)
-        if name ~= "" then
-          local ok, stats = pcall(vim.uv.fs_stat, name)
-          if ok and stats and stats.size > 500 * 1024 then
-            return
-          end
-        end
-        if vim.api.nvim_buf_line_count(bufnr) > 5000 then
+        -- Big file safeguard: disable treesitter + auto-indent (AGENTS invariant)
+        if _G.is_big_file(bufnr) then
+          vim.bo[bufnr].indentexpr = ""
+          vim.bo[bufnr].autoindent = false
           return
         end
 

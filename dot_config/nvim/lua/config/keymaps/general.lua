@@ -15,11 +15,13 @@ end, { desc = "Config Reload Current File" })
 
 vim.keymap.set("n", "<leader>cR", "<cmd>source ~/.config/nvim/init.lua<cr>", { desc = "Config Reload All (init.lua)" })
 vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Code Make Executable (+x)" })
+-- Mason is lazy-loaded, but `:Mason` always resolves thanks to its `cmd` trigger
+vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason: Package Manager" })
 
 -- 🛡️ CLIPBOARD & REGISTERS
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without overwriting register" })
-vim.keymap.set("n", "<leader>dl", "dd", { desc = "Delete current line" })
-vim.keymap.set({ "n", "v" }, "<leader>D", [[_d]], { desc = "Delete to blackhole register" })
+vim.keymap.set("n", "<leader>D", [["_dd]], { desc = "Delete current line to blackhole register" })
+vim.keymap.set("x", "<leader>D", [["_d]], { desc = "Delete selection to blackhole register" })
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Escape insert mode properly" })
 
 -- 🚫 DISABLE MACROS
@@ -34,8 +36,17 @@ vim.keymap.set("n", "<leader>Ss", function()
 end, { desc = "Session Save" })
 
 vim.keymap.set("n", "<leader>Sr", function()
-  vim.cmd("source ~/.local/share/nvim/last_session.vim")
-  vim.notify("Global session restored successfully", vim.log.levels.INFO)
+  local session = vim.fn.expand("~/.local/share/nvim/last_session.vim")
+  if vim.fn.filereadable(session) == 0 then
+    vim.notify("No saved session found", vim.log.levels.WARN)
+    return
+  end
+  local ok, err = pcall(vim.cmd.source, session)
+  if ok then
+    vim.notify("Global session restored successfully", vim.log.levels.INFO)
+  else
+    vim.notify("Failed to restore session: " .. tostring(err), vim.log.levels.ERROR)
+  end
 end, { desc = "Session Restore" })
 
 -- 🌳 UNDOTREE
@@ -49,3 +60,10 @@ vim.keymap.set("n", "<leader>cw", function()
   local status = vim.wo.wrap and "ON" or "OFF"
   vim.notify("Word Wrap: " .. status, vim.log.levels.INFO)
 end, { desc = "Toggle Word Wrap" })
+
+-- 🔍 WHITESPACE TOGGLE (<leader>c group)
+vim.keymap.set("n", "<leader>cW", function()
+  vim.wo.list = not vim.wo.list
+  local status = vim.wo.list and "ON" or "OFF"
+  vim.notify("Whitespace (list): " .. status, vim.log.levels.INFO)
+end, { desc = "Toggle Whitespace Dots" })

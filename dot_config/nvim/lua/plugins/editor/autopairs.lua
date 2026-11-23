@@ -4,12 +4,16 @@ return {
 
   opts = {
     check_ts = true,
+    -- Big files: skip autopairs to avoid forcing a Treesitter parse
+    enabled = function(bufnr)
+      return not _G.is_big_file(bufnr)
+    end,
     ts_config = {
       lua = { "string", "source" }, -- ignore pairs inside both string and raw source nodes in Lua
       javascript = { "template_string" },
       java = false, -- TS check on Java can be sluggish; disable to avoid edge-case lag
     },
-    disable_filetype = { "TelescopePrompt", "spectre_panel" }, -- prevent autopairs from interfering in search prompts
+    disable_filetype = { "TelescopePrompt" }, -- prevent autopairs from interfering in search prompts
     fast_wrap = {
       map = "<M-e>", -- press Alt + E to instantly wrap with brackets (FastWrap mechanism)
       chars = { "{", "[", "(", "\"", "'" },

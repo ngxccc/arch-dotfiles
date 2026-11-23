@@ -10,8 +10,15 @@ return {
         ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<C-e>"] = { "hide", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
-        ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
-        ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+        -- Tab: uu tien accept goi y dang hien (ke ca khi chua select),
+        -- chi nhay sang placeholder snippet khi menu khong hien.
+        ["<Tab>"] = {
+          function(cmp)
+            if cmp.is_menu_visible() then return cmp.select_and_accept() end
+            return cmp.snippet_forward()
+          end,
+          "fallback",
+        },
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<C-f>"] = { "scroll_documentation_down", "fallback" },

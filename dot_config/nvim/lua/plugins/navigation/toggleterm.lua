@@ -20,7 +20,7 @@ return {
     })
 
     -- Configure keymaps for Terminal mode to make window navigation easier
-    function _G.set_terminal_keymaps()
+    local function set_terminal_keymaps()
       -- Press Esc twice to switch from Terminal mode to Normal mode (avoids conflicts with lazygit/fzf)
       vim.keymap.set("t", "<esc><esc>", [[<C-\><C-n>]], { buffer = 0, desc = "Escape Terminal Mode" })
       -- Navigate between windows from the terminal
@@ -37,6 +37,10 @@ return {
     end
 
     -- Automatically activate these keymaps when a terminal is opened
-    vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+    vim.api.nvim_create_autocmd("TermOpen", {
+      group = vim.api.nvim_create_augroup("UserTerminalKeymaps", { clear = true }),
+      pattern = "term://*",
+      callback = set_terminal_keymaps,
+    })
   end,
 }

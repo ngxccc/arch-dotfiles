@@ -3,8 +3,6 @@ amd-ucode
 android-tools
 android-udev
 anki
-aspnet-runtime
-aspnet-targeting-pack
 awww
 base
 base-devel
@@ -18,14 +16,13 @@ brightnessctl
 btrfs-progs
 bun
 chezmoi
+clang
 cliphist
 cloudflared
-composer
 cups
 cups-pk-helper
 docker
 docker-compose
-dotnet-sdk
 duf
 efibootmgr
 evtest
@@ -47,11 +44,15 @@ github-cli
 gnome-keyring
 go
 grim
+gst-libav
 gst-plugin-pipewire
+gst-plugins-bad
+gst-plugins-good
 gvfs
 impala
 imv
 iwd
+jdk21-openjdk
 jq
 keychain
 kitty
@@ -63,6 +64,7 @@ linux
 linux-firmware
 luacheck
 mako
+mold
 mpv
 nano
 neovim
@@ -74,8 +76,6 @@ noto-fonts-emoji
 nwg-look
 obsidian
 pavucontrol
-php
-php-sqlite
 pipewire
 pipewire-alsa
 pipewire-jack
@@ -123,7 +123,9 @@ uv
 uwsm
 vim
 vulkan-radeon
+wabt
 waybar
+webkit2gtk-4.1
 wf-recorder
 wget
 wireplumber

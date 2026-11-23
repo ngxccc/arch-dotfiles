@@ -69,7 +69,8 @@ window#waybar.hidden {
 #pulseaudio,
 #backlight,
 #custom-orbit,
-#custom-notification {
+#custom-notification,
+#tray {
   padding: 0 10px;
   margin: 3px 2px;
   border-radius: 0;
@@ -91,6 +92,7 @@ window#waybar.hidden {
 #custom-notification {
   color: @text-primary;
 }
+
 
 #battery.warning {
   color: @text-primary;

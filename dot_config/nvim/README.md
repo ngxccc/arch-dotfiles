@@ -1,65 +1,63 @@
 # 🚀 Neovim Configuration & Keymaps
 
-Welcome to your modern, feature-packed Neovim setup! The `<leader>` key defaults to **Space**.
+Cấu hình Neovim native-first: buffer là dữ liệu, tabpage là workspace, không dùng bufferline.
+`<leader>` = **Space**, `<localleader>` = `,`.
 
 ---
 
 ## 🔍 How to Find & Export Keymaps
 
-1. **Interactive Search (`Space` + `f` + `k`)**:
-   Press `<leader>fk` (or run `:Telescope keymaps`) to open an interactive search window for all active shortcuts.
-
-2. **Auto-Export to Markdown (`:ExportKeymaps`)**:
-   Run `:ExportKeymaps` inside Neovim anytime you add or update keymaps. It will automatically scan the active system and regenerate **[KEYMAPS_AUTOGEN.md](./KEYMAPS_AUTOGEN.md)**.
+1. **Interactive Search**: `<leader>fk` (hoặc `:Telescope keymaps`) — tra toàn bộ keymap đang active, gồm cả buffer-local.
+2. **Auto-Export**: chạy `:ExportKeymaps` để regenerate **[KEYMAPS_AUTOGEN.md](./KEYMAPS_AUTOGEN.md)**.
+   - Quét mode Normal / Visual / Operator / Insert / Terminal.
+   - Key LSP buffer-local lấy từ `lua/config/lsp_keymaps.lua` (SSOT dùng chung với `LspAttach`).
+   - Key nội bộ của blink.cmp không nằm trong `nvim_get_keymap()`, được ghi chú riêng trong file export.
 
 ---
 
-## 📦 Plugin Ecosystem & Integrated Tools
+## 📦 Plugin Ecosystem
 
 ### 🛠️ 1. LSP, Formatting & Linting (`lua/plugins/lsp/`)
 
-- **`nvim-lspconfig` & `mason.nvim`**: Native LSP client and automatic installer/manager for 30+ language servers (Go, TypeScript/JavaScript, Python, TailwindCSS, Lua, HTML, CSS, JSON, etc.).
-- **`conform.nvim`**: Asynchronous code formatter supporting `prettier`, `gofmt`, `stylua`, `blade-formatter`, with automatic format-on-save.
-- **`nvim-lint`**: Fast asynchronous linter integration for external tools (`golangci-lint`, `eslint_d`, `shellcheck`).
-- **`nvim-cmp`**: Ultra-fast autocomplete engine powered by LSP sources, snippets (`LuaSnip`), buffer words, and file paths.
-- **`nvim-lsp-file-operations`**: Automatically updates imports when renaming or moving files/folders in Neo-tree.
+- **`nvim-lspconfig` + `mason.nvim`**: Native LSP (`vim.lsp.config`/`vim.lsp.enable`) cho Lua, Python, TS/JS, Go, Rust, HTML/CSS/JSON, Tailwind, Prisma, SQL.
+  - Mason được lazy-load qua `cmd`, nên `:Mason` / `:MasonInstall` / `:MasonLog` / `:MasonToolsInstall` luôn dùng được ngay từ buffer đầu tiên (trước đây lỗi `E492: Not an editor command: Mason`). Mở nhanh bằng `<leader>cm`.
+- **`blink.cmp`**: Completion engine (LSP + snippets + path + buffer). `<Tab>` accept gợi ý / nhảy snippet placeholder, `<C-j>`/`<C-k>` chọn item, `<CR>` accept item đang chọn.
+- **`conform.nvim`**: Format on save, có condition theo config repo (`oxfmt` → `biome` → `prettier`; `stylua`, `ruff_format`, `goimports`+`gofumpt`, `rumdl`, `taplo`, `sql_formatter`).
+- **`nvim-lint`**: Lint on save (`selene` cho Lua, `shellcheck` cho Shell, `hadolint` cho Dockerfile, `rumdl` cho Markdown, `yamllint` cho YAML, `oxlint` khi repo có `.oxlintrc.json`, `golangci-lint` cho Go) + **`actionlint`** cho riêng `.github/workflows/*.yml|yaml`. Python dùng pyright + ruff LSP; mypy để CI.
+- **`rustaceanvim` + `crates.nvim`**: Rust IDE (clippy on save, DAP codelldb, runnables/testables) và quản lý dependency Cargo.toml.
+- **`nvim-dap` + `nvim-dap-ui` + virtual text**: Debug Go/Rust, breakpoint, REPL, evaluate.
 
-### 🌳 2. Syntax & Editing Enhancements (`lua/plugins/editor/`)
+### 🌳 2. Syntax & Editing (`lua/plugins/editor/`)
 
-- **`nvim-treesitter` & `textobjects`**: AST-based syntax highlighting, indentation, folding, and structural navigation (`]f`/`[f` for functions, `]c`/`[c` for classes).
-- **`vim-visual-multi`**: VS Code style multi-cursor editing (`Ctrl+n`, `Ctrl+Alt+j`, `Ctrl+Alt+k`).
-- **`nvim-ufo`**: Modern, fast code folding with fold count preview (`zM` to close all, `zR` to open all).
-- **`grug-far.nvim`**: Interactive global search and replace tool across the entire workspace (`<leader>sr`).
-- **`markdown-preview.nvim`**: Live Markdown browser preview (`<leader>mp`).
-- **`nvim-autopairs`**: Auto-closes brackets, parenthesis, quotes, and HTML tags.
-- **`tree-sitter-blade`**: Laravel Blade template syntax highlighting support.
-- **`orgmode`**: Emacs-style Org-mode for task tracking and structured notes in Neovim.
+- **`nvim-treesitter` + textobjects**: Highlight/indent/fold, di chuyển `]f` `[f` `]c` `[c`, select `af` `if` `ac` `ic`.
+- **`nvim-ufo`**: Folding với virtual text; tự tắt trên file lớn.
+- **`nvim-autopairs`**: Auto-close cặp ngoặc/quote, có FastWrap `<M-e>`.
+- **`grug-far.nvim`**: Search & replace toàn workspace (`<leader>sr`). Có sẵn 3 engine: `ripgrep` (mặc định), **`astgrep`** và **`astgrep-rules`** — mở structural search bằng `<leader>sA`, hoặc bấm `,e` trong panel để đổi engine.
+- **`render-markdown.nvim` + `markdown-preview.nvim`**: Render trong Neovim và preview trình duyệt (`<leader>mp`).
+- **`vim-doge`**, **`undotree`**, **`nvim-highlight-colors`**: doc generator, undo tree, highlight mã màu.
 
 ### 🧭 3. Navigation & Terminal (`lua/plugins/navigation/`)
 
-- **`neo-tree.nvim`**: Feature-rich file explorer with git status indicators and file manipulation (`<leader>e`).
-- **`oil.nvim`**: File manager that lets you edit directory structures like a text buffer (`<leader>cd` or `-`).
-- **`telescope.nvim`**: Highly extensible fuzzy finder for files, text grep, keymaps, buffers, and diagnostics (`<leader>ff`, `<leader>fw`, `<leader>fk`).
-- **`harpoon`**: Fast file bookmarking tool to jump instantly between hot files (`<leader>ha`, `<C-e>`).
-- **`toggleterm.nvim`**: Integrated floating and split terminal manager (`<C-t>`).
-- **`vim-tmux-navigator`**: Seamless window navigation between Neovim splits and Tmux panes using `<C-h/j/k/l>`.
+- **`oil.nvim`**: Sửa filesystem như buffer. `-` mở parent, `<leader>e` float, `<leader>E` fullscreen. Copy path: `y.` (register hiện tại), `yp` (relative), `ya` (absolute), `yn` (tên file).
+- **`telescope.nvim`**: Finder (`<leader>ff`, `<leader>fw`, `<leader>fb`, `<leader>fk`, `<leader>fg`…).
+- **`harpoon`**: Bookmark file (`<leader>ha`, `<leader>1`–`<leader>4`, `<C-e>` mở menu).
+- **`toggleterm.nvim`**: Terminal (`<C-t>`, Esc Esc để thoát terminal-mode).
+- **`vim-tmux-navigator`**: Di chuyển split/tmux pane bằng `<C-h/j/k/l>`.
 
-### 🎨 4. User Interface & Aesthetics (`lua/plugins/ui/`)
+### 🎨 4. UI (`lua/plugins/ui/`)
 
-- **`catppuccin`**: Premium color scheme with integrations across all UI components.
-- **`lualine.nvim`**: Fast status line showing current mode, git branch, diagnostics, and LSP status.
-- **`bufferline.nvim`**: VS Code style top tab bar displaying open buffers (`<leader>be`, `<M-h>`, `<M-l>`).
-- **`which-key.nvim`**: Popup keymap helper displaying available shortcuts as you type (`<leader>`).
-- **`noice.nvim`**: Modern UI replacement for messages, cmdline, and popupmenu using `nui.nvim`.
-- **`trouble.nvim`**: Beautiful list for diagnostics, references, quickfix, and location lists (`<leader>xx`, `<leader>cs`).
-- **`todo-comments.nvim`**: Highlights and searches TODO, FIXME, BUG notes in code (`<leader>ft`).
-- **`zen-mode.nvim`**: Distraction-free coding mode (`<leader>z`).
-- **`fidget.nvim`**: Standalone LSP progress notifications in the bottom-right corner.
-- **`indent-blankline.nvim`**: Visual indent guide lines with active scope context highlighting.
-- **`dressing.nvim`**: Enhances Neovim's default `vim.ui.select` and `vim.ui.input` interfaces with Telescope/floating windows.
+- **`catppuccin`** (mocha), **`mini.icons`** (mock devicons), **`lualine.nvim`**, **`which-key.nvim`**, **`noice.nvim`**, **`dressing.nvim`**, **`fidget.nvim`**, **`indent-blankline.nvim`**, **`tiny-inline-diagnostic.nvim`**, **`trouble.nvim`**, **`todo-comments.nvim`**, **`zen-mode.nvim`**, **`ts-error-translator.nvim`**.
+- **Không có bufferline**: dùng tabpage làm workspace, tên tab qua `:TabRename <name>`.
 
-### 🐙 5. Git Integration (`lua/plugins/git/`)
+### 🐙 5. Git (`lua/plugins/git/`)
 
-- **`neogit`**: Magit-style Git interface inside Neovim (`<leader>gn`).
-- **`diffview.nvim`**: Side-by-side Git diff viewer and merge conflict resolver (`<leader>gd`).
-- **`gitsigns.nvim`**: Inline git status, gutter signs, stage/hunk previews, and blame lines.
+- **`neogit`** (`<leader>gg`), **`diffview.nvim`** (`<leader>gd`/`<leader>gD`), **`gitsigns.nvim`** (blame inline, stage buffer `<leader>ga`), **`vim-fugitive`** (`:Git`, `:G`).
+
+---
+
+## ⚡ Performance Invariants
+
+- Cold/warm startup mục tiêu ≤ 40ms (đo bằng `nvim --startuptime`).
+- Plugin lazy theo `event`/`cmd`/`keys`; eager chỉ giữ `catppuccin`, `mini.icons`, `lualine`, `oil`.
+- **Big-file guard** (> 500KB hoặc > 5000 dòng): tắt Treesitter, folding (UFO), autopairs, format-on-save, lint-on-save, LSP attach; tắt `indentexpr` và `autoindent`.
+- `nvim-lint` chỉ chạy `BufWritePost`; `conform` chạy on save và bỏ qua file lớn.

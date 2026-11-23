@@ -87,7 +87,6 @@ local function show_file_info()
     return
   end
 
-  local filename = vim.fn.fnamemodify(filepath, ":t")
   local rel_path = vim.fn.fnamemodify(filepath, ":.")
   local file_type = vim.bo[bufnr].filetype
   if file_type == "" then
@@ -159,12 +158,6 @@ vim.keymap.set(
   "<cmd>b#<cr>",
   { desc = "Toggle Previous Active Buffer (Alternate)" }
 )
-vim.keymap.set(
-  "n",
-  "<leader>bb",
-  "<cmd>Telescope buffers<cr>",
-  { desc = "Buffer List (Telescope)" }
-)
 vim.keymap.set("n", "<leader>bd", function()
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].modified then
@@ -198,14 +191,24 @@ end, { desc = "Buffer Delete All" })
 vim.keymap.set("n", "<leader>bo", function()
   local current = vim.api.nvim_get_current_buf()
   local buffers = vim.api.nvim_list_bufs()
+  local failed = 0
   for _, bufnr in ipairs(buffers) do
     if
       bufnr ~= current
       and vim.api.nvim_buf_is_valid(bufnr)
       and vim.bo[bufnr].buflisted
     then
-      pcall(vim.cmd, "bd " .. bufnr)
+      local ok = pcall(vim.cmd, "bd " .. bufnr)
+      if not ok then
+        failed = failed + 1
+      end
     end
+  end
+  if failed > 0 then
+    vim.notify(
+      failed .. " modified buffer(s) were kept; save or force-delete them first",
+      vim.log.levels.WARN
+    )
   end
 end, { desc = "Buffer Delete Others" })
 

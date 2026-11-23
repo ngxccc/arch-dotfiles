@@ -3,12 +3,19 @@
   "position": "top",
   "height": 30,
   "spacing": 4,
-  "modules-left": ["clock"],
-  "modules-center": ["niri/workspaces"],
+  "modules-left": [
+    "clock"
+  ],
+  "modules-center": [
+    "niri/workspaces"
+  ],
   "modules-right": [
     "group/quicksettings"
   ],
-
+  "tray": {
+    "icon-size": 13,
+    "spacing": 6
+  },
   "group/quicksettings": {
     "orientation": "inherit",
     "drawer": {
@@ -20,32 +27,33 @@
       "battery",
       "pulseaudio",
       "backlight",
-      "network"
+      "network",
+      "tray"
     ]
   },
-
   "backlight": {
     "device": "amdgpu_bl1",
     "format": "{icon} {percent}%",
-    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ],
     "on-scroll-up": "brightnessctl set +5%",
     "on-scroll-down": "brightnessctl set 5%-",
     "tooltip": false
   },
-
   "custom/apps": {
     "format": "ngxc",
     "font-family": "JetBrainsMono Nerd Font",
     "font-weight": 400,
     "on-click": "~/.config/rofi/scripts/menu.sh",
   },
-
   "custom/orbit": {
     "format": "󰀻",
     "tooltip": false,
     "on-click": "orbit toggle top-right",
   },
-
   "hyprland/workspaces": {
     "all-outputs": true,
     "active-only": false,
@@ -53,23 +61,29 @@
     "on-scroll-up": "hyprctl dispatch workspace +1",
     "on-scroll-down": "hyprctl dispatch workspace -1",
   },
-
   "niri/workspaces": {
     "format": "{value}",
     "on-scroll-up": "niri msg action focus-workspace-up",
     "on-scroll-down": "niri msg action focus-workspace-down",
   },
-
   "clock": {
     "format": "{:%H:%M - %A, %d/%m}",
     "tooltip": false,
   },
-
   "battery": {
-    "states": { "warning": 30, "critical": 15 },
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
     "format": "{capacity}% {icon}",
     "format-charging": "{capacity}% AC",
-    "format-icons": ["BAT", "BAT", "BAT", "BAT", "BAT"],
+    "format-icons": [
+      "BAT",
+      "BAT",
+      "BAT",
+      "BAT",
+      "BAT"
+    ],
     "tooltip": false,
     "on-click": "kitty --title batctl -e bash -c 'batctl status; echo -e \"\n[Press q/Q to quit]\"; while read -s -n 1 key; do [[ \"$key\" == \"q\" || \"$key\" == \"Q\" ]] && exit; done'",
     "menu": "on-click-right",
@@ -79,9 +93,14 @@
       "action-2": "kitty --title batctl -e batctl",
     },
   },
-
   "network": {
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
     "format": "{icon}",
     "format-wifi": "{icon}",
     "format-ethernet": "󰌘 ethernet",
@@ -99,7 +118,6 @@
       "action-3": "nmcli radio wifi on",
     },
   },
-
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "on-click": "kitty --title pulsemixer pulsemixer",
@@ -108,17 +126,19 @@
     "scroll-step": 5,
     "format-muted": "",
     "format-icons": {
-      "default": ["", " ", " "],
+      "default": [
+        "",
+        " ",
+        " "
+      ],
     },
   },
-
   "custom/notification": {
     "tooltip": false,
     "format": "",
     "on-click": "makoctl dismiss -a",
     "on-click-right": "makoctl restore",
   },
-
   "mpris": {
     "interval": 10,
     "format": "{player_icon} {dynamic}",
@@ -147,8 +167,12 @@
       "playing": "",
       "stopped": "",
     },
-    "dynamic-order": ["artist"],
-    "ignored-players": ["zen"],
+    "dynamic-order": [
+      "artist"
+    ],
+    "ignored-players": [
+      "zen"
+    ],
     "max-length": 25,
   },
 }
