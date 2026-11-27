@@ -2,15 +2,18 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "--- BẮT ĐẦU CHIẾN DỊCH HỒI SINH ARCH LINUX ---"
 
 # 1. AUR Helper
 if ! command -v yay &>/dev/null; then
   echo "Installing yay..."
   sudo pacman -S --needed --noconfirm base-devel git
+  rm -rf /tmp/yay
   git clone https://aur.archlinux.org/yay.git /tmp/yay
-  cd /tmp/yay && makepkg -si --noconfirm
-  cd -
+  (cd /tmp/yay && makepkg -si --noconfirm)
+  rm -rf /tmp/yay
 fi
 
 # 2. Core Runtimes (FNM & Rustup)
@@ -34,12 +37,12 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # 3. Sync Packages
 echo "Syncing packages from backup lists..."
-if [ -f "backup-pkgs/pkglist-repo.txt" ]; then
-  sudo pacman -S --needed --noconfirm - <backup-pkgs/pkglist-repo.txt
+if [ -f "$SCRIPT_DIR/backup-pkgs/pkglist-repo.txt" ]; then
+  sudo pacman -S --needed --noconfirm - <"$SCRIPT_DIR/backup-pkgs/pkglist-repo.txt"
 fi
 
-if [ -f "backup-pkgs/pkglist-aur.txt" ]; then
-  yay -S --needed --noconfirm - <backup-pkgs/pkglist-aur.txt
+if [ -f "$SCRIPT_DIR/backup-pkgs/pkglist-aur.txt" ]; then
+  yay -S --needed --noconfirm - <"$SCRIPT_DIR/backup-pkgs/pkglist-aur.txt"
 fi
 
 # 4. Dotfiles Deployment
@@ -70,31 +73,33 @@ else
 fi
 
 if [ ! -f "$HOME/.local/share/dbx-web/.env" ]; then
-  cat << 'EOF' > "$HOME/.local/share/dbx-web/.env"
+  cat << EOF > "$HOME/.local/share/dbx-web/.env"
 DBX_PORT=4224
 DBX_DATA_DIR=$HOME/.local/share/dbx-web/data
 DBX_DISABLE_PASSWORD=1
 EOF
 fi
 
-# Reload systemd user daemon for dbx.service
+# Reload systemd user daemon and enable dbx.service
 systemctl --user daemon-reload || true
+systemctl --user enable --now dbx.service || true
+
 # 6. Core Services
 echo "Enabling core services..."
+sudo systemctl enable --now iwd.service
+sudo systemctl enable --now NetworkManager.service
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now libvirtd.socket
 sudo systemctl enable --now sddm.service
 sudo systemctl enable --now "fcitx5-lotus-server@$(whoami).service"
 
-sudo systemctl disable --now cups.service
+sudo systemctl disable --now cups.service || true
 sudo systemctl enable --now cups.socket
 
 # 7. Optimization: Mask unwanted background indexing services
 systemctl --user mask localsearch-3.service localsearch-control-3.service localsearch-writeback-3.service 2>/dev/null || true
 
-sudo systemctl disable docker.service docker.socket
-sudo systemctl stop docker.service docker.socket
-sudo usermod -aG docker $USER
-newgrp docker
+sudo systemctl disable --now docker.service docker.socket || true
+sudo usermod -aG docker "$USER"
 
 echo "CHỐT ĐƠN! REBOOT LẠI MÁY ĐỂ HƯỞNG THÀNH QUẢ"
