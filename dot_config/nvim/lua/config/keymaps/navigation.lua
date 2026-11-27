@@ -263,9 +263,3 @@ vim.keymap.set(
   "<cmd>vertical resize +2<cr>",
   { desc = "Increase Window Width" }
 )
-vim.keymap.set(
-  "n",
-  "<Tab>",
-  "<C-w>w",
-  { desc = "Cycle through windows", silent = true }
-)

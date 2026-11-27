@@ -1,6 +1,6 @@
 # 🚀 Automatically Generated Neovim Keymaps
 
-Generated on: 2026-11-20 07:16:11
+Generated on: 2026-11-25 19:55:07
 
 | Keymap | Mode | Action / Description |
 | :--- | :--- | :--- |
@@ -25,7 +25,6 @@ Generated on: 2026-11-20 07:16:11
 | **`<F5>`** | Normal | Debug: Continue |
 | **`<S-Tab>`** | Insert | vim.snippet.jump if active, otherwise <S-Tab> |
 | **`<Tab>`** | Insert | vim.snippet.jump if active, otherwise <Tab> |
-| **`<Tab>`** | Normal | Cycle through windows |
 | **`<leader>1`** | Normal | Harpoon: File 1 |
 | **`<leader>2`** | Normal | Harpoon: File 2 |
 | **`<leader>3`** | Normal | Harpoon: File 3 |

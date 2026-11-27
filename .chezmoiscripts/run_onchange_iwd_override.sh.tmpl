@@ -1,0 +1,23 @@
+#!/bin/bash
+
+{{- $relPath := "dot_config/system-configs/iwd/override.conf" }}
+{{- $iwdOverride := joinPath .chezmoi.sourceDir $relPath }}
+
+{{- if stat $iwdOverride }}
+# iwd_override_hash: {{ include $relPath | sha256sum }}
+{{- else }}
+# iwd_override_hash: EMPTY_FILE_NO_HASH
+{{- end }}
+
+{{- if stat $iwdOverride }}
+sudo mkdir -p /etc/systemd/system/iwd.service.d
+sudo cp {{ $iwdOverride }} /etc/systemd/system/iwd.service.d/override.conf
+sudo systemctl daemon-reload
+echo "[v] Hoàn tất nạp systemd override cho iwd.service!"
+{{- else }}
+if [ -f /etc/systemd/system/iwd.service.d/override.conf ]; then
+    sudo rm /etc/systemd/system/iwd.service.d/override.conf
+    sudo systemctl daemon-reload
+    echo "[!] Đã dọn dẹp systemd override cũ của iwd.service."
+fi
+{{- end }}
